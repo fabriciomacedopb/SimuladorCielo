@@ -1,4 +1,4 @@
-const CACHE_NAME = 'proposta-pagamentos-v2.5.6';
+const CACHE_NAME = 'proposta-pagamentos-v2.5.7';
 const CORE = [
   './', './index.html', './manifest.json',
   './css/app.css', './css/app-base.css', './css/app-components.css',
