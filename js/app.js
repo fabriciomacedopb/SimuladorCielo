@@ -17,7 +17,7 @@ import { validateState } from './validacao.js';
 let state = loadDraft() || createDefaultState();
 let currentView = 'analysis';
 let saveTimer = null;
-const steps = [['Dados da proposta','Identificação e validade'],['Cartões','Volume por modalidade'],['Bandeiras','Mix e condições comerciais'],['Pix','Tarifação e volume'],['Equipamentos','POS, TEF e conectividade'],['Antecipação','Volume e condição'],['Cobrança','Eventos e tarifas'],['Mais Vantagens','Pacote e benefícios'],['Outros serviços','Itens adicionais'],['Resultado','Conferência final']];
+const steps = [['Dados da proposta','Identificação e validade'],['Cartões','Volume por modalidade'],['Bandeiras','Mix e condições comerciais'],['Pix','Tarifação e volume'],['Equipamentos','POS, TEF e conectividade'],['Antecipação','Volume e condição'],['Cobrança','Eventos e tarifas'],['Mais Vantagens','Pacote, pontos e benefícios'],['Outros serviços','Itens adicionais'],['Resultado','Conferência final']];
 function markDirty(){state.ui.dirty=true;clearTimeout(saveTimer);saveTimer=setTimeout(()=>saveDraft(state),180)}
 function mutateState(mutator){mutator(state);markDirty()}
 function updateState(mutator){mutateState(mutator);render()}
@@ -28,5 +28,5 @@ function renderAnalysis(){const main=$('#main');const validation=validateState(s
 function renderStepContent(){const c=$('#stepContent');const ctx={state,$,$$,updateState,updateInputState,input,inlineInput,select,segmented,statusBadge,setStep,goDashboard:()=>{currentView='dashboard';render()}};const cardSteps=createCardSteps(ctx),brandSteps=createBrandSteps(ctx),operations=createOperationsSteps(ctx),commercial=createCommercialSteps(ctx),finalSteps=createFinalSteps(ctx);const renderers=[cardSteps.stepProposal,cardSteps.stepCards,brandSteps.stepBrands,operations.stepPix,operations.stepEquipment,operations.stepAnticipation,commercial.stepCollection,commercial.stepPackage,finalSteps.stepOthers,finalSteps.stepReview];renderers[state.ui.step](c);bindSmartInputs(c)}
 function saveCurrent(){const defaultName=`${state.meta.cliente||'Simulação'} - ${fmtDateBR(state.meta.dataAnalise)}`;const name=prompt('Nome da simulação:',defaultName);if(name===null)return;const record=saveSimulation(state,name||defaultName);state.meta.id=record.id;state.ui.dirty=false;saveDraft(state);alert('Simulação salva neste navegador.');render()}
 function newSimulation(){if(state.ui.dirty&&!confirm('Existem alterações ainda não salvas. Deseja iniciar uma nova análise mesmo assim?'))return;state=createDefaultState();clearDraft();currentView='analysis';render()}
-if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js?v=2.4.0').catch(()=>{}));
+if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js?v=2.5.0').catch(()=>{}));
 render();
