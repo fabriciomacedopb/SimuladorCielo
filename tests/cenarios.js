@@ -6,6 +6,7 @@ import { calculateCards, modalityVolumeCents } from '../js/cartoes.js';
 import { calculatePix } from '../js/pix.js';
 import { calculateEquipment } from '../js/equipamentos.js';
 import { calculateBenefits } from '../js/beneficios.js';
+import { calculateCollection } from '../js/cobranca.js';
 import { calculateMaisVantagens, discountByReceipts } from '../js/mais-vantagens.js';
 import { calculateAll } from '../js/calculos.js';
 
@@ -16,6 +17,7 @@ function minimalValidState(volume = 10000) {
   s.cards.modoModalidades = 'valor';
   s.cards.faturamentoTotal = volume;
   s.cards.modalities['Débito'].valor = volume;
+  s.cards.detalharBandeiras = true;
   s.cards.modoBandeiras = 'share';
   s.cards.modalities['Débito'].brands.visa.share = 100;
   s.cards.modalities['Débito'].brands.mastercard.share = 0;
@@ -27,6 +29,11 @@ function minimalValidState(volume = 10000) {
   return s;
 }
 
+test('Novo fluxo: cartões iniciam no modo valor', () => {
+  const s = createDefaultState();
+  assert.equal(s.cards.modoModalidades, 'valor');
+});
+
 test('Cartões: combinação Visa Débito reproduz cálculo do gabarito', () => {
   const s = minimalValidState(10000);
   const r = calculateCards(s);
@@ -35,6 +42,22 @@ test('Cartões: combinação Visa Débito reproduz cálculo do gabarito', () => 
   assert.equal(r.custoCieloCents, 7800);
   assert.equal(r.impactoMensalCents, 4200);
   assert.equal(r.impacto12Cents, 50400);
+});
+
+test('Cartões: modo geral calcula a modalidade sem exigir mix de bandeiras', () => {
+  const s = createDefaultState();
+  s.cards.modoModalidades = 'valor';
+  s.cards.modalities['Débito'].valor = 10000;
+  s.cards.faturamentoTotal = 10000;
+  s.cards.detalharBandeiras = false;
+  s.cards.modalities['Débito'].taxaAtualGeral = 1.20;
+  s.cards.modalities['Débito'].taxaCieloGeral = 0.80;
+  const r = calculateCards(s);
+  assert.equal(r.complete, true);
+  assert.equal(r.custoAtualCents, 12000);
+  assert.equal(r.custoCieloCents, 8000);
+  assert.equal(r.impactoMensalCents, 4000);
+  assert.deepEqual(r.byBrand, []);
 });
 
 test('Pix: cenário do Excel R$ 220 mil, 1.000 transações, 0,49%', () => {
@@ -77,6 +100,18 @@ test('Equipamentos: isenção só é aplicada quando explicitamente marcada', ()
   assert.equal(calculateEquipment(s).custoCieloCents, 20000);
   s.equipment[0].isencaoAplicavel = true;
   assert.equal(calculateEquipment(s).custoCieloCents, 0);
+});
+
+test('Cobrança: quantidade e tarifas sensibilizam o impacto mensal', () => {
+  const s = createDefaultState();
+  s.collection.itens = [
+    { id: 'emissao', evento: 'Emissão', quantidade: 1000, tarifaAtual: 2.00, tarifaProposta: 1.50 },
+    { id: 'liquidacao', evento: 'Liquidação', quantidade: 800, tarifaAtual: 3.00, tarifaProposta: 2.00 }
+  ];
+  const r = calculateCollection(s);
+  assert.equal(r.detail[0].impactoMensalCents, 50000);
+  assert.equal(r.detail[1].impactoMensalCents, 80000);
+  assert.equal(r.impactoMensalCents, 130000);
 });
 
 test('Benefícios BB Empresas: cenário do Excel totaliza 8.440 pts/mês', () => {
@@ -132,6 +167,7 @@ test('Mix por bandeira altera impacto sem alterar as taxas', () => {
   s.cards.modoModalidades = 'valor';
   s.cards.faturamentoTotal = 100000;
   s.cards.modalities['Débito'].valor = 100000;
+  s.cards.detalharBandeiras = true;
   s.cards.modoBandeiras = 'share';
   const debit = s.cards.modalities['Débito'].brands;
   debit.visa.share = 50; debit.mastercard.share = 50; debit.elo.share = 0;
