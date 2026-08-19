@@ -1,184 +1,39 @@
 import { BANDEIRAS, MODALIDADES } from '../config/parametros.js';
 import { costMicroCents, microCentsToCents, parseDecimal, rateToUnits, toCents } from './formatters.js';
 
-export function activeBrandsFor(modalidade) {
-  return BANDEIRAS.filter((b) => modalidade !== 'Débito' || b.debito);
-}
-
-function allocateCentsByShare(totalCents, entries) {
-  const normalized = entries.map((entry, index) => {
-    const share = Math.max(parseDecimal(entry.share) ?? 0, 0);
-    const raw = totalCents * share / 100;
-    const base = Math.floor(raw);
-    return { ...entry, index, share, raw, base, frac: raw - base };
-  });
-  const shareSum = normalized.reduce((s, e) => s + e.share, 0);
-  const target = Math.round(totalCents * shareSum / 100);
-  let remainder = target - normalized.reduce((s, e) => s + e.base, 0);
-  const order = [...normalized].sort((a, b) => b.frac - a.frac || a.index - b.index);
-  for (let i = 0; i < order.length && remainder > 0; i = (i + 1) % order.length) {
-    order[i].base += 1;
-    remainder -= 1;
-  }
-  return new Map(normalized.map((e) => [e.id, order.find((x) => x.id === e.id)?.base ?? e.base]));
-}
-
-function modalityAllocation(state) {
-  const total = toCents(state.cards.faturamentoTotal) ?? 0;
-  if (state.cards.modoModalidades === 'valor') {
-    return new Map(MODALIDADES.map((m) => [m, toCents(state.cards.modalities[m]?.valor) ?? 0]));
-  }
-  return allocateCentsByShare(total, MODALIDADES.map((m) => ({ id: m, share: state.cards.modalities[m]?.share })));
-}
-
-export function modalityVolumeCents(state, modalidade) {
-  return modalityAllocation(state).get(modalidade) ?? 0;
-}
-
-export function totalCardsVolumeCents(state) {
-  if (state.cards.modoModalidades === 'share') return toCents(state.cards.faturamentoTotal) ?? 0;
-  return MODALIDADES.reduce((sum, m) => sum + (toCents(state.cards.modalities[m]?.valor) ?? 0), 0);
-}
-
-export function modalityShare(state, modalidade) {
-  const total = totalCardsVolumeCents(state);
-  return total > 0 ? modalityVolumeCents(state, modalidade) / total * 100 : 0;
-}
-
-function brandAllocation(state, modalidade) {
-  const modalVol = modalityVolumeCents(state, modalidade);
-  const active = activeBrandsFor(modalidade);
-  if (state.cards.modoBandeiras === 'valor') {
-    return new Map(active.map((b) => [b.id, toCents(state.cards.modalities[modalidade]?.brands?.[b.id]?.valor) ?? 0]));
-  }
-  return allocateCentsByShare(modalVol, active.map((b) => ({ id: b.id, share: state.cards.modalities[modalidade]?.brands?.[b.id]?.share })));
-}
-
-export function brandVolumeCents(state, modalidade, brandId) {
-  return brandAllocation(state, modalidade).get(brandId) ?? 0;
-}
-
-export function brandShare(state, modalidade, brandId) {
-  const modalVol = modalityVolumeCents(state, modalidade);
-  return modalVol > 0 ? brandVolumeCents(state, modalidade, brandId) / modalVol * 100 : 0;
-}
-
-function isRatePresent(value) {
-  return value !== null && value !== undefined && value !== '' && parseDecimal(value) !== null;
-}
-
-function modalityDistributionValid(state) {
-  const total = totalCardsVolumeCents(state);
-  if (total <= 0) return false;
-  if (state.cards.modoModalidades === 'share') {
-    const sum = MODALIDADES.reduce((s, m) => s + (parseDecimal(state.cards.modalities[m]?.share) ?? 0), 0);
-    return Math.abs(sum - 100) < 0.01;
-  }
-  const reference = toCents(state.cards.faturamentoTotal);
-  return reference === null || Math.abs(reference - total) <= 1;
-}
-
-function brandDistributionValid(state, modalidade) {
-  const modalVol = modalityVolumeCents(state, modalidade);
-  if (modalVol <= 0) return true;
-  const active = activeBrandsFor(modalidade);
-  if (state.cards.modoBandeiras === 'share') {
-    const sum = active.reduce((s, b) => s + (parseDecimal(state.cards.modalities[modalidade]?.brands?.[b.id]?.share) ?? 0), 0);
-    return Math.abs(sum - 100) < 0.01;
-  }
-  const sum = active.reduce((s, b) => s + brandVolumeCents(state, modalidade, b.id), 0);
-  return Math.abs(sum - modalVol) <= 1;
-}
+export function activeBrandsFor(modalidade) { return BANDEIRAS.filter((b) => modalidade !== 'Débito' || b.debito); }
+function allocateCentsByShare(totalCents, entries) { const normalized = entries.map((entry, index) => { const share = Math.max(parseDecimal(entry.share) ?? 0, 0); const raw = totalCents * share / 100; const base = Math.floor(raw); return { ...entry, index, share, raw, base, frac: raw - base }; }); const shareSum = normalized.reduce((s, e) => s + e.share, 0); const target = Math.round(totalCents * shareSum / 100); let remainder = target - normalized.reduce((s, e) => s + e.base, 0); const order = [...normalized].sort((a, b) => b.frac - a.frac || a.index - b.index); for (let i = 0; i < order.length && remainder > 0; i = (i + 1) % order.length) { order[i].base += 1; remainder -= 1; } return new Map(normalized.map((e) => [e.id, order.find((x) => x.id === e.id)?.base ?? e.base])); }
+function modalityAllocation(state) { const total = toCents(state.cards.faturamentoTotal) ?? 0; if (state.cards.modoModalidades === 'valor') return new Map(MODALIDADES.map((m) => [m, toCents(state.cards.modalities[m]?.valor) ?? 0])); return allocateCentsByShare(total, MODALIDADES.map((m) => ({ id: m, share: state.cards.modalities[m]?.share }))); }
+export function modalityVolumeCents(state, modalidade) { return modalityAllocation(state).get(modalidade) ?? 0; }
+export function totalCardsVolumeCents(state) { if (state.cards.modoModalidades === 'share') return toCents(state.cards.faturamentoTotal) ?? 0; return MODALIDADES.reduce((sum, m) => sum + (toCents(state.cards.modalities[m]?.valor) ?? 0), 0); }
+export function modalityShare(state, modalidade) { const total = totalCardsVolumeCents(state); return total > 0 ? modalityVolumeCents(state, modalidade) / total * 100 : 0; }
+function brandAllocation(state, modalidade) { const modalVol = modalityVolumeCents(state, modalidade); const active = activeBrandsFor(modalidade); if (state.cards.modoBandeiras === 'valor') return new Map(active.map((b) => [b.id, toCents(state.cards.modalities[modalidade]?.brands?.[b.id]?.valor) ?? 0])); return allocateCentsByShare(modalVol, active.map((b) => ({ id: b.id, share: state.cards.modalities[modalidade]?.brands?.[b.id]?.share }))); }
+export function brandVolumeCents(state, modalidade, brandId) { if (state.cards.detalharBandeiras === false) return 0; return brandAllocation(state, modalidade).get(brandId) ?? 0; }
+export function brandShare(state, modalidade, brandId) { const modalVol = modalityVolumeCents(state, modalidade); return modalVol > 0 ? brandVolumeCents(state, modalidade, brandId) / modalVol * 100 : 0; }
+function isRatePresent(value) { return value !== null && value !== undefined && value !== '' && parseDecimal(value) !== null; }
+function modalityDistributionValid(state) { const total = totalCardsVolumeCents(state); if (total <= 0) return false; if (state.cards.modoModalidades === 'share') { const sum = MODALIDADES.reduce((s, m) => s + (parseDecimal(state.cards.modalities[m]?.share) ?? 0), 0); return Math.abs(sum - 100) < 0.01; } const reference = toCents(state.cards.faturamentoTotal); return reference === null || Math.abs(reference - total) <= 1; }
+function brandDistributionValid(state, modalidade) { if (state.cards.detalharBandeiras === false) return true; const modalVol = modalityVolumeCents(state, modalidade); if (modalVol <= 0) return true; const active = activeBrandsFor(modalidade); if (state.cards.modoBandeiras === 'share') { const sum = active.reduce((s, b) => s + (parseDecimal(state.cards.modalities[modalidade]?.brands?.[b.id]?.share) ?? 0), 0); return Math.abs(sum - 100) < 0.01; } const sum = active.reduce((s, b) => s + brandVolumeCents(state, modalidade, b.id), 0); return Math.abs(sum - modalVol) <= 1; }
+function detailGeneralRates(state) { const detail = []; let totalCurrentMicro = 0; let totalProposedMicro = 0; let ratesComplete = true; for (const modalidade of MODALIDADES) { const volumeCents = modalityVolumeCents(state, modalidade); const cell = state.cards.modalities[modalidade]; const needsRate = volumeCents > 0; const rowComplete = !needsRate || (isRatePresent(cell.taxaAtualGeral) && isRatePresent(cell.taxaCieloGeral)); if (!rowComplete) ratesComplete = false; const currentRateUnits = rateToUnits(cell.taxaAtualGeral); const proposedRateUnits = rateToUnits(cell.taxaCieloGeral); const currentMicro = rowComplete ? costMicroCents(volumeCents, currentRateUnits ?? 0) : null; const proposedMicro = rowComplete ? costMicroCents(volumeCents, proposedRateUnits ?? 0) : null; if (currentMicro !== null) totalCurrentMicro += currentMicro; if (proposedMicro !== null) totalProposedMicro += proposedMicro; const currentCents = currentMicro === null ? null : microCentsToCents(currentMicro); const proposedCents = proposedMicro === null ? null : microCentsToCents(proposedMicro); const impactCents = currentCents === null || proposedCents === null ? null : currentCents - proposedCents; detail.push({ modalidade, brandId: 'geral', bandeira: 'Condição geral', volumeCents, share: volumeCents > 0 ? 100 : 0, taxaAtual: parseDecimal(cell.taxaAtualGeral), taxaCielo: parseDecimal(cell.taxaCieloGeral), currentMicro, proposedMicro, custoAtualCents: currentCents, custoCieloCents: proposedCents, impactoMensalCents: impactCents, impacto12Cents: impactCents === null ? null : impactCents * 12, complete: rowComplete }); } return { detail, totalCurrentMicro, totalProposedMicro, ratesComplete }; }
 
 export function calculateCards(state) {
-  const detail = [];
-  let totalCurrentMicro = 0;
-  let totalProposedMicro = 0;
-  let ratesComplete = true;
+  const detailedBrands = state.cards.detalharBandeiras !== false;
   const modalityMixComplete = modalityDistributionValid(state);
-  let brandMixComplete = true;
-
-  for (const modalidade of MODALIDADES) {
-    const modalVol = modalityVolumeCents(state, modalidade);
-    if (!brandDistributionValid(state, modalidade)) brandMixComplete = false;
-    const brands = activeBrandsFor(modalidade);
-    for (const brand of brands) {
-      const volumeCents = brandVolumeCents(state, modalidade, brand.id);
-      const cell = state.cards.modalities[modalidade].brands[brand.id];
-      const currentRateUnits = rateToUnits(cell.taxaAtual);
-      const proposedRateUnits = rateToUnits(cell.taxaCielo);
-      const needsRate = volumeCents > 0;
-      const rowComplete = !needsRate || (isRatePresent(cell.taxaAtual) && isRatePresent(cell.taxaCielo));
-      if (!rowComplete) ratesComplete = false;
-
-      const currentMicro = rowComplete ? costMicroCents(volumeCents, currentRateUnits ?? 0) : null;
-      const proposedMicro = rowComplete ? costMicroCents(volumeCents, proposedRateUnits ?? 0) : null;
-      if (currentMicro !== null) totalCurrentMicro += currentMicro;
-      if (proposedMicro !== null) totalProposedMicro += proposedMicro;
-
-      const currentCents = currentMicro === null ? null : microCentsToCents(currentMicro);
-      const proposedCents = proposedMicro === null ? null : microCentsToCents(proposedMicro);
-      const impactCents = currentCents === null || proposedCents === null ? null : currentCents - proposedCents;
-
-      detail.push({
-        modalidade,
-        brandId: brand.id,
-        bandeira: brand.nome,
-        volumeCents,
-        share: brandShare(state, modalidade, brand.id),
-        taxaAtual: parseDecimal(cell.taxaAtual),
-        taxaCielo: parseDecimal(cell.taxaCielo),
-        currentMicro,
-        proposedMicro,
-        custoAtualCents: currentCents,
-        custoCieloCents: proposedCents,
-        impactoMensalCents: impactCents,
-        impacto12Cents: impactCents === null ? null : impactCents * 12,
-        complete: rowComplete
-      });
+  let brandMixComplete = true, ratesComplete = true, detail = [], totalCurrentMicro = 0, totalProposedMicro = 0;
+  if (!detailedBrands) {
+    const general = detailGeneralRates(state); detail = general.detail; totalCurrentMicro = general.totalCurrentMicro; totalProposedMicro = general.totalProposedMicro; ratesComplete = general.ratesComplete;
+  } else {
+    for (const modalidade of MODALIDADES) {
+      const modalVol = modalityVolumeCents(state, modalidade); if (!brandDistributionValid(state, modalidade)) brandMixComplete = false;
+      for (const brand of activeBrandsFor(modalidade)) {
+        const volumeCents = brandVolumeCents(state, modalidade, brand.id); const cell = state.cards.modalities[modalidade].brands[brand.id]; const currentRateUnits = rateToUnits(cell.taxaAtual); const proposedRateUnits = rateToUnits(cell.taxaCielo); const needsRate = volumeCents > 0; const rowComplete = !needsRate || (isRatePresent(cell.taxaAtual) && isRatePresent(cell.taxaCielo)); if (!rowComplete) ratesComplete = false;
+        const currentMicro = rowComplete ? costMicroCents(volumeCents, currentRateUnits ?? 0) : null; const proposedMicro = rowComplete ? costMicroCents(volumeCents, proposedRateUnits ?? 0) : null; if (currentMicro !== null) totalCurrentMicro += currentMicro; if (proposedMicro !== null) totalProposedMicro += proposedMicro;
+        const currentCents = currentMicro === null ? null : microCentsToCents(currentMicro); const proposedCents = proposedMicro === null ? null : microCentsToCents(proposedMicro); const impactCents = currentCents === null || proposedCents === null ? null : currentCents - proposedCents;
+        detail.push({ modalidade, brandId: brand.id, bandeira: brand.nome, volumeCents, share: brandShare(state, modalidade, brand.id), taxaAtual: parseDecimal(cell.taxaAtual), taxaCielo: parseDecimal(cell.taxaCielo), currentMicro, proposedMicro, custoAtualCents: currentCents, custoCieloCents: proposedCents, impactoMensalCents: impactCents, impacto12Cents: impactCents === null ? null : impactCents * 12, complete: rowComplete });
+      }
     }
   }
-
   const complete = modalityMixComplete && brandMixComplete && ratesComplete;
-  const currentCents = complete ? microCentsToCents(totalCurrentMicro) : null;
-  const proposedCents = complete ? microCentsToCents(totalProposedMicro) : null;
-  const impactCents = complete ? currentCents - proposedCents : null;
-  const totalVolume = totalCardsVolumeCents(state);
-
-  const byBrand = BANDEIRAS.map((brand) => {
-    const rows = detail.filter((r) => r.brandId === brand.id);
-    const volumeCents = rows.reduce((s, r) => s + r.volumeCents, 0);
-    const currentMicro = rows.reduce((s, r) => s + (r.currentMicro ?? 0), 0);
-    const proposedMicro = rows.reduce((s, r) => s + (r.proposedMicro ?? 0), 0);
-    const brandComplete = complete && rows.every((r) => r.complete);
-    const atual = brandComplete ? microCentsToCents(currentMicro) : null;
-    const proposta = brandComplete ? microCentsToCents(proposedMicro) : null;
-    const impacto = atual === null || proposta === null ? null : atual - proposta;
-    return {
-      brandId: brand.id,
-      bandeira: brand.nome,
-      volumeCents,
-      participacao: totalVolume > 0 ? volumeCents / totalVolume * 100 : 0,
-      custoAtualCents: atual,
-      custoCieloCents: proposta,
-      impactoMensalCents: impacto,
-      impacto12Cents: impacto === null ? null : impacto * 12
-    };
-  });
-
-  return {
-    complete,
-    modalityMixComplete,
-    brandMixComplete,
-    ratesComplete,
-    totalVolumeCents: totalVolume,
-    custoAtualCents: currentCents,
-    custoCieloCents: proposedCents,
-    impactoMensalCents: impactCents,
-    impacto12Cents: impactCents === null ? null : impactCents * 12,
-    taxaMediaAtual: complete && totalVolume > 0 ? currentCents / totalVolume * 100 : null,
-    taxaMediaCielo: complete && totalVolume > 0 ? proposedCents / totalVolume * 100 : null,
-    detail,
-    byBrand
-  };
+  const currentCents = complete ? microCentsToCents(totalCurrentMicro) : null; const proposedCents = complete ? microCentsToCents(totalProposedMicro) : null; const impactCents = complete ? currentCents - proposedCents : null; const totalVolume = totalCardsVolumeCents(state);
+  const byBrand = detailedBrands ? BANDEIRAS.map((brand) => { const rows = detail.filter((r) => r.brandId === brand.id); const volumeCents = rows.reduce((s, r) => s + r.volumeCents, 0); const currentMicro = rows.reduce((s, r) => s + (r.currentMicro ?? 0), 0); const proposedMicro = rows.reduce((s, r) => s + (r.proposedMicro ?? 0), 0); const brandComplete = complete && rows.every((r) => r.complete); const atual = brandComplete ? microCentsToCents(currentMicro) : null; const proposta = brandComplete ? microCentsToCents(proposedMicro) : null; const impacto = atual === null || proposta === null ? null : atual - proposta; return { brandId: brand.id, bandeira: brand.nome, volumeCents, participacao: totalVolume > 0 ? volumeCents / totalVolume * 100 : 0, custoAtualCents: atual, custoCieloCents: proposta, impactoMensalCents: impacto, impacto12Cents: impacto === null ? null : impacto * 12 }; }) : [];
+  return { complete, detailedBrands, modalityMixComplete, brandMixComplete, ratesComplete, totalVolumeCents: totalVolume, custoAtualCents: currentCents, custoCieloCents: proposedCents, impactoMensalCents: impactCents, impacto12Cents: impactCents === null ? null : impactCents * 12, taxaMediaAtual: complete && totalVolume > 0 ? currentCents / totalVolume * 100 : null, taxaMediaCielo: complete && totalVolume > 0 ? proposedCents / totalVolume * 100 : null, detail, byBrand };
 }
