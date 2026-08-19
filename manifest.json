@@ -1,0 +1,13 @@
+{
+  "name": "Proposta Integrada de Pagamentos",
+  "short_name": "Pagamentos",
+  "description": "Análise financeira local de meios de pagamento, dashboard e proposta comercial.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3f6f8",
+  "theme_color": "#082b49",
+  "icons": [
+    { "src": "assets/icons/app-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
