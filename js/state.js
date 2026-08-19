@@ -28,7 +28,17 @@ export function createDefaultState() {
     collection: { itens: COBRANCA_EVENTOS_PADRAO.map((evento) => ({ id: crypto.randomUUID?.() || `${evento}-${Math.random()}`, evento, quantidade: 0, tarifaAtual: 0, tarifaProposta: 0 })), boletosEmitidos: 0, boletosLiquidados: 0, recebimentosElegiveis: 0, bbPayElegivel: 0 },
     package: { tipoInstituicaoAtual: 'Outro banco', instituicaoAtual: '', nomePacoteAtual: '', mensalidadeAtual: null, planoProposto: 'Mais Vantagens 1', statusValidacao: 'A VALIDAR', considerarBeneficio: true, descontoInvestimentosPct: 0 },
     others: [], benefits: { outrosProdutosPontos: 0 },
-    ui: { step: 0, brandModalidade: 'Débito', brandSubtab: 'distribuicao', dirty: false }
+    ui: {
+      step: 0,
+      brandModalidade: 'Débito',
+      brandSubtab: 'distribuicao',
+      rateBulkRange: '2a6',
+      rateBulkBrand: 'todas',
+      rateBulkCurrent: '',
+      rateBulkCielo: '',
+      rateBulkMessage: '',
+      dirty: false
+    }
   };
 }
 
