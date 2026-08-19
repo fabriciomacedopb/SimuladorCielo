@@ -18,17 +18,62 @@ export function validateState(state) {
 
   if (state.cards.detalharBandeiras !== false) {
     for (const modalidade of MODALIDADES) {
-      const modalVol = modalityVolumeCents(state, modalidade); if (modalVol <= 0) continue; const active = activeBrandsFor(modalidade);
-      if (state.cards.modoBandeiras === 'share') { const sum = active.reduce((s, b) => s + (parseDecimal(state.cards.modalities[modalidade].brands[b.id].share) ?? 0), 0); if (Math.abs(sum - 100) >= 0.01) { brandMixLevel = 'review'; brandMixMessage = `${modalidade}: mix das bandeiras totaliza ${sum.toFixed(2)}%.`; break; } }
-      else { const sum = active.reduce((s, b) => s + brandVolumeCents(state, modalidade, b.id), 0); if (Math.abs(sum - modalVol) > 1) { brandMixLevel = 'review'; brandMixMessage = `${modalidade}: valores por bandeira não conciliam com o volume da modalidade.`; break; } }
+      const modalVol = modalityVolumeCents(state, modalidade);
+      if (modalVol <= 0) continue;
+      const active = activeBrandsFor(modalidade);
+
+      if (state.cards.modoBandeiras === 'share') {
+        const sum = active.reduce((s, b) => s + (parseDecimal(state.cards.modalities[modalidade].brands[b.id].share) ?? 0), 0);
+        if (Math.abs(sum) < 0.01) {
+          brandMixLevel = 'fill';
+          brandMixMessage = `${modalidade}: informe o share por bandeira ou altere a forma de preenchimento para Valor mensal.`;
+          break;
+        }
+        if (Math.abs(sum - 100) >= 0.01) {
+          brandMixLevel = 'review';
+          brandMixMessage = `${modalidade}: o share das bandeiras totaliza ${sum.toFixed(2)}%. Ajuste para 100%.`;
+          break;
+        }
+      } else {
+        const sum = active.reduce((s, b) => s + brandVolumeCents(state, modalidade, b.id), 0);
+        if (sum === 0) {
+          brandMixLevel = 'fill';
+          brandMixMessage = `${modalidade}: informe o faturamento por bandeira ou altere a forma de preenchimento para Share %.`;
+          break;
+        }
+        if (Math.abs(sum - modalVol) > 1) {
+          brandMixLevel = 'review';
+          brandMixMessage = `${modalidade}: o faturamento informado por bandeira não concilia com o volume da modalidade.`;
+          break;
+        }
+      }
     }
+
     for (const modalidade of MODALIDADES) {
-      const modalVol = modalityVolumeCents(state, modalidade); if (modalVol <= 0) continue;
-      for (const brand of activeBrandsFor(modalidade)) { const vol = brandVolumeCents(state, modalidade, brand.id); if (vol <= 0) continue; const cell = state.cards.modalities[modalidade].brands[brand.id]; if (parseDecimal(cell.taxaAtual) === null || parseDecimal(cell.taxaCielo) === null) { ratesLevel = 'fill'; ratesMessage = `${modalidade} / ${brand.nome}: informe condição atual e Cielo.`; break; } }
+      const modalVol = modalityVolumeCents(state, modalidade);
+      if (modalVol <= 0) continue;
+      for (const brand of activeBrandsFor(modalidade)) {
+        const vol = brandVolumeCents(state, modalidade, brand.id);
+        if (vol <= 0) continue;
+        const cell = state.cards.modalities[modalidade].brands[brand.id];
+        if (parseDecimal(cell.taxaAtual) === null || parseDecimal(cell.taxaCielo) === null) {
+          ratesLevel = 'fill';
+          ratesMessage = `${modalidade} / ${brand.nome}: informe condição atual e Cielo.`;
+          break;
+        }
+      }
       if (ratesLevel !== 'ok') break;
     }
   } else {
-    for (const modalidade of MODALIDADES) { if (modalityVolumeCents(state, modalidade) <= 0) continue; const row = state.cards.modalities[modalidade]; if (parseDecimal(row.taxaAtualGeral) === null || parseDecimal(row.taxaCieloGeral) === null) { ratesLevel = 'fill'; ratesMessage = `${modalidade}: informe a condição geral atual e Cielo.`; break; } }
+    for (const modalidade of MODALIDADES) {
+      if (modalityVolumeCents(state, modalidade) <= 0) continue;
+      const row = state.cards.modalities[modalidade];
+      if (parseDecimal(row.taxaAtualGeral) === null || parseDecimal(row.taxaCieloGeral) === null) {
+        ratesLevel = 'fill';
+        ratesMessage = `${modalidade}: informe a condição geral atual e Cielo.`;
+        break;
+      }
+    }
   }
 
   checks.push(status('Distribuição por bandeira', brandMixLevel, brandMixMessage, 2));
