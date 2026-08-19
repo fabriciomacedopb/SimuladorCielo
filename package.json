@@ -1,0 +1,10 @@
+{
+  "name": "proposta-integrada-pagamentos",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.js",
+    "check": "for f in js/*.js config/*.js tests/*.js; do node --check \"$f\" || exit 1; done && node --test tests/*.js"
+  }
+}
