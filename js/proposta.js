@@ -1,6 +1,6 @@
 import { BANDEIRAS, ESTIMATIVA_BANDEIRAS_BRASIL, INFORMACOES_IMPORTANTES, MODALIDADES } from '../config/parametros.js';
 import { activeBrandsFor } from './cartoes.js';
-import { escapeHtml, fmtBRLFromCents, fmtCompactCents, fmtDateBR, fmtPct, fmtPoints, toCents } from './formatters.js';
+import { escapeHtml, fmtBRLFromCents, fmtCompactCents, fmtDateBR, fmtPct, fmtPoints, fmtPp, toCents } from './formatters.js';
 
 function proposalNarrative(results) {
   const t = results.totals;
@@ -26,22 +26,39 @@ function brandBadge(brand) {
   return `<span class="payment-brand brand-logo brand-${brand.id}" title="${escapeHtml(brand.nome)}"><img src="${brand.logo}" alt="${escapeHtml(brand.nome)}"></span>`;
 }
 
-function compactRates(state) {
+function rateOutcome(row) {
+  if (!row || row.taxaAtual === null || row.taxaCielo === null) return { delta: '—', tone: 'neutral', month: '—', year: '—' };
+  const diff = row.taxaAtual - row.taxaCielo;
+  const tone = diff > 0 ? 'better' : diff < 0 ? 'worse' : 'neutral';
+  const arrow = diff > 0 ? '▼' : diff < 0 ? '▲' : '=';
+  return {
+    delta: `${arrow} ${fmtPp(Math.abs(diff))}`,
+    tone,
+    month: row.impactoMensalCents === null ? '—' : fmtBRLFromCents(row.impactoMensalCents),
+    year: row.impacto12Cents === null ? '—' : fmtBRLFromCents(row.impacto12Cents)
+  };
+}
+
+function compactRates(state, results) {
   return BANDEIRAS.map((brand) => {
     const rows = MODALIDADES.filter((m) => activeBrandsFor(m).some((b) => b.id === brand.id)).map((m) => {
       const cell = state.cards.modalities[m].brands[brand.id];
-      return `<tr><td>${escapeHtml(m)}</td><td>${fmtPct(cell.taxaAtual)}</td><td>${fmtPct(cell.taxaCielo)}</td></tr>`;
+      const row = results.cards.detail.find((r) => r.modalidade === m && r.brandId === brand.id);
+      const out = rateOutcome(row);
+      return `<tr><td>${escapeHtml(m)}</td><td>${fmtPct(cell.taxaAtual)}</td><td>${fmtPct(cell.taxaCielo)}</td><td class="rate-${out.tone}">${out.delta}</td><td class="rate-${out.tone}">${out.month}</td><td class="rate-${out.tone}">${out.year}</td></tr>`;
     }).join('');
-    return `<div class="proposal-rate-brand"><div class="proposal-rate-head">${brandBadge(brand)}<span>Atual</span><span>Cielo</span></div><table><tbody>${rows}</tbody></table></div>`;
+    return `<div class="proposal-rate-brand enriched"><div class="proposal-rate-head enriched">${brandBadge(brand)}<span>Comparativo da condição</span></div><div class="proposal-rate-scroll"><table><thead><tr><th>Modalidade</th><th>Atual</th><th>Cielo</th><th>Dif. taxa</th><th>Benefício/mês</th><th>Benefício/12m</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
   }).join('');
 }
 
-function compactGeneralRates(state) {
+function compactGeneralRates(state, results) {
   const rows = MODALIDADES.map((m) => {
     const cell = state.cards.modalities[m];
-    return `<tr><td>${escapeHtml(m)}</td><td>${fmtPct(cell.taxaAtualGeral)}</td><td>${fmtPct(cell.taxaCieloGeral)}</td></tr>`;
+    const row = results.cards.detail.find((r) => r.modalidade === m && r.brandId === 'geral');
+    const out = rateOutcome(row);
+    return `<tr><td>${escapeHtml(m)}</td><td>${fmtPct(cell.taxaAtualGeral)}</td><td>${fmtPct(cell.taxaCieloGeral)}</td><td class="rate-${out.tone}">${out.delta}</td><td class="rate-${out.tone}">${out.month}</td><td class="rate-${out.tone}">${out.year}</td></tr>`;
   }).join('');
-  return `<div class="proposal-rate-brand general"><div class="proposal-rate-head"><span class="payment-brand brand-general">Condição geral</span><span>Atual</span><span>Cielo</span></div><table><tbody>${rows}</tbody></table></div>`;
+  return `<div class="proposal-rate-brand general enriched"><div class="proposal-rate-head enriched"><span class="payment-brand brand-general">Condição geral</span><span>Comparativo da condição</span></div><div class="proposal-rate-scroll"><table><thead><tr><th>Modalidade</th><th>Atual</th><th>Cielo</th><th>Dif. taxa</th><th>Benefício/mês</th><th>Benefício/12m</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
 }
 
 function equipmentSection(results) {
@@ -53,7 +70,7 @@ function equipmentSection(results) {
 function liveloBenefit(results) {
   const b = results.benefits;
   const livelo = b.livelo;
-  return `<div class="proposal-livelo"><div class="proposal-livelo-title"><span>Benefícios BB Empresas · estimativa de pontos</span><strong>${fmtPoints(b.mensal)} / mês</strong><small>${fmtPoints(b.anual)} em 12 meses</small></div><div class="proposal-points-breakdown"><span>Cielo <b>${fmtPoints(b.cielo)}</b></span><span>Pix <b>${fmtPoints(b.pix)}</b></span><span>Cobrança <b>${fmtPoints(b.cobranca)}</b></span><span>Outros <b>${fmtPoints(b.outros)}</b></span></div><div class="proposal-livelo-transfer"><span>Potencial estimado para transferência ao Programa Livelo</span><strong>${fmtPoints(livelo.potencialTransferenciaMensal)} / mês</strong><small>Estimativa sujeita à elegibilidade, disponibilidade dos pontos e às regras e limites vigentes. As condições podem ser alteradas. Pontos não compõem a economia financeira em R$.</small></div></div>`;
+  return `<div class="proposal-livelo"><div class="proposal-livelo-title"><span>Benefícios BB Empresas · estimativa de pontos</span><strong>${fmtPoints(b.mensal)} / mês</strong><small>${fmtPoints(b.anual)} em 12 meses</small></div><div class="proposal-points-breakdown"><span>Cielo <b>${fmtPoints(b.cielo)}</b></span><span>Pix <b>${fmtPoints(b.pix)}</b></span><span>Cobrança <b>${fmtPoints(b.cobranca)}</b></span><span>Outros <b>${fmtPoints(b.outros)}</b></span></div><div class="proposal-livelo-reference"><div><span>Referência equivalente de compra / mês</span><strong>${fmtBRLFromCents(livelo.valorReferenciaMensalCents)}</strong></div><div><span>Referência equivalente de compra / 12 meses</span><strong>${fmtBRLFromCents(livelo.valorReferencia12Cents)}</strong></div></div><div class="proposal-livelo-transfer"><span>Potencial estimado para transferência ao Programa Livelo</span><strong>${fmtPoints(livelo.potencialTransferenciaMensal)} / mês</strong><small>Premissa de referência: ${escapeHtml(livelo.referenciaValor)}. A equivalência em R$ é apenas uma comparação com custo de aquisição de quantidade semelhante de pontos; não representa dinheiro, valor de resgate, economia adicional ou garantia de conversão. Preços, promoções, regras e condições podem variar. Pontos não compõem a economia financeira em R$.</small></div></div>`;
 }
 
 export function renderProposal(container, state, results) {
@@ -100,7 +117,7 @@ export function renderProposal(container, state, results) {
         </article>
         <article>
           <h2>${detailed ? 'Condições comerciais por bandeira' : 'Condições comerciais gerais'}</h2>
-          <div class="proposal-rate-grid ${detailed ? '' : 'single'}">${detailed ? compactRates(state) : compactGeneralRates(state)}</div>
+          <div class="proposal-rate-grid ${detailed ? '' : 'single'}">${detailed ? compactRates(state,results) : compactGeneralRates(state,results)}</div>
         </article>
       </div>
 
