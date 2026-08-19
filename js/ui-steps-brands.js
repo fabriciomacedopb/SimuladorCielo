@@ -1,6 +1,6 @@
 import { BANDEIRAS, ESTIMATIVA_BANDEIRAS_BRASIL, MODALIDADES } from '../config/parametros.js';
-import { activeBrandsFor, brandShare, brandVolumeCents, estimatedBrandShare, modalityVolumeCents } from './cartoes.js';
-import { escapeHtml, fmtBRLFromCents, fmtPct } from './formatters.js';
+import { activeBrandsFor, brandShare, brandVolumeCents, calculateCards, estimatedBrandShare, modalityVolumeCents } from './cartoes.js';
+import { escapeHtml, fmtBRLFromCents, fmtPct, fmtPp } from './formatters.js';
 
 const RATE_RANGES = {
   '2a6': ['2x','3x','4x','5x','6x'],
@@ -12,11 +12,28 @@ const RATE_RANGE_LABELS = { '2a6': '2x a 6x', '7a12': '7x a 12x', '2a12': '2x a 
 function brandBadge(brand) {
   return `<span class="payment-brand brand-logo brand-${brand.id}" title="${escapeHtml(brand.nome)}"><img src="${brand.logo}" alt="${escapeHtml(brand.nome)}"></span>`;
 }
-
 function selected(value, current) { return value === current ? 'selected' : ''; }
+function comparisonTone(delta) { return delta > 0 ? 'better' : delta < 0 ? 'worse' : 'neutral'; }
+function moneyWithSign(cents) {
+  if (cents === null || cents === undefined) return '—';
+  if (cents === 0) return fmtBRLFromCents(0);
+  return `${cents > 0 ? '+' : '−'} ${fmtBRLFromCents(Math.abs(cents))}`;
+}
 
 export function createBrandSteps(ctx) {
   const { state, $, $$, updateState, updateInputState, segmented, inlineInput } = ctx;
+
+  function comparisonHtml(modalidade, brandId) {
+    const row = calculateCards(state).detail.find((r) => r.modalidade === modalidade && r.brandId === brandId);
+    if (!row || row.taxaAtual === null || row.taxaCielo === null) {
+      return `<div class="rate-comparison-item"><span>Diferença da taxa</span><strong>—</strong></div><div class="rate-comparison-item"><span>Benefício / impacto mês</span><strong>—</strong></div><div class="rate-comparison-item"><span>Benefício / impacto 12 meses</span><strong>—</strong></div>`;
+    }
+    const delta = row.taxaAtual - row.taxaCielo;
+    const tone = comparisonTone(delta);
+    const arrow = delta > 0 ? '▼' : delta < 0 ? '▲' : '=';
+    const monthlyTone = row.impactoMensalCents > 0 ? 'better' : row.impactoMensalCents < 0 ? 'worse' : 'neutral';
+    return `<div class="rate-comparison-item ${tone}"><span>Diferença da taxa</span><strong>${arrow} ${fmtPp(Math.abs(delta))}</strong><small>${delta > 0 ? 'Cielo menor' : delta < 0 ? 'Cielo maior' : 'Mesma taxa'}</small></div><div class="rate-comparison-item ${monthlyTone}"><span>Benefício / impacto mês</span><strong>${moneyWithSign(row.impactoMensalCents)}</strong><small>${row.impactoMensalCents > 0 ? 'Economia estimada' : row.impactoMensalCents < 0 ? 'Acréscimo estimado' : 'Sem diferença'}</small></div><div class="rate-comparison-item ${monthlyTone}"><span>Benefício / impacto 12 meses</span><strong>${moneyWithSign(row.impacto12Cents)}</strong><small>Projeção de 12 meses</small></div>`;
+  }
 
   function quickRateFill() {
     const detailed = state.cards.detalharBandeiras !== false;
@@ -59,18 +76,27 @@ export function createBrandSteps(ctx) {
       const distributionField = usingEstimate
         ? `<div class="estimated-brand-volume"><span>Distribuição estimada</span><strong>${fmtPct(share)}</strong><small>${volume ? fmtBRLFromCents(volume) : '—'} na modalidade</small></div>`
         : `<label><span>${usingShare ? 'Share da modalidade' : 'Faturamento mensal na bandeira'}</span>${inlineInput(usingShare ? (cell.share??'') : (cell.valor??''),{format:usingShare?'percent':'currency',attrs:`class="brand-dist-input" data-brand="${b.id}"`})}</label>`;
-      return `<article class="brand-combined-card ${usingEstimate?'estimated':''}"><header>${brandBadge(b)}<small data-brand-summary="${b.id}">${summary}</small></header><div class="brand-combined-fields">${distributionField}<label><span>Condição atual</span>${inlineInput(cell.taxaAtual??'',{format:'percent',attrs:`class="brand-rate-input" data-brand="${b.id}" data-side="taxaAtual"`})}</label><label><span>Taxa Cielo</span>${inlineInput(cell.taxaCielo??'',{format:'percent',attrs:`class="brand-rate-input cielo-input" data-brand="${b.id}" data-side="taxaCielo"`})}</label></div></article>`;
+      return `<article class="brand-combined-card ${usingEstimate?'estimated':''}"><header>${brandBadge(b)}<small data-brand-summary="${b.id}">${summary}</small></header><div class="brand-combined-fields">${distributionField}<label><span>Condição atual</span>${inlineInput(cell.taxaAtual??'',{format:'percent',attrs:`class="brand-rate-input" data-brand="${b.id}" data-side="taxaAtual"`})}</label><label><span>Taxa Cielo</span>${inlineInput(cell.taxaCielo??'',{format:'percent',attrs:`class="brand-rate-input cielo-input" data-brand="${b.id}" data-side="taxaCielo"`})}</label></div><div class="rate-comparison-strip" data-rate-comparison="${b.id}">${comparisonHtml(modalidade,b.id)}</div></article>`;
     }).join('')}${modalidade==='Débito'?`<article class="brand-combined-card disabled"><header>${brandBadge(diners)}<small>Não aplicável</small></header><div class="brand-disabled-note">Débito não é utilizado para Diners/Amex nesta ferramenta.</div></article>`:''}</div>`;
   }
 
   function generalEditor(modalidade) {
     const row = state.cards.modalities[modalidade];
-    return `${quickRateFill()}<div class="helper-box prominent"><b>Condição geral por modalidade.</b> Estas taxas serão aplicadas ao faturamento total de ${escapeHtml(modalidade)}. Se Visa, Mastercard, Elo ou Diners/Amex tiverem condições diferentes, selecione “Por bandeira”.</div><div class="general-rate-card"><header><strong>${escapeHtml(modalidade)}</strong><small>${modalityVolumeCents(state,modalidade)?fmtBRLFromCents(modalityVolumeCents(state,modalidade)):'Sem volume'}</small></header><div class="rate-fields two-rate-fields"><label><span>Condição atual</span>${inlineInput(row.taxaAtualGeral??'',{format:'percent',attrs:'class="general-rate-input" data-side="taxaAtualGeral"'})}</label><label><span>Taxa Cielo</span>${inlineInput(row.taxaCieloGeral??'',{format:'percent',attrs:'class="general-rate-input cielo-input" data-side="taxaCieloGeral"'})}</label></div></div>`;
+    return `${quickRateFill()}<div class="helper-box prominent"><b>Condição geral por modalidade.</b> Estas taxas serão aplicadas ao faturamento total de ${escapeHtml(modalidade)}. Se Visa, Mastercard, Elo ou Diners/Amex tiverem condições diferentes, selecione “Por bandeira”.</div><div class="general-rate-card"><header><strong>${escapeHtml(modalidade)}</strong><small>${modalityVolumeCents(state,modalidade)?fmtBRLFromCents(modalityVolumeCents(state,modalidade)):'Sem volume'}</small></header><div class="rate-fields two-rate-fields"><label><span>Condição atual</span>${inlineInput(row.taxaAtualGeral??'',{format:'percent',attrs:'class="general-rate-input" data-side="taxaAtualGeral"'})}</label><label><span>Taxa Cielo</span>${inlineInput(row.taxaCieloGeral??'',{format:'percent',attrs:'class="general-rate-input cielo-input" data-side="taxaCieloGeral"'})}</label></div><div class="rate-comparison-strip general" data-rate-comparison="geral">${comparisonHtml(modalidade,'geral')}</div></div>`;
   }
 
   function detailedEditor(modalidade, active) {
     const usingEstimate = state.cards.origemMixBandeiras === 'estimativaBrasil';
     return `${mixSourceChooser()}${usingEstimate ? estimatedMixPanel(modalidade,active) : distributionChooser()}${quickRateFill()}<div class="helper-box prominent"><b>As taxas continuam por bandeira.</b> ${usingEstimate ? 'O faturamento por bandeira abaixo é estimado automaticamente; informe apenas as condições atuais e Cielo.' : 'Informe o mix do cliente e as condições atuais/Cielo. As taxas podem ser diferentes entre Visa, Mastercard, Elo e Diners/Amex.'}</div>${detailedBrandCards(modalidade, active)}`;
+  }
+
+  function refreshComparison(modalidade, brandId) {
+    const el = $(`[data-rate-comparison="${brandId}"]`);
+    if (el) el.innerHTML = comparisonHtml(modalidade, brandId);
+  }
+  function refreshAllComparisons(modalidade) {
+    if (state.cards.detalharBandeiras === false) refreshComparison(modalidade,'geral');
+    else activeBrandsFor(modalidade).forEach((b)=>refreshComparison(modalidade,b.id));
   }
 
   function bindQuickRateFill() {
@@ -97,7 +123,6 @@ export function createBrandSteps(ctx) {
         s.ui.rateBulkCurrent = current;
         s.ui.rateBulkCielo = cielo;
         s.ui.rateBulkMessage = `Aplicado com sucesso: ${label}. Os valores permanecem selecionados para facilitar novos ajustes.`;
-
         if (s.cards.detalharBandeiras === false) {
           targets.forEach((m) => {
             if (current !== '') s.cards.modalities[m].taxaAtualGeral = current;
@@ -105,7 +130,6 @@ export function createBrandSteps(ctx) {
           });
           return;
         }
-
         targets.forEach((m) => {
           const brands = selectedBrand === 'todas' ? activeBrandsFor(m) : activeBrandsFor(m).filter((b) => b.id === selectedBrand);
           brands.forEach((brand) => {
@@ -119,10 +143,8 @@ export function createBrandSteps(ctx) {
 
   function bindDetailedInputs(modalidade) {
     $$('[data-segmented="mixSource"] .seg').forEach((b) => b.addEventListener('click', () => updateState((s) => { s.cards.origemMixBandeiras = b.dataset.value; })));
-
     if (state.cards.origemMixBandeiras !== 'estimativaBrasil') {
       $$('[data-segmented="modoBandeiras"] .seg').forEach((b) => b.addEventListener('click', () => updateState((s) => { s.cards.modoBandeiras = b.dataset.value; })));
-
       const refreshSummary = () => {
         $$('[data-brand-summary]').forEach((el) => {
           const id = el.dataset.brandSummary;
@@ -130,7 +152,6 @@ export function createBrandSteps(ctx) {
           el.textContent = volume ? fmtPct(brandShare(state, modalidade, id)) : '—';
         });
       };
-
       $$('.brand-dist-input').forEach((el) => el.addEventListener('input', (e) => {
         updateInputState((s) => {
           const cell = s.cards.modalities[modalidade].brands[e.target.dataset.brand];
@@ -138,18 +159,20 @@ export function createBrandSteps(ctx) {
           else cell.valor = e.target.value;
         });
         refreshSummary();
+        refreshAllComparisons(modalidade);
       }));
     }
-
-    $$('.brand-rate-input').forEach((el) => el.addEventListener('input', (e) => updateInputState((s) => {
-      s.cards.modalities[modalidade].brands[e.target.dataset.brand][e.target.dataset.side] = e.target.value;
-    })));
+    $$('.brand-rate-input').forEach((el) => el.addEventListener('input', (e) => {
+      updateInputState((s) => { s.cards.modalities[modalidade].brands[e.target.dataset.brand][e.target.dataset.side] = e.target.value; });
+      refreshComparison(modalidade,e.target.dataset.brand);
+    }));
   }
 
   function bindGeneralInputs(modalidade) {
-    $$('.general-rate-input').forEach((el) => el.addEventListener('input', (e) => updateInputState((s) => {
-      s.cards.modalities[modalidade][e.target.dataset.side] = e.target.value;
-    })));
+    $$('.general-rate-input').forEach((el) => el.addEventListener('input', (e) => {
+      updateInputState((s) => { s.cards.modalities[modalidade][e.target.dataset.side] = e.target.value; });
+      refreshComparison(modalidade,'geral');
+    }));
   }
 
   function stepBrands(c) {
@@ -157,14 +180,10 @@ export function createBrandSteps(ctx) {
     const modalVol = modalityVolumeCents(state, modalidade);
     const active = activeBrandsFor(modalidade);
     const detailed = state.cards.detalharBandeiras !== false;
-
-    c.innerHTML = `<article class="stage-card"><div class="card-heading"><div><h2>Faturamento e condições por bandeira</h2><p>Cadastre as taxas por bandeira e escolha se utilizará o mix real do cliente ou uma estimativa nacional.</p></div><div class="metric-mini"><span>${escapeHtml(modalidade)}</span><strong>${modalVol ? fmtBRLFromCents(modalVol) : 'Sem volume'}</strong></div></div><div class="brand-toolbar unified"><div class="modal-chips">${MODALIDADES.map((m) => `<button class="modal-chip ${m===modalidade?'active':''}" data-brand-modal="${m}">${m}</button>`).join('')}</div></div>${detailModeChooser()}${detailed ? detailedEditor(modalidade, active) : generalEditor(modalidade)}</article>`;
-
+    c.innerHTML = `<article class="stage-card"><div class="card-heading"><div><h2>Faturamento e condições por bandeira</h2><p>Cadastre as taxas por bandeira, compare a diferença e acompanhe o benefício financeiro estimado da condição Cielo.</p></div><div class="metric-mini"><span>${escapeHtml(modalidade)}</span><strong>${modalVol ? fmtBRLFromCents(modalVol) : 'Sem volume'}</strong></div></div><div class="brand-toolbar unified"><div class="modal-chips">${MODALIDADES.map((m) => `<button class="modal-chip ${m===modalidade?'active':''}" data-brand-modal="${m}">${m}</button>`).join('')}</div></div>${detailModeChooser()}${detailed ? detailedEditor(modalidade, active) : generalEditor(modalidade)}</article>`;
     $$('[data-brand-modal]').forEach((b) => b.addEventListener('click', () => updateState((s) => { s.ui.brandModalidade = b.dataset.brandModal; })));
     $$('[data-segmented="brandDetailMode"] .seg').forEach((b) => b.addEventListener('click', () => updateState((s) => { s.cards.detalharBandeiras = b.dataset.value === 'bandeira'; })));
-
-    if (detailed) bindDetailedInputs(modalidade);
-    else bindGeneralInputs(modalidade);
+    if (detailed) bindDetailedInputs(modalidade); else bindGeneralInputs(modalidade);
     bindQuickRateFill();
   }
 
