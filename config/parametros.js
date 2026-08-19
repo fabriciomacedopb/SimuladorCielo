@@ -7,9 +7,9 @@ export const MODALIDADES = [
 
 export const BANDEIRAS = [
   { id: 'visa', nome: 'Visa', debito: true, logo: 'assets/logos/visa.png' },
-  { id: 'mastercard', nome: 'Mastercard', debito: true, logo: 'assets/logos/mastercard.png' },
+  { id: 'mastercard', nome: 'Mastercard', debito: true, logo: 'assets/logos/mastercard-clean.svg' },
   { id: 'elo', nome: 'Elo', debito: true, logo: 'assets/logos/elo.png' },
-  { id: 'dinersAmex', nome: 'Diners/Amex', debito: false, logo: 'assets/logos/diners-amex.png' }
+  { id: 'dinersAmex', nome: 'Diners/Amex', debito: false, logo: 'assets/logos/diners-amex-clean.svg' }
 ];
 
 // Estimativa nacional para quando o cliente não conhece a distribuição real por bandeira.
