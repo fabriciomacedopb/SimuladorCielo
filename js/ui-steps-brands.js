@@ -7,17 +7,25 @@ const RATE_RANGES = {
   '7a12': ['7x','8x','9x','10x','11x','12x'],
   '2a12': ['2x','3x','4x','5x','6x','7x','8x','9x','10x','11x','12x']
 };
+const RATE_RANGE_LABELS = { '2a6': '2x a 6x', '7a12': '7x a 12x', '2a12': '2x a 12x' };
 
 function brandBadge(brand) {
   return `<span class="payment-brand brand-logo brand-${brand.id}" title="${escapeHtml(brand.nome)}"><img src="${brand.logo}" alt="${escapeHtml(brand.nome)}"></span>`;
 }
+
+function selected(value, current) { return value === current ? 'selected' : ''; }
 
 export function createBrandSteps(ctx) {
   const { state, $, $$, updateState, updateInputState, segmented, inlineInput } = ctx;
 
   function quickRateFill() {
     const detailed = state.cards.detalharBandeiras !== false;
-    return `<div class="rate-bulk-card"><div class="rate-bulk-heading"><div><strong>Preenchimento rápido de taxas</strong><span>Repita uma condição em faixas de parcelamento e ajuste exceções individualmente depois.</span></div></div><div class="rate-bulk-grid"><label class="field"><span>Aplicar em</span><select id="rateBulkRange"><option value="2a6">2x a 6x</option><option value="7a12">7x a 12x</option><option value="2a12">2x a 12x</option></select></label>${detailed ? `<label class="field"><span>Bandeira</span><select id="rateBulkBrand"><option value="todas">Todas as bandeiras</option>${BANDEIRAS.map((b)=>`<option value="${b.id}">${escapeHtml(b.nome)}</option>`).join('')}</select></label>` : '<div class="read-only-field"><span>Aplicação</span><strong>Condição geral</strong></div>'}<label class="field"><span>Condição atual</span>${inlineInput('',{format:'percent',attrs:'id="rateBulkCurrent"',placeholder:'0,00'})}</label><label class="field"><span>Taxa Cielo</span>${inlineInput('',{format:'percent',attrs:'id="rateBulkCielo"',placeholder:'0,00',className:'cielo-input'})}</label><button type="button" class="btn btn-light rate-bulk-apply" id="applyRateBulk">Aplicar às modalidades</button></div></div>`;
+    const range = state.ui.rateBulkRange || '2a6';
+    const brand = state.ui.rateBulkBrand || 'todas';
+    const current = state.ui.rateBulkCurrent ?? '';
+    const cielo = state.ui.rateBulkCielo ?? '';
+    const message = state.ui.rateBulkMessage || '';
+    return `<div class="rate-bulk-card"><div class="rate-bulk-heading"><div><strong>Preenchimento rápido de taxas</strong><span>Repita uma condição em faixas de parcelamento e ajuste exceções individualmente depois.</span></div></div><div class="rate-bulk-grid"><label class="field"><span>Aplicar em</span><select id="rateBulkRange"><option value="2a6" ${selected('2a6',range)}>2x a 6x</option><option value="7a12" ${selected('7a12',range)}>7x a 12x</option><option value="2a12" ${selected('2a12',range)}>2x a 12x</option></select></label>${detailed ? `<label class="field"><span>Bandeira</span><select id="rateBulkBrand"><option value="todas" ${selected('todas',brand)}>Todas as bandeiras</option>${BANDEIRAS.map((b)=>`<option value="${b.id}" ${selected(b.id,brand)}>${escapeHtml(b.nome)}</option>`).join('')}</select></label>` : '<div class="read-only-field"><span>Aplicação</span><strong>Condição geral</strong></div>'}<label class="field"><span>Condição atual</span>${inlineInput(current,{format:'percent',attrs:'id="rateBulkCurrent"',placeholder:'0,00'})}</label><label class="field"><span>Taxa Cielo</span>${inlineInput(cielo,{format:'percent',attrs:'id="rateBulkCielo"',placeholder:'0,00',className:'cielo-input'})}</label><button type="button" class="btn btn-light rate-bulk-apply" id="applyRateBulk">Aplicar às modalidades</button></div>${message ? `<div class="helper-box prominent" id="rateBulkStatus"><b>${escapeHtml(message)}</b></div>` : ''}</div>`;
   }
 
   function detailModeChooser() {
@@ -52,13 +60,30 @@ export function createBrandSteps(ctx) {
   }
 
   function bindQuickRateFill() {
+    $('#rateBulkRange')?.addEventListener('change', (e) => updateInputState((s) => { s.ui.rateBulkRange = e.target.value; s.ui.rateBulkMessage = ''; }));
+    $('#rateBulkBrand')?.addEventListener('change', (e) => updateInputState((s) => { s.ui.rateBulkBrand = e.target.value; s.ui.rateBulkMessage = ''; }));
+    $('#rateBulkCurrent')?.addEventListener('input', (e) => updateInputState((s) => { s.ui.rateBulkCurrent = e.target.value; s.ui.rateBulkMessage = ''; }));
+    $('#rateBulkCielo')?.addEventListener('input', (e) => updateInputState((s) => { s.ui.rateBulkCielo = e.target.value; s.ui.rateBulkMessage = ''; }));
+
     $('#applyRateBulk')?.addEventListener('click', () => {
-      const targets = RATE_RANGES[$('#rateBulkRange').value] || [];
-      const current = $('#rateBulkCurrent').dataset.rawValue ?? $('#rateBulkCurrent').value;
-      const cielo = $('#rateBulkCielo').dataset.rawValue ?? $('#rateBulkCielo').value;
+      const range = $('#rateBulkRange')?.value || state.ui.rateBulkRange || '2a6';
+      const targets = RATE_RANGES[range] || [];
+      const currentEl = $('#rateBulkCurrent');
+      const cieloEl = $('#rateBulkCielo');
+      const current = currentEl?.dataset.rawValue ?? currentEl?.value ?? state.ui.rateBulkCurrent ?? '';
+      const cielo = cieloEl?.dataset.rawValue ?? cieloEl?.value ?? state.ui.rateBulkCielo ?? '';
       if (current === '' && cielo === '') return;
-      const selectedBrand = $('#rateBulkBrand')?.value || 'todas';
+      const selectedBrand = $('#rateBulkBrand')?.value || state.ui.rateBulkBrand || 'todas';
+      const brandName = selectedBrand === 'todas' ? 'Todas as bandeiras' : (BANDEIRAS.find((b)=>b.id===selectedBrand)?.nome || selectedBrand);
+      const label = state.cards.detalharBandeiras === false ? `Condição geral · ${RATE_RANGE_LABELS[range]}` : `${brandName} · ${RATE_RANGE_LABELS[range]}`;
+
       updateState((s) => {
+        s.ui.rateBulkRange = range;
+        s.ui.rateBulkBrand = selectedBrand;
+        s.ui.rateBulkCurrent = current;
+        s.ui.rateBulkCielo = cielo;
+        s.ui.rateBulkMessage = `Aplicado com sucesso: ${label}. Os valores permanecem selecionados para facilitar novos ajustes.`;
+
         if (s.cards.detalharBandeiras === false) {
           targets.forEach((m) => {
             if (current !== '') s.cards.modalities[m].taxaAtualGeral = current;
@@ -66,6 +91,7 @@ export function createBrandSteps(ctx) {
           });
           return;
         }
+
         targets.forEach((m) => {
           const brands = selectedBrand === 'todas' ? activeBrandsFor(m) : activeBrandsFor(m).filter((b) => b.id === selectedBrand);
           brands.forEach((brand) => {
