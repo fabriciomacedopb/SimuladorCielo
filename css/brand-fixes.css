@@ -1,0 +1,154 @@
+/* Ajustes específicos de renderização das marcas fornecidas pelo usuário.
+   Mantém os arquivos originais e corrige apenas encaixe, escala e proporção. */
+
+/* Etapa 3 — cards principais */
+.brand-combined-card>header .brand-mastercard,
+.brand-combined-card>header .brand-dinersAmex {
+  flex:0 0 auto;
+  overflow:hidden;
+  background-color:#fff;
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:contain;
+}
+.brand-combined-card>header .brand-mastercard {
+  width:112px;
+  min-width:112px;
+  height:44px;
+  background-image:url('../assets/logos/mastercard.png');
+}
+.brand-combined-card>header .brand-dinersAmex {
+  width:220px;
+  min-width:220px;
+  height:44px;
+  background-image:url('../assets/logos/diners-amex.png');
+  background-position:left center;
+}
+.brand-combined-card>header .brand-mastercard img,
+.brand-combined-card>header .brand-dinersAmex img {
+  opacity:0;
+  width:1px!important;
+  height:1px!important;
+  max-width:1px!important;
+  max-height:1px!important;
+}
+
+/* Painel do mix estimado — versões compactas */
+.estimated-mix-list .brand-mastercard,
+.estimated-mix-list .brand-dinersAmex {
+  flex:0 0 auto;
+  overflow:hidden;
+  background-color:#fff;
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:contain;
+}
+.estimated-mix-list .brand-mastercard {
+  width:74px;
+  min-width:74px;
+  height:28px;
+  background-image:url('../assets/logos/mastercard.png');
+}
+.estimated-mix-list .brand-dinersAmex {
+  width:112px;
+  min-width:112px;
+  height:28px;
+  background-image:url('../assets/logos/diners-amex.png');
+  background-position:left center;
+}
+.estimated-mix-list .brand-mastercard img,
+.estimated-mix-list .brand-dinersAmex img {
+  opacity:0;
+  width:1px!important;
+  height:1px!important;
+  max-width:1px!important;
+  max-height:1px!important;
+}
+
+/* Dashboard — impacto por bandeira e matriz de taxas */
+.brand-impact-card header .brand-mastercard,
+.brand-impact-card header .brand-dinersAmex,
+.rate-brand-card header .brand-mastercard,
+.rate-brand-card header .brand-dinersAmex {
+  overflow:hidden;
+  background-color:#fff;
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:contain;
+}
+.brand-impact-card header .brand-mastercard,
+.rate-brand-card header .brand-mastercard {
+  width:86px;
+  min-width:86px;
+  height:30px;
+  background-image:url('../assets/logos/mastercard.png');
+}
+.brand-impact-card header .brand-dinersAmex,
+.rate-brand-card header .brand-dinersAmex {
+  width:150px;
+  min-width:150px;
+  height:30px;
+  background-image:url('../assets/logos/diners-amex.png');
+  background-position:left center;
+}
+.brand-impact-card header .brand-mastercard img,
+.brand-impact-card header .brand-dinersAmex img,
+.rate-brand-card header .brand-mastercard img,
+.rate-brand-card header .brand-dinersAmex img {
+  opacity:0;
+  width:1px!important;
+  height:1px!important;
+  max-width:1px!important;
+  max-height:1px!important;
+}
+
+/* Proposta comercial — precisa caber em duas colunas e no PDF */
+.proposal-rate-head .brand-mastercard,
+.proposal-rate-head .brand-dinersAmex {
+  overflow:hidden;
+  background-color:#fff;
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:contain;
+}
+.proposal-rate-head .brand-mastercard {
+  width:76px;
+  min-width:76px;
+  height:27px;
+  background-image:url('../assets/logos/mastercard.png');
+}
+.proposal-rate-head .brand-dinersAmex {
+  width:116px;
+  min-width:116px;
+  height:27px;
+  background-image:url('../assets/logos/diners-amex.png');
+  background-position:left center;
+}
+.proposal-rate-head .brand-mastercard img,
+.proposal-rate-head .brand-dinersAmex img {
+  opacity:0;
+  width:1px!important;
+  height:1px!important;
+  max-width:1px!important;
+  max-height:1px!important;
+}
+
+/* Não comprimir a marca larga Diners/Amex nos cabeçalhos. */
+.brand-combined-card>header,
+.brand-impact-card header,
+.rate-brand-card header,
+.proposal-rate-head {
+  min-width:0;
+}
+
+@media(max-width:820px){
+  .brand-combined-card>header .brand-dinersAmex{width:185px;min-width:185px}
+  .brand-impact-card header .brand-dinersAmex,
+  .rate-brand-card header .brand-dinersAmex{width:132px;min-width:132px}
+}
+
+@media(max-width:600px){
+  .brand-combined-card>header .brand-mastercard{width:92px;min-width:92px;height:38px}
+  .brand-combined-card>header .brand-dinersAmex{width:155px;min-width:155px;height:38px}
+  .estimated-mix-list .brand-dinersAmex{width:100px;min-width:100px}
+}
