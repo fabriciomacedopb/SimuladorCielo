@@ -23,6 +23,10 @@ export function calculateBenefits(state, dependencies) {
   const liveloMin = rules.livelo?.transferenciaMinimaPontos ?? 1000;
   const liveloMax = rules.livelo?.limiteTransferenciaMensalPontos ?? 500000;
   const potencialTransferenciaMensal = Math.min(mensal, liveloMax);
+  const referencia1000Reais = Number(rules.livelo?.valorReferenciaCompra1000Pontos ?? 0);
+  const referenciaPorPontoCents = referencia1000Reais > 0 ? referencia1000Reais * 100 / 1000 : 0;
+  const valorReferenciaMensalCents = Math.round(mensal * referenciaPorPontoCents);
+  const valorReferencia12Cents = Math.round(anual * referenciaPorPontoCents);
 
   return {
     cielo: cieloPts,
@@ -37,7 +41,11 @@ export function calculateBenefits(state, dependencies) {
       potencialTransferenciaMensal,
       minimoTransferenciaPontos: liveloMin,
       limiteTransferenciaMensalPontos: liveloMax,
-      atendeMinimoTransferencia: potencialTransferenciaMensal >= liveloMin
+      atendeMinimoTransferencia: potencialTransferenciaMensal >= liveloMin,
+      valorReferenciaCompra1000Pontos: referencia1000Reais,
+      valorReferenciaMensalCents,
+      valorReferencia12Cents,
+      referenciaValor: rules.livelo?.referenciaValor || ''
     }
   };
 }
