@@ -6,10 +6,10 @@ export const MODALIDADES = [
 ];
 
 export const BANDEIRAS = [
-  { id: 'visa', nome: 'Visa', debito: true },
-  { id: 'mastercard', nome: 'Mastercard', debito: true },
-  { id: 'elo', nome: 'Elo', debito: true },
-  { id: 'dinersAmex', nome: 'Diners/Amex', debito: false }
+  { id: 'visa', nome: 'Visa', debito: true, logo: 'assets/logos/visa.png' },
+  { id: 'mastercard', nome: 'Mastercard', debito: true, logo: 'assets/logos/mastercard.png' },
+  { id: 'elo', nome: 'Elo', debito: true, logo: 'assets/logos/elo.png' },
+  { id: 'dinersAmex', nome: 'Diners/Amex', debito: false, logo: 'assets/logos/diners-amex.png' }
 ];
 
 export const SOLUCOES_ATUAIS = [
@@ -51,6 +51,7 @@ export const BENEFICIOS_BB_EMPRESAS = {
   cielo: { baseReais: 5000, pontos: 50 },
   pix: { baseReais: 500, pontos: 1, limiteMensal: 10000 },
   cobranca: { minimoBoletosLiquidados: 10, pontos: 30 },
+  livelo: { transferenciaMinimaPontos: 1000, limiteTransferenciaMensalPontos: 500000 },
   limiteDemaisProdutosMensal: 70000,
   limiteTotalMPEMensal: 370000,
   limiteCartaoMPEMensal: 300000,
@@ -66,9 +67,9 @@ export const COBRANCA_EVENTOS_PADRAO = [
 ];
 
 export const INFORMACOES_IMPORTANTES = [
-  'Esta proposta foi elaborada com base nas informações, volumes, perfil de vendas e condições comerciais considerados na data da análise. Os valores de economia, redução de custos e impactos financeiros são estimativas e poderão variar conforme o volume efetivamente transacionado, o mix de vendas, a quantidade de transações e a utilização dos produtos e serviços.',
-  'As taxas, tarifas, isenções, descontos e benefícios estão sujeitos à validação, elegibilidade, análise cadastral e comercial, credenciamento e contratação. Alterações nas informações ou no perfil da operação poderão resultar na revisão das condições e dos resultados estimados. Tributos, encargos e outros custos aplicáveis seguirão as regras e a legislação vigentes.',
-  'A análise considera o conjunto das soluções avaliadas — cartões, Pix, equipamentos, antecipação de recebíveis, cobrança, serviços bancários e demais componentes aplicáveis — e não uma condição isolada. Os resultados apresentados serão confirmados de acordo com as condições efetivamente contratadas e com a utilização dos produtos e serviços considerados na análise.'
+  'Esta proposta foi elaborada com base nas informações, volumes, perfil de vendas e condições comerciais considerados na data da análise. Os valores de economia, redução de custos, benefícios e impactos financeiros são estimativas e poderão variar conforme o volume efetivamente transacionado, o mix de vendas, a quantidade de transações e a utilização dos produtos e serviços.',
+  'As taxas, tarifas, isenções, descontos, benefícios e estimativas de pontos estão sujeitos à validação, elegibilidade, análise cadastral e comercial, credenciamento, contratação e às regras vigentes de cada programa ou solução. Alterações nas informações, no perfil da operação ou nas regras aplicáveis poderão resultar na revisão das condições e dos resultados estimados.',
+  'A análise considera o conjunto das soluções avaliadas — cartões, Pix, equipamentos, antecipação de recebíveis, cobrança, serviços bancários e demais componentes aplicáveis — e não uma condição isolada. Pontos e benefícios não integram a economia financeira em reais e sua utilização ou transferência depende das regras vigentes no momento da solicitação.'
 ];
 
 // A planilha recebida não contém uma regra implementada para desconto por investimentos.
