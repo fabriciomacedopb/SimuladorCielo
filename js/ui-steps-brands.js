@@ -35,7 +35,7 @@ export function createBrandSteps(ctx) {
 
   function distributionChooser() {
     const mode = state.cards.modoBandeiras === 'share' ? 'share' : 'valor';
-    return `<div class="brand-mode-row unified"><div><span class="choice-label">Forma de informar o faturamento por bandeira</span>${segmented('modoBandeiras',mode,[['valor','Valor mensal'],['share','Share % (opcional)']])}</div><p class="helper-box"><b>Share é opcional.</b> Se souber os valores, informe diretamente o faturamento mensal de cada bandeira. O share será calculado automaticamente. Se preferir usar percentuais, selecione “Share %”.</p></div>`;
+    return `<div class="brand-mode-row unified"><div><span class="choice-label">Forma de informar o faturamento por bandeira</span>${segmented('modoBandeiras',mode,[['valor','Valor mensal'],['share','Share % (opcional)']])}</div><p class="helper-box"><b>O share é opcional; a distribuição por bandeira não.</b> Em “Por bandeira”, informe <b>Valor mensal</b> ou <b>Share %</b> para cada modalidade que tenha faturamento. Se usar valor, o share será calculado automaticamente.</p></div>`;
   }
 
   function detailedBrandCards(modalidade, active) {
@@ -46,7 +46,7 @@ export function createBrandSteps(ctx) {
       const volume = brandVolumeCents(state, modalidade, b.id);
       const share = brandShare(state, modalidade, b.id);
       const summary = usingShare ? (volume ? fmtBRLFromCents(volume) : '—') : (volume ? fmtPct(share) : '—');
-      return `<article class="brand-combined-card"><header>${brandBadge(b)}<small data-brand-summary="${b.id}">${summary}</small></header><div class="brand-combined-fields"><label><span>${usingShare ? 'Share da modalidade' : 'Faturamento mensal na bandeira'}</span>${inlineInput(usingShare ? (cell.share??'') : (cell.valor??''),{format:usingShare?'percent':'currency',attrs:`class="brand-dist-input" data-brand="${b.id}"`})}</label><label><span>Condição atual</span>${inlineInput(cell.taxaAtual??'',{format:'percent',attrs:`class="brand-rate-input" data-brand="${b.id}" data-side="taxaAtual"`})}</label><label><span>Taxa Cielo</span>${inlineInput(cell.taxaCielo??'',{format:'percent',attrs:`class="brand-rate-input cielo-input" data-brand="${b.id}" data-side="taxaCielo"`})}</label></div></article>`;
+      return `<article class="brand-combined-card"><header>${brandBadge(b)}<small data-brand-summary="${b.id}">${summary}</small></header><div class="brand-combined-fields"><label><span>${usingShare ? 'Share da modalidade *' : 'Faturamento mensal na bandeira *'}</span>${inlineInput(usingShare ? (cell.share??'') : (cell.valor??''),{format:usingShare?'percent':'currency',attrs:`class="brand-dist-input" data-brand="${b.id}"`})}</label><label><span>Condição atual</span>${inlineInput(cell.taxaAtual??'',{format:'percent',attrs:`class="brand-rate-input" data-brand="${b.id}" data-side="taxaAtual"`})}</label><label><span>Taxa Cielo</span>${inlineInput(cell.taxaCielo??'',{format:'percent',attrs:`class="brand-rate-input cielo-input" data-brand="${b.id}" data-side="taxaCielo"`})}</label></div></article>`;
     }).join('')}${modalidade==='Débito'?`<article class="brand-combined-card disabled"><header>${brandBadge(diners)}<small>Não aplicável</small></header><div class="brand-disabled-note">Débito não é utilizado para Diners/Amex nesta ferramenta.</div></article>`:''}</div>`;
   }
 
@@ -56,7 +56,7 @@ export function createBrandSteps(ctx) {
   }
 
   function detailedEditor(modalidade, active) {
-    return `${distributionChooser()}${quickRateFill()}<div class="helper-box prominent"><b>Faturamento e taxas ficam juntos.</b> Para cada bandeira, informe o faturamento (ou share, se preferir), a condição atual e a taxa Cielo. As condições podem ser diferentes entre Visa, Mastercard, Elo e Diners/Amex.</div>${detailedBrandCards(modalidade, active)}`;
+    return `${distributionChooser()}${quickRateFill()}<div class="helper-box prominent"><b>Faturamento e taxas ficam juntos.</b> Para calcular a economia corretamente quando as taxas variam por bandeira, informe a distribuição do faturamento por <b>Valor mensal</b> ou, alternativamente, por <b>Share %</b>. Depois informe a condição atual e a taxa Cielo de cada bandeira utilizada.</div>${detailedBrandCards(modalidade, active)}`;
   }
 
   function bindQuickRateFill() {
