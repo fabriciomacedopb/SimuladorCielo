@@ -1,4 +1,4 @@
-export const SCHEMA_VERSION = 2;
+export const SCHEMA_VERSION = 3;
 
 export const MODALIDADES = [
   'Débito', 'Crédito à vista', '2x', '3x', '4x', '5x', '6x',
