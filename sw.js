@@ -1,4 +1,4 @@
-const CACHE_NAME = 'proposta-pagamentos-v2.5.8';
+const CACHE_NAME = 'proposta-pagamentos-v2.5.9';
 const CORE = [
   './', './index.html', './manifest.json',
   './css/app.css', './css/app-base.css', './css/app-components.css',
@@ -11,7 +11,7 @@ const CORE = [
   './js/ui-steps-brands.js', './js/ui-steps-operations.js', './js/ui-steps-commercial.js',
   './js/ui-steps-final.js', './js/ui-results.js', './js/ui-saved.js',
   './assets/bb.svg', './assets/cielo.svg', './assets/icons/app-icon.svg',
-  './assets/logos/visa.png', './assets/logos/mastercard.png', './assets/logos/elo.png', './assets/logos/diners-amex.png'
+  './assets/logos/visa.png', './assets/logos/mastercard-clean.svg', './assets/logos/elo.png', './assets/logos/diners-amex-clean.svg'
 ];
 self.addEventListener('install',(event)=>{event.waitUntil(caches.open(CACHE_NAME).then((cache)=>cache.addAll(CORE)));self.skipWaiting();});
 self.addEventListener('activate',(event)=>{event.waitUntil(caches.keys().then((keys)=>Promise.all(keys.filter((key)=>key!==CACHE_NAME).map((key)=>caches.delete(key)))));self.clients.claim();});
