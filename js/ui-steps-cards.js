@@ -3,7 +3,7 @@ import { modalityShare, modalityVolumeCents, totalCardsVolumeCents } from './car
 import { escapeHtml, fmtBRLFromCents, fmtPct } from './formatters.js';
 
 export function createCardSteps(ctx) {
-  const { state, $, $$, updateState, input, select, segmented } = ctx;
+  const { state, $, $$, updateState, updateInputState, input, select, segmented } = ctx;
 function stepProposal(c) {
   c.innerHTML = `<article class="stage-card"><div class="card-heading"><div><h2>Dados da proposta</h2><p>Identifique o cliente e o contexto comercial da análise.</p></div></div><div class="form-grid two-cols">
     ${input('cliente','Cliente',state.meta.cliente,{placeholder:'Empresa / grupo'})}
@@ -15,9 +15,10 @@ function stepProposal(c) {
     ${input('validade','Validade da proposta',state.meta.validade,{type:'date'})}
     <label class="field span-2"><span>Observações</span><textarea id="observacoes" rows="4" placeholder="Informações comerciais relevantes para a proposta">${escapeHtml(state.meta.observacoes)}</textarea></label>
   </div></article>`;
-  ['cliente','cnpj','agencia','gerente','solucaoAtual','dataAnalise','validade','observacoes'].forEach((id) => {
-    $(`#${id}`).addEventListener('input', (e) => updateState((s) => { s.meta[id] = e.target.value; }));
+  ['cliente','cnpj','agencia','gerente','dataAnalise','validade','observacoes'].forEach((id) => {
+    $(`#${id}`).addEventListener('input', (e) => updateInputState((s) => { s.meta[id] = e.target.value; }));
   });
+  $('#solucaoAtual').addEventListener('change', (e) => updateState((s) => { s.meta.solucaoAtual = e.target.value; }));
 }
 function stepCards(c) {
   const total = totalCardsVolumeCents(state);
@@ -26,8 +27,8 @@ function stepCards(c) {
     <div class="modality-list"><div class="modality-head"><span>Modalidade</span><span>${state.cards.modoModalidades==='share'?'Share':'Valor mensal'}</span><span>${state.cards.modoModalidades==='share'?'Volume calculado':'Share calculado'}</span></div>${MODALIDADES.map((m) => { const row=state.cards.modalities[m]; const v=modalityVolumeCents(state,m); return `<div class="modality-row"><strong>${m}</strong><input class="modal-input" data-m="${m}" inputmode="decimal" value="${escapeHtml(state.cards.modoModalidades==='share'?(row.share??''):(row.valor??''))}" placeholder="${state.cards.modoModalidades==='share'?'0,00%':'R$ 0,00'}"><span>${state.cards.modoModalidades==='share'?(v?fmtBRLFromCents(v):'—'):fmtPct(modalityShare(state,m))}</span></div>`;}).join('')}</div>
   </article>`;
   $$('[data-segmented="modoModalidades"] .seg').forEach((b) => b.addEventListener('click', () => updateState((s) => { s.cards.modoModalidades = b.dataset.value; })));
-  $('#cardsTotal').addEventListener('input', (e) => updateState((s) => { s.cards.faturamentoTotal = e.target.value; }));
-  $$('.modal-input').forEach((el) => el.addEventListener('input', (e) => updateState((s) => {
+  $('#cardsTotal').addEventListener('input', (e) => updateInputState((s) => { s.cards.faturamentoTotal = e.target.value; }));
+  $$('.modal-input').forEach((el) => el.addEventListener('input', (e) => updateInputState((s) => {
     const row = s.cards.modalities[e.target.dataset.m];
     if (s.cards.modoModalidades === 'share') row.share = e.target.value; else row.valor = e.target.value;
   })));
