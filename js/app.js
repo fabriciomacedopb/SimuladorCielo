@@ -42,10 +42,22 @@ function markDirty() {
   saveTimer = setTimeout(() => saveDraft(state), 180);
 }
 
-function updateState(mutator) {
+function mutateState(mutator) {
   mutator(state);
   markDirty();
+}
+
+function updateState(mutator) {
+  mutateState(mutator);
   render();
+}
+
+// Campos digitáveis não devem reconstruir o DOM a cada tecla.
+// O estado e o autosave continuam sendo atualizados imediatamente;
+// a interface completa é renderizada apenas em ações estruturais
+// (mudança de etapa, select, toggle, inclusão/exclusão etc.).
+function updateInputState(mutator) {
+  mutateState(mutator);
 }
 
 function setStep(index) {
@@ -95,7 +107,7 @@ function renderAnalysis() {
 
 function renderStepContent() {
   const c = $('#stepContent');
-  const ctx = { state, $, $$, updateState, input, select, segmented, statusBadge, setStep, goDashboard: () => { currentView = 'dashboard'; render(); } };
+  const ctx = { state, $, $$, updateState, updateInputState, input, select, segmented, statusBadge, setStep, goDashboard: () => { currentView = 'dashboard'; render(); } };
   const cardSteps = createCardSteps(ctx);
   const brandSteps = createBrandSteps(ctx);
   const operations = createOperationsSteps(ctx);
