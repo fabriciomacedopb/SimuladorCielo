@@ -22,19 +22,32 @@ function composition(results) {
   }).join('');
 }
 
+function brandBadge(brand) {
+  return `<span class="payment-brand brand-${brand.id}">${escapeHtml(brand.nome)}</span>`;
+}
+
 function compactRates(state) {
   return BANDEIRAS.map((brand) => {
     const rows = MODALIDADES.filter((m) => activeBrandsFor(m).some((b) => b.id === brand.id)).map((m) => {
       const cell = state.cards.modalities[m].brands[brand.id];
       return `<tr><td>${escapeHtml(m)}</td><td>${fmtPct(cell.taxaAtual)}</td><td>${fmtPct(cell.taxaCielo)}</td></tr>`;
     }).join('');
-    return `<div class="proposal-rate-brand"><div class="proposal-rate-head"><strong>${escapeHtml(brand.nome)}</strong><span>Atual</span><span>Cielo</span></div><table><tbody>${rows}</tbody></table></div>`;
+    return `<div class="proposal-rate-brand"><div class="proposal-rate-head">${brandBadge(brand)}<span>Atual</span><span>Cielo</span></div><table><tbody>${rows}</tbody></table></div>`;
   }).join('');
+}
+
+function compactGeneralRates(state) {
+  const rows = MODALIDADES.map((m) => {
+    const cell = state.cards.modalities[m];
+    return `<tr><td>${escapeHtml(m)}</td><td>${fmtPct(cell.taxaAtualGeral)}</td><td>${fmtPct(cell.taxaCieloGeral)}</td></tr>`;
+  }).join('');
+  return `<div class="proposal-rate-brand general"><div class="proposal-rate-head"><span class="payment-brand brand-general">Condição geral</span><span>Atual</span><span>Cielo</span></div><table><tbody>${rows}</tbody></table></div>`;
 }
 
 export function renderProposal(container, state, results) {
   const t = results.totals;
   const impactPositive = (t.impactMonthlyCents ?? 0) >= 0;
+  const detailed = state.cards.detalharBandeiras !== false;
   const packageText = results.package.statusValidacao === 'NÃO ELEGÍVEL'
     ? 'Mais Vantagens: benefício não considerado por não elegibilidade.'
     : results.package.considerarBeneficio
@@ -71,8 +84,8 @@ export function renderProposal(container, state, results) {
           </div>
         </article>
         <article>
-          <h2>Condições comerciais por bandeira</h2>
-          <div class="proposal-rate-grid">${compactRates(state)}</div>
+          <h2>${detailed ? 'Condições comerciais por bandeira' : 'Condições comerciais gerais'}</h2>
+          <div class="proposal-rate-grid ${detailed ? '' : 'single'}">${detailed ? compactRates(state) : compactGeneralRates(state)}</div>
         </article>
       </div>
 
