@@ -24,16 +24,29 @@
 .rate-bulk-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr auto;gap:10px;align-items:end;margin-top:12px}.rate-bulk-apply{height:39px;white-space:nowrap}
 .general-rate-card{border:1px solid var(--line);border-radius:14px;background:#fbfcfd;padding:16px;margin-top:14px;max-width:720px}.general-rate-card header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.general-rate-card header strong{color:var(--navy);font-size:16px}.general-rate-card header small{color:#75828c}.two-rate-fields{grid-template-columns:1fr 1fr}
 
-/* Identificação visual das bandeiras sem redesenhar os logotipos oficiais */
+/* Logos das bandeiras fornecidos pelo usuário */
 .payment-brand{display:inline-flex;align-items:center;justify-content:center;min-height:25px;padding:4px 9px;border-radius:7px;border:1px solid #cbd7df;background:#fff;color:var(--navy);font-size:11px;font-weight:900;letter-spacing:.15px;white-space:nowrap}
-.brand-visa{border-color:#b9c8dc}.brand-mastercard{border-color:#dbc9c1}.brand-elo{border-color:#c9d4d8}.brand-dinersAmex{border-color:#c9cfe0}.brand-general{border-color:#b8dbea;background:#f5fbfe;color:#0879a6}
+.payment-brand.brand-logo{height:32px;min-width:72px;padding:3px 8px;background:#fff;border-color:#d5dfe5}
+.payment-brand.brand-logo img{display:block;max-width:118px;max-height:24px;width:auto;height:auto;object-fit:contain}
+.payment-brand.brand-dinersAmex{min-width:118px}
+.payment-brand.brand-dinersAmex img{max-width:150px}
+.brand-general{border-color:#b8dbea;background:#f5fbfe;color:#0879a6}
 .rate-entry .payment-brand,.brand-entry .payment-brand{font-size:12px}
+.rate-entry .payment-brand.brand-logo,.brand-entry .payment-brand.brand-logo{height:38px;min-width:92px}
+.rate-entry .payment-brand.brand-logo img,.brand-entry .payment-brand.brand-logo img{max-height:29px;max-width:145px}
+.ranking-brand{display:inline-flex;align-items:center;gap:8px}.ranking-brand img{height:17px;max-width:62px;object-fit:contain}
 
 /* Etapa 7 — coluna para exclusão e melhor leitura dos valores */
 .collection-head,.collection-row{grid-template-columns:1.3fr .72fr 1fr 1fr 1fr 38px;min-width:920px}
 .collection-row>strong{text-align:right;font-size:11px}.collection-row .icon-btn{width:30px;height:30px}
 .collection-row .input-control{min-width:0}
 
-@media(max-width:1100px){.rate-bulk-grid{grid-template-columns:1fr 1fr 1fr 1fr}.rate-bulk-apply{grid-column:1/-1}.analysis-mode-card{grid-template-columns:1fr}}
-@media(max-width:820px){.auto-total-grid,.two-rate-fields{grid-template-columns:1fr}.rate-bulk-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:600px){.rate-bulk-grid{grid-template-columns:1fr}}
+/* Etapa 8 — estratificação de pontos e Livelo */
+.points-benefit-card{margin-top:18px;border:1px solid #d7e1ea;border-radius:16px;background:linear-gradient(135deg,#fff,#f6f9fc);padding:18px}
+.points-benefit-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}.points-benefit-head h3{margin:4px 0 0;color:var(--navy);font-size:17px}.points-total{text-align:right;min-width:180px}.points-total span,.points-total small{display:block;color:#71808a;font-size:10px}.points-total strong{display:block;margin:4px 0;color:var(--navy);font-size:22px}
+.points-breakdown{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:15px}.points-breakdown>div{border:1px solid #e0e8ed;border-radius:11px;background:#fff;padding:11px}.points-breakdown span,.points-breakdown strong{display:block}.points-breakdown span{font-size:10px;color:#6c7881}.points-breakdown strong{margin-top:4px;color:var(--navy);font-size:15px}
+.livelo-estimate{display:grid;grid-template-columns:.72fr 1.28fr;gap:18px;margin-top:14px;padding:14px;border-radius:12px;background:#f3f7ff;border:1px solid #d7e1f4}.livelo-estimate span,.livelo-estimate strong,.livelo-estimate small{display:block}.livelo-estimate span{font-size:10px;color:#596a7c;font-weight:900;text-transform:uppercase}.livelo-estimate strong{font-size:18px;color:#334d86;margin:5px 0}.livelo-estimate small{font-size:10px;color:#6f7c8b}.livelo-estimate p{margin:0;font-size:10px;line-height:1.5;color:#65717d}
+
+@media(max-width:1100px){.rate-bulk-grid{grid-template-columns:1fr 1fr 1fr 1fr}.rate-bulk-apply{grid-column:1/-1}.analysis-mode-card{grid-template-columns:1fr}.points-breakdown{grid-template-columns:1fr 1fr}}
+@media(max-width:820px){.auto-total-grid,.two-rate-fields{grid-template-columns:1fr}.rate-bulk-grid{grid-template-columns:1fr 1fr}.livelo-estimate{grid-template-columns:1fr}.points-benefit-head{display:block}.points-total{text-align:left;margin-top:12px}}
+@media(max-width:600px){.rate-bulk-grid{grid-template-columns:1fr}.points-breakdown{grid-template-columns:1fr}.payment-brand.brand-logo{min-width:64px}}
