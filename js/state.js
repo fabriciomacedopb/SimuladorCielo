@@ -21,7 +21,14 @@ export function createDefaultState() {
   return {
     schemaVersion: SCHEMA_VERSION,
     meta: { id: crypto.randomUUID?.() || `${Date.now()}-${Math.random()}`, cliente: '', cnpj: '', agencia: '', gerente: '', solucaoAtual: 'Não informado', dataAnalise: today(), validade: plusDays(today(), 15), observacoes: '' },
-    cards: { modoModalidades: 'valor', faturamentoTotal: 0, detalharBandeiras: true, modoBandeiras: 'valor', modalities },
+    cards: {
+      modoModalidades: 'valor',
+      faturamentoTotal: 0,
+      detalharBandeiras: true,
+      origemMixBandeiras: 'manual',
+      modoBandeiras: 'valor',
+      modalities
+    },
     pix: { volumeMensal: null, transacoesMes: null, pixNaoElegivel: 0, atual: { tipo: 'percentual', percentual: null, valorFixo: null, teto: null }, proposta: { tipo: 'percentual', percentual: null, valorFixo: null, teto: null } },
     equipment: EQUIPAMENTOS_PADRAO.map((tipo) => ({ id: crypto.randomUUID?.() || `${tipo}-${Math.random()}`, tipo, qtdAtual: 0, mensalidadeAtual: 0, qtdProposta: 0, mensalidadeProposta: 0, isencaoAplicavel: false, qtdIsenta: 0 })),
     anticipation: { realiza: false, tipo: 'Automática', volumeMensal: null, taxaAtual: null, taxaCielo: null, prazoMedioDias: null },
@@ -65,6 +72,7 @@ export function normalizeImportedState(input) {
   }
   merged.cards.modoModalidades = 'valor';
   merged.cards.detalharBandeiras = input.cards?.detalharBandeiras !== false;
+  merged.cards.origemMixBandeiras = input.cards?.origemMixBandeiras === 'estimativaBrasil' ? 'estimativaBrasil' : 'manual';
   merged.cards.modoBandeiras = input.cards?.modoBandeiras === 'share' ? 'share' : 'valor';
   merged.cards.faturamentoTotal = MODALIDADES.reduce((sum, m) => sum + parseLegacyNumber(merged.cards.modalities[m].valor), 0);
   merged.equipment = Array.isArray(input.equipment) ? input.equipment : base.equipment;
