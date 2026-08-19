@@ -1,9 +1,8 @@
-const CACHE_NAME = 'proposta-pagamentos-v2.2.1';
+const CACHE_NAME = 'proposta-pagamentos-v2.3.0';
 const CORE = [
   './', './index.html', './manifest.json',
-  './css/app.css',
-  './css/app-base.css',
-  './css/app-components.css', './css/dashboard.css', './css/proposta.css', './css/print.css',
+  './css/app.css', './css/app-base.css', './css/app-components.css',
+  './css/dashboard.css', './css/proposta.css', './css/print.css',
   './config/parametros.js',
   './js/app.js', './js/state.js', './js/formatters.js', './js/cartoes.js', './js/pix.js',
   './js/equipamentos.js', './js/antecipacao.js', './js/cobranca.js', './js/mais-vantagens.js',
@@ -21,37 +20,51 @@ self.addEventListener('install', (event) => {
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((keys) => Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))))
+    caches.keys().then((keys) => Promise.all(
+      keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))
+    ))
   );
   self.clients.claim();
 });
 
+async function networkFirst(request, fallback) {
+  try {
+    const response = await fetch(request, { cache: 'no-store' });
+    if (response && response.ok && new URL(request.url).origin === self.location.origin) {
+      const cache = await caches.open(CACHE_NAME);
+      cache.put(request, response.clone());
+    }
+    return response;
+  } catch (error) {
+    return (await caches.match(request)) || (fallback ? await caches.match(fallback) : undefined) || Response.error();
+  }
+}
+
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
-  if (event.request.mode === 'navigate') {
-    event.respondWith(
-      fetch(event.request)
-        .then((response) => {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put('./index.html', copy));
-          return response;
-        })
-        .catch(() => caches.match('./index.html'))
-    );
+  const url = new URL(event.request.url);
+  if (url.origin !== self.location.origin) return;
+
+  const isDynamicCode =
+    event.request.mode === 'navigate' ||
+    event.request.destination === 'script' ||
+    event.request.destination === 'style' ||
+    event.request.destination === 'worker' ||
+    event.request.destination === 'document';
+
+  if (isDynamicCode) {
+    event.respondWith(networkFirst(event.request, event.request.mode === 'navigate' ? './index.html' : null));
     return;
   }
 
   event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-      return fetch(event.request).then((response) => {
-        if (response.ok && new URL(event.request.url).origin === self.location.origin) {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
-        }
-        return response;
-      });
-    })
+    caches.match(event.request).then((cached) => cached || fetch(event.request).then((response) => {
+      if (response.ok) {
+        const copy = response.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+      }
+      return response;
+    }))
   );
 });
