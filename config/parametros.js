@@ -1,4 +1,4 @@
-export const SCHEMA_VERSION = 3;
+export const SCHEMA_VERSION = 4;
 
 export const MODALIDADES = [
   'Débito', 'Crédito à vista', '2x', '3x', '4x', '5x', '6x',
@@ -11,6 +11,17 @@ export const BANDEIRAS = [
   { id: 'elo', nome: 'Elo', debito: true, logo: 'assets/logos/elo.png' },
   { id: 'dinersAmex', nome: 'Diners/Amex', debito: false, logo: 'assets/logos/diners-amex.png' }
 ];
+
+// Estimativa nacional para quando o cliente não conhece a distribuição real por bandeira.
+// Base de referência pública: ranking de mercado brasileiro de 2024, com Mastercard em 1º,
+// Visa em 2º e Elo em 3º. Os pesos abaixo (51/31/14/4) são uma aproximação operacional
+// para a ferramenta e NÃO representam o mix observado do cliente. No Débito, Diners/Amex
+// não se aplica e os pesos são automaticamente normalizados entre Mastercard, Visa e Elo.
+export const ESTIMATIVA_BANDEIRAS_BRASIL = {
+  referencia: 'Brasil · referência de mercado 2024',
+  metodologia: 'Estimativa nacional para simulação quando o mix real do cliente não estiver disponível.',
+  pesos: { mastercard: 51, visa: 31, elo: 14, dinersAmex: 4 }
+};
 
 export const SOLUCOES_ATUAIS = [
   'Rede', 'Getnet', 'Sipag', 'PagSeguro', 'Mercado Pago', 'Stone',
