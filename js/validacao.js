@@ -12,39 +12,45 @@ export function validateState(state) {
   checks.push(totalCards > 0 ? status('Volume das modalidades', 'ok', 'Faturamento mensal total calculado automaticamente.', 1) : status('Volume das modalidades', 'fill', 'Informe o faturamento mensal das modalidades.', 1));
 
   let brandMixLevel = 'ok';
-  let brandMixMessage = state.cards.detalharBandeiras === false ? 'Detalhamento por bandeira dispensado nesta análise.' : 'Distribuição por bandeira conciliada nas modalidades com volume.';
+  let brandMixMessage = state.cards.detalharBandeiras === false
+    ? 'Detalhamento por bandeira dispensado nesta análise.'
+    : state.cards.origemMixBandeiras === 'estimativaBrasil'
+      ? 'Distribuição por bandeira estimada automaticamente com referência de mercado brasileiro. Validar o mix real do cliente quando disponível.'
+      : 'Distribuição por bandeira conciliada nas modalidades com volume.';
   let ratesLevel = 'ok';
   let ratesMessage = state.cards.detalharBandeiras === false ? 'Condições gerais preenchidas nas modalidades com volume.' : 'Condições atuais e Cielo preenchidas nas combinações com volume.';
 
   if (state.cards.detalharBandeiras !== false) {
-    for (const modalidade of MODALIDADES) {
-      const modalVol = modalityVolumeCents(state, modalidade);
-      if (modalVol <= 0) continue;
-      const active = activeBrandsFor(modalidade);
+    if (state.cards.origemMixBandeiras !== 'estimativaBrasil') {
+      for (const modalidade of MODALIDADES) {
+        const modalVol = modalityVolumeCents(state, modalidade);
+        if (modalVol <= 0) continue;
+        const active = activeBrandsFor(modalidade);
 
-      if (state.cards.modoBandeiras === 'share') {
-        const sum = active.reduce((s, b) => s + (parseDecimal(state.cards.modalities[modalidade].brands[b.id].share) ?? 0), 0);
-        if (Math.abs(sum) < 0.01) {
-          brandMixLevel = 'fill';
-          brandMixMessage = `${modalidade}: informe o share por bandeira ou altere a forma de preenchimento para Valor mensal.`;
-          break;
-        }
-        if (Math.abs(sum - 100) >= 0.01) {
-          brandMixLevel = 'review';
-          brandMixMessage = `${modalidade}: o share das bandeiras totaliza ${sum.toFixed(2)}%. Ajuste para 100%.`;
-          break;
-        }
-      } else {
-        const sum = active.reduce((s, b) => s + brandVolumeCents(state, modalidade, b.id), 0);
-        if (sum === 0) {
-          brandMixLevel = 'fill';
-          brandMixMessage = `${modalidade}: informe o faturamento por bandeira ou altere a forma de preenchimento para Share %.`;
-          break;
-        }
-        if (Math.abs(sum - modalVol) > 1) {
-          brandMixLevel = 'review';
-          brandMixMessage = `${modalidade}: o faturamento informado por bandeira não concilia com o volume da modalidade.`;
-          break;
+        if (state.cards.modoBandeiras === 'share') {
+          const sum = active.reduce((s, b) => s + (parseDecimal(state.cards.modalities[modalidade].brands[b.id].share) ?? 0), 0);
+          if (Math.abs(sum) < 0.01) {
+            brandMixLevel = 'fill';
+            brandMixMessage = `${modalidade}: informe o share por bandeira ou selecione “Estimar mix Brasil”.`;
+            break;
+          }
+          if (Math.abs(sum - 100) >= 0.01) {
+            brandMixLevel = 'review';
+            brandMixMessage = `${modalidade}: o share das bandeiras totaliza ${sum.toFixed(2)}%. Ajuste para 100%.`;
+            break;
+          }
+        } else {
+          const sum = active.reduce((s, b) => s + brandVolumeCents(state, modalidade, b.id), 0);
+          if (sum === 0) {
+            brandMixLevel = 'fill';
+            brandMixMessage = `${modalidade}: informe o faturamento por bandeira ou selecione “Estimar mix Brasil”.`;
+            break;
+          }
+          if (Math.abs(sum - modalVol) > 1) {
+            brandMixLevel = 'review';
+            brandMixMessage = `${modalidade}: o faturamento informado por bandeira não concilia com o volume da modalidade.`;
+            break;
+          }
         }
       }
     }
