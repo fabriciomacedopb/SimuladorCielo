@@ -1,4 +1,4 @@
-const CACHE_NAME = 'proposta-pagamentos-v2.4.0';
+const CACHE_NAME = 'proposta-pagamentos-v2.5.0';
 const CORE = [
   './', './index.html', './manifest.json',
   './css/app.css', './css/app-base.css', './css/app-components.css',
@@ -10,7 +10,8 @@ const CORE = [
   './js/dashboard.js', './js/proposta.js', './js/ui-shell.js', './js/ui-steps-cards.js',
   './js/ui-steps-brands.js', './js/ui-steps-operations.js', './js/ui-steps-commercial.js',
   './js/ui-steps-final.js', './js/ui-results.js', './js/ui-saved.js',
-  './assets/bb.svg', './assets/cielo.svg', './assets/icons/app-icon.svg'
+  './assets/bb.svg', './assets/cielo.svg', './assets/icons/app-icon.svg',
+  './assets/logos/visa.png', './assets/logos/mastercard.png', './assets/logos/elo.png', './assets/logos/diners-amex.png'
 ];
 
 self.addEventListener('install', (event) => {
