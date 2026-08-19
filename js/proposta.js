@@ -1,4 +1,4 @@
-import { BANDEIRAS, INFORMACOES_IMPORTANTES, MODALIDADES } from '../config/parametros.js';
+import { BANDEIRAS, ESTIMATIVA_BANDEIRAS_BRASIL, INFORMACOES_IMPORTANTES, MODALIDADES } from '../config/parametros.js';
 import { activeBrandsFor } from './cartoes.js';
 import { escapeHtml, fmtBRLFromCents, fmtCompactCents, fmtDateBR, fmtPct, fmtPoints, toCents } from './formatters.js';
 
@@ -66,6 +66,10 @@ export function renderProposal(container, state, results) {
       ? `Mais Vantagens: mensalidade efetiva estimada de ${fmtBRLFromCents(results.package.mensalidadeEfetivaCents)} com desconto aplicado de ${fmtPct(results.package.descontoAplicado * 100, 0)}.${results.package.statusValidacao === 'A VALIDAR' ? ' Benefício estimado sujeito à validação e contratação.' : ''}`
       : `Mais Vantagens: benefício não considerado na simulação; mensalidade proposta de ${fmtBRLFromCents(results.package.mensalidadeEfetivaCents)}.`;
 
+  const estimatedMixNotice = results.cards.mixEstimated
+    ? `<aside class="proposal-estimated-mix"><strong>Mix por bandeira estimado</strong><span>A distribuição do faturamento entre as bandeiras foi estimada com base em uma referência nacional de mercado (${escapeHtml(ESTIMATIVA_BANDEIRAS_BRASIL.referencia)}), pois o mix real do cliente não foi informado. Essa premissa influencia os valores de economia/impacto e deve ser substituída pelo mix real quando disponível.</span></aside>`
+    : '';
+
   container.innerHTML = `
     <section class="client-sheet proposal-sheet" id="proposalPrintable">
       <header class="client-hero proposal-hero">
@@ -85,6 +89,7 @@ export function renderProposal(container, state, results) {
       </div>
 
       <article class="proposal-result"><span>RESULTADO DA ANÁLISE</span><strong>${proposalNarrative(results)}</strong></article>
+      ${estimatedMixNotice}
 
       <div class="proposal-body-grid">
         <article>
