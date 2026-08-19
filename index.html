@@ -8,13 +8,32 @@
   <title>Proposta Integrada de Pagamentos</title>
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="assets/icons/app-icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/app.css">
-  <link rel="stylesheet" href="css/dashboard.css">
-  <link rel="stylesheet" href="css/proposta.css">
-  <link rel="stylesheet" href="css/print.css" media="print">
+  <link rel="stylesheet" href="css/app.css?v=20260818-2350">
+  <link rel="stylesheet" href="css/dashboard.css?v=20260818-2350">
+  <link rel="stylesheet" href="css/proposta.css?v=20260818-2350">
+  <link rel="stylesheet" href="css/print.css?v=20260818-2350" media="print">
 </head>
 <body>
   <noscript>Esta aplicação precisa de JavaScript habilitado para realizar os cálculos localmente no navegador.</noscript>
-  <script type="module" src="js/app.js"></script>
+  <script>
+    (async function bootFreshVersion(){
+      try {
+        if ('serviceWorker' in navigator) {
+          const registrations = await navigator.serviceWorker.getRegistrations();
+          await Promise.all(registrations.map((registration) => registration.unregister()));
+        }
+        if ('caches' in window) {
+          const keys = await caches.keys();
+          await Promise.all(keys.filter((key) => key.startsWith('proposta-pagamentos-')).map((key) => caches.delete(key)));
+        }
+      } catch (error) {
+        console.warn('Não foi possível limpar o cache anterior automaticamente.', error);
+      }
+      const script = document.createElement('script');
+      script.type = 'module';
+      script.src = 'js/app.js?v=20260818-2350';
+      document.body.appendChild(script);
+    })();
+  </script>
 </body>
 </html>
