@@ -7,7 +7,10 @@ export function parseDecimal(value) {
   if (typeof value === 'number') return Number.isFinite(value) ? value : null;
   const raw = String(value).trim().replace(/\s/g, '').replace(/R\$/gi, '').replace(/%/g, '');
   if (!raw) return null;
-  const normalized = raw.includes(',') ? raw.replace(/\./g, '').replace(',', '.') : raw;
+  let normalized;
+  if (raw.includes(',')) normalized = raw.replace(/\./g, '').replace(',', '.');
+  else if (/^[+-]?\d{1,3}(\.\d{3})+$/.test(raw)) normalized = raw.replace(/\./g, '');
+  else normalized = raw;
   const n = Number(normalized);
   return Number.isFinite(n) ? n : null;
 }
