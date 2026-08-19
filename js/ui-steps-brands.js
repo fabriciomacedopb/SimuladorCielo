@@ -1,5 +1,5 @@
-import { BANDEIRAS, MODALIDADES } from '../config/parametros.js';
-import { activeBrandsFor, brandShare, brandVolumeCents, modalityVolumeCents } from './cartoes.js';
+import { BANDEIRAS, ESTIMATIVA_BANDEIRAS_BRASIL, MODALIDADES } from '../config/parametros.js';
+import { activeBrandsFor, brandShare, brandVolumeCents, estimatedBrandShare, modalityVolumeCents } from './cartoes.js';
 import { escapeHtml, fmtBRLFromCents, fmtPct } from './formatters.js';
 
 const RATE_RANGES = {
@@ -33,20 +33,33 @@ export function createBrandSteps(ctx) {
     return `<div class="analysis-mode-card"><div><span class="choice-label">Detalhamento das condições</span>${segmented('brandDetailMode',detailMode,[['bandeira','Por bandeira'],['geral','Condição geral']])}</div><p><b>Por bandeira</b> permite cadastrar Visa, Mastercard, Elo e Diners/Amex com taxas diferentes. Use <b>Condição geral</b> somente quando a mesma taxa representar toda a modalidade.</p></div>`;
   }
 
+  function mixSourceChooser() {
+    const source = state.cards.origemMixBandeiras === 'estimativaBrasil' ? 'estimativaBrasil' : 'manual';
+    return `<div class="analysis-mode-card mix-source-card"><div><span class="choice-label">Distribuição das vendas por bandeira</span>${segmented('mixSource',source,[['manual','Informar mix do cliente'],['estimativaBrasil','Não informar · Estimar Brasil']])}</div><p>${source === 'estimativaBrasil' ? '<b>Estimativa automática:</b> o sistema distribui o faturamento conforme uma referência nacional de uso das bandeiras. As taxas continuam sendo informadas por bandeira.' : '<b>Mix real do cliente:</b> informe por valor mensal ou, se preferir, por Share %. O sistema preserva os dados manuais caso você alterne para a estimativa.'}</p></div>`;
+  }
+
   function distributionChooser() {
     const mode = state.cards.modoBandeiras === 'share' ? 'share' : 'valor';
-    return `<div class="brand-mode-row unified"><div><span class="choice-label">Forma de informar o faturamento por bandeira</span>${segmented('modoBandeiras',mode,[['valor','Valor mensal'],['share','Share % (opcional)']])}</div><p class="helper-box"><b>O share é opcional; a distribuição por bandeira não.</b> Em “Por bandeira”, informe <b>Valor mensal</b> ou <b>Share %</b> para cada modalidade que tenha faturamento. Se usar valor, o share será calculado automaticamente.</p></div>`;
+    return `<div class="brand-mode-row unified"><div><span class="choice-label">Forma de informar o mix do cliente</span>${segmented('modoBandeiras',mode,[['valor','Valor mensal'],['share','Share %']])}</div><p class="helper-box">Você informa <b>uma única forma</b>: valor mensal ou share. Ao usar valor, o share é calculado automaticamente; ao usar share, o faturamento por bandeira é calculado sobre o volume da modalidade.</p></div>`;
+  }
+
+  function estimatedMixPanel(modalidade, active) {
+    return `<div class="estimated-mix-panel"><div><span class="eyebrow">MIX ESTIMADO</span><strong>${escapeHtml(ESTIMATIVA_BANDEIRAS_BRASIL.referencia)}</strong><p>Utilizado somente porque o mix real do cliente não foi informado. É uma aproximação para simulação e deve ser validada quando os dados reais estiverem disponíveis.</p></div><div class="estimated-mix-list">${active.map((b)=>`<div>${brandBadge(b)}<strong>${fmtPct(estimatedBrandShare(modalidade,b.id))}</strong></div>`).join('')}</div></div>`;
   }
 
   function detailedBrandCards(modalidade, active) {
     const diners = BANDEIRAS.find((b)=>b.id==='dinersAmex');
-    const usingShare = state.cards.modoBandeiras === 'share';
+    const usingEstimate = state.cards.origemMixBandeiras === 'estimativaBrasil';
+    const usingShare = !usingEstimate && state.cards.modoBandeiras === 'share';
     return `<div class="brand-combined-grid">${active.map((b) => {
       const cell = state.cards.modalities[modalidade].brands[b.id];
       const volume = brandVolumeCents(state, modalidade, b.id);
       const share = brandShare(state, modalidade, b.id);
-      const summary = usingShare ? (volume ? fmtBRLFromCents(volume) : '—') : (volume ? fmtPct(share) : '—');
-      return `<article class="brand-combined-card"><header>${brandBadge(b)}<small data-brand-summary="${b.id}">${summary}</small></header><div class="brand-combined-fields"><label><span>${usingShare ? 'Share da modalidade *' : 'Faturamento mensal na bandeira *'}</span>${inlineInput(usingShare ? (cell.share??'') : (cell.valor??''),{format:usingShare?'percent':'currency',attrs:`class="brand-dist-input" data-brand="${b.id}"`})}</label><label><span>Condição atual</span>${inlineInput(cell.taxaAtual??'',{format:'percent',attrs:`class="brand-rate-input" data-brand="${b.id}" data-side="taxaAtual"`})}</label><label><span>Taxa Cielo</span>${inlineInput(cell.taxaCielo??'',{format:'percent',attrs:`class="brand-rate-input cielo-input" data-brand="${b.id}" data-side="taxaCielo"`})}</label></div></article>`;
+      const summary = volume ? fmtPct(share) : '—';
+      const distributionField = usingEstimate
+        ? `<div class="estimated-brand-volume"><span>Distribuição estimada</span><strong>${fmtPct(share)}</strong><small>${volume ? fmtBRLFromCents(volume) : '—'} na modalidade</small></div>`
+        : `<label><span>${usingShare ? 'Share da modalidade' : 'Faturamento mensal na bandeira'}</span>${inlineInput(usingShare ? (cell.share??'') : (cell.valor??''),{format:usingShare?'percent':'currency',attrs:`class="brand-dist-input" data-brand="${b.id}"`})}</label>`;
+      return `<article class="brand-combined-card ${usingEstimate?'estimated':''}"><header>${brandBadge(b)}<small data-brand-summary="${b.id}">${summary}</small></header><div class="brand-combined-fields">${distributionField}<label><span>Condição atual</span>${inlineInput(cell.taxaAtual??'',{format:'percent',attrs:`class="brand-rate-input" data-brand="${b.id}" data-side="taxaAtual"`})}</label><label><span>Taxa Cielo</span>${inlineInput(cell.taxaCielo??'',{format:'percent',attrs:`class="brand-rate-input cielo-input" data-brand="${b.id}" data-side="taxaCielo"`})}</label></div></article>`;
     }).join('')}${modalidade==='Débito'?`<article class="brand-combined-card disabled"><header>${brandBadge(diners)}<small>Não aplicável</small></header><div class="brand-disabled-note">Débito não é utilizado para Diners/Amex nesta ferramenta.</div></article>`:''}</div>`;
   }
 
@@ -56,7 +69,8 @@ export function createBrandSteps(ctx) {
   }
 
   function detailedEditor(modalidade, active) {
-    return `${distributionChooser()}${quickRateFill()}<div class="helper-box prominent"><b>Faturamento e taxas ficam juntos.</b> Para calcular a economia corretamente quando as taxas variam por bandeira, informe a distribuição do faturamento por <b>Valor mensal</b> ou, alternativamente, por <b>Share %</b>. Depois informe a condição atual e a taxa Cielo de cada bandeira utilizada.</div>${detailedBrandCards(modalidade, active)}`;
+    const usingEstimate = state.cards.origemMixBandeiras === 'estimativaBrasil';
+    return `${mixSourceChooser()}${usingEstimate ? estimatedMixPanel(modalidade,active) : distributionChooser()}${quickRateFill()}<div class="helper-box prominent"><b>As taxas continuam por bandeira.</b> ${usingEstimate ? 'O faturamento por bandeira abaixo é estimado automaticamente; informe apenas as condições atuais e Cielo.' : 'Informe o mix do cliente e as condições atuais/Cielo. As taxas podem ser diferentes entre Visa, Mastercard, Elo e Diners/Amex.'}</div>${detailedBrandCards(modalidade, active)}`;
   }
 
   function bindQuickRateFill() {
@@ -104,29 +118,28 @@ export function createBrandSteps(ctx) {
   }
 
   function bindDetailedInputs(modalidade) {
-    $$('[data-segmented="modoBandeiras"] .seg').forEach((b) => b.addEventListener('click', () => updateState((s) => { s.cards.modoBandeiras = b.dataset.value; })));
+    $$('[data-segmented="mixSource"] .seg').forEach((b) => b.addEventListener('click', () => updateState((s) => { s.cards.origemMixBandeiras = b.dataset.value; })));
 
-    const refreshSummary = () => {
-      $$('[data-brand-summary]').forEach((el) => {
-        const id = el.dataset.brandSummary;
-        if (state.cards.modoBandeiras === 'share') {
-          const volume = brandVolumeCents(state, modalidade, id);
-          el.textContent = volume ? fmtBRLFromCents(volume) : '—';
-        } else {
+    if (state.cards.origemMixBandeiras !== 'estimativaBrasil') {
+      $$('[data-segmented="modoBandeiras"] .seg').forEach((b) => b.addEventListener('click', () => updateState((s) => { s.cards.modoBandeiras = b.dataset.value; })));
+
+      const refreshSummary = () => {
+        $$('[data-brand-summary]').forEach((el) => {
+          const id = el.dataset.brandSummary;
           const volume = brandVolumeCents(state, modalidade, id);
           el.textContent = volume ? fmtPct(brandShare(state, modalidade, id)) : '—';
-        }
-      });
-    };
+        });
+      };
 
-    $$('.brand-dist-input').forEach((el) => el.addEventListener('input', (e) => {
-      updateInputState((s) => {
-        const cell = s.cards.modalities[modalidade].brands[e.target.dataset.brand];
-        if (s.cards.modoBandeiras === 'share') cell.share = e.target.value;
-        else cell.valor = e.target.value;
-      });
-      refreshSummary();
-    }));
+      $$('.brand-dist-input').forEach((el) => el.addEventListener('input', (e) => {
+        updateInputState((s) => {
+          const cell = s.cards.modalities[modalidade].brands[e.target.dataset.brand];
+          if (s.cards.modoBandeiras === 'share') cell.share = e.target.value;
+          else cell.valor = e.target.value;
+        });
+        refreshSummary();
+      }));
+    }
 
     $$('.brand-rate-input').forEach((el) => el.addEventListener('input', (e) => updateInputState((s) => {
       s.cards.modalities[modalidade].brands[e.target.dataset.brand][e.target.dataset.side] = e.target.value;
@@ -145,7 +158,7 @@ export function createBrandSteps(ctx) {
     const active = activeBrandsFor(modalidade);
     const detailed = state.cards.detalharBandeiras !== false;
 
-    c.innerHTML = `<article class="stage-card"><div class="card-heading"><div><h2>Faturamento e condições por bandeira</h2><p>Cadastre faturamento e taxas na mesma tela. As condições Atual e Cielo são independentes para cada bandeira.</p></div><div class="metric-mini"><span>${escapeHtml(modalidade)}</span><strong>${modalVol ? fmtBRLFromCents(modalVol) : 'Sem volume'}</strong></div></div><div class="brand-toolbar unified"><div class="modal-chips">${MODALIDADES.map((m) => `<button class="modal-chip ${m===modalidade?'active':''}" data-brand-modal="${m}">${m}</button>`).join('')}</div></div>${detailModeChooser()}${detailed ? detailedEditor(modalidade, active) : generalEditor(modalidade)}</article>`;
+    c.innerHTML = `<article class="stage-card"><div class="card-heading"><div><h2>Faturamento e condições por bandeira</h2><p>Cadastre as taxas por bandeira e escolha se utilizará o mix real do cliente ou uma estimativa nacional.</p></div><div class="metric-mini"><span>${escapeHtml(modalidade)}</span><strong>${modalVol ? fmtBRLFromCents(modalVol) : 'Sem volume'}</strong></div></div><div class="brand-toolbar unified"><div class="modal-chips">${MODALIDADES.map((m) => `<button class="modal-chip ${m===modalidade?'active':''}" data-brand-modal="${m}">${m}</button>`).join('')}</div></div>${detailModeChooser()}${detailed ? detailedEditor(modalidade, active) : generalEditor(modalidade)}</article>`;
 
     $$('[data-brand-modal]').forEach((b) => b.addEventListener('click', () => updateState((s) => { s.ui.brandModalidade = b.dataset.brandModal; })));
     $$('[data-segmented="brandDetailMode"] .seg').forEach((b) => b.addEventListener('click', () => updateState((s) => { s.cards.detalharBandeiras = b.dataset.value === 'bandeira'; })));
