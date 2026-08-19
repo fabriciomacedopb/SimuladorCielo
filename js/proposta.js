@@ -1,6 +1,6 @@
 import { BANDEIRAS, INFORMACOES_IMPORTANTES, MODALIDADES } from '../config/parametros.js';
 import { activeBrandsFor } from './cartoes.js';
-import { escapeHtml, fmtBRLFromCents, fmtCompactCents, fmtDateBR, fmtPct, fmtPoints } from './formatters.js';
+import { escapeHtml, fmtBRLFromCents, fmtCompactCents, fmtDateBR, fmtPct, fmtPoints, toCents } from './formatters.js';
 
 function proposalNarrative(results) {
   const t = results.totals;
@@ -23,7 +23,7 @@ function composition(results) {
 }
 
 function brandBadge(brand) {
-  return `<span class="payment-brand brand-${brand.id}">${escapeHtml(brand.nome)}</span>`;
+  return `<span class="payment-brand brand-logo brand-${brand.id}" title="${escapeHtml(brand.nome)}"><img src="${brand.logo}" alt="${escapeHtml(brand.nome)}"></span>`;
 }
 
 function compactRates(state) {
@@ -42,6 +42,18 @@ function compactGeneralRates(state) {
     return `<tr><td>${escapeHtml(m)}</td><td>${fmtPct(cell.taxaAtualGeral)}</td><td>${fmtPct(cell.taxaCieloGeral)}</td></tr>`;
   }).join('');
   return `<div class="proposal-rate-brand general"><div class="proposal-rate-head"><span class="payment-brand brand-general">Condição geral</span><span>Atual</span><span>Cielo</span></div><table><tbody>${rows}</tbody></table></div>`;
+}
+
+function equipmentSection(results) {
+  const rows = (results.equipment?.detail || []).filter((item) => item.qtdAtual > 0 || item.qtdProposta > 0 || item.custoAtualCents > 0 || item.custoCieloCents > 0);
+  if (!rows.length) return '';
+  return `<section class="proposal-equipment"><div class="proposal-section-heading"><div><span>EQUIPAMENTOS E TERMINAIS</span><h2>Comparativo de custos</h2></div><div class="equipment-total"><span>Impacto mensal estimado</span><strong class="${results.equipment.impactoMensalCents>0?'positive':results.equipment.impactoMensalCents<0?'negative':''}">${results.equipment.impactoMensalCents ? fmtBRLFromCents(results.equipment.impactoMensalCents) : '—'}</strong></div></div><div class="proposal-equipment-scroll"><table class="proposal-equipment-table"><thead><tr><th>Equipamento</th><th>Qtd. atual</th><th>Mens. unitária atual</th><th>Qtd. proposta</th><th>Mens. unitária proposta</th><th>Custo atual/mês</th><th>Custo proposta/mês</th><th>Diferença/mês</th><th>Em 12 meses</th></tr></thead><tbody>${rows.map((item)=>`<tr><td><strong>${escapeHtml(item.tipo)}</strong>${item.qtdIsenta>0?`<small>${item.qtdIsenta} un. isenta(s) na proposta</small>`:''}</td><td>${item.qtdAtual}</td><td>${fmtBRLFromCents(toCents(item.mensalidadeAtual) ?? 0)}</td><td>${item.qtdProposta}</td><td>${fmtBRLFromCents(toCents(item.mensalidadeProposta) ?? 0)}</td><td>${fmtBRLFromCents(item.custoAtualCents)}</td><td>${fmtBRLFromCents(item.custoCieloCents)}</td><td class="${item.impactoMensalCents>0?'positive':item.impactoMensalCents<0?'negative':''}">${item.impactoMensalCents ? fmtBRLFromCents(item.impactoMensalCents) : '—'}</td><td>${item.impacto12Cents ? fmtBRLFromCents(item.impacto12Cents) : '—'}</td></tr>`).join('')}</tbody></table></div></section>`;
+}
+
+function liveloBenefit(results) {
+  const b = results.benefits;
+  const livelo = b.livelo;
+  return `<div class="proposal-livelo"><div class="proposal-livelo-title"><span>Benefícios BB Empresas · estimativa de pontos</span><strong>${fmtPoints(b.mensal)} / mês</strong><small>${fmtPoints(b.anual)} em 12 meses</small></div><div class="proposal-points-breakdown"><span>Cielo <b>${fmtPoints(b.cielo)}</b></span><span>Pix <b>${fmtPoints(b.pix)}</b></span><span>Cobrança <b>${fmtPoints(b.cobranca)}</b></span><span>Outros <b>${fmtPoints(b.outros)}</b></span></div><div class="proposal-livelo-transfer"><span>Potencial estimado para transferência ao Programa Livelo</span><strong>${fmtPoints(livelo.potencialTransferenciaMensal)} / mês</strong><small>Estimativa sujeita à elegibilidade, disponibilidade dos pontos e às regras e limites vigentes. As condições podem ser alteradas. Pontos não compõem a economia financeira em R$.</small></div></div>`;
 }
 
 export function renderProposal(container, state, results) {
@@ -78,10 +90,8 @@ export function renderProposal(container, state, results) {
         <article>
           <h2>Composição do resultado</h2>
           <div class="proposal-composition">${composition(results)}</div>
-          <div class="proposal-benefits">
-            <div><span>Benefícios BB Empresas</span><strong>${fmtPoints(results.benefits.mensal)} / mês</strong><small>${fmtPoints(results.benefits.anual)} em 12 meses. Pontos não compõem a economia financeira.</small></div>
-            <p>${escapeHtml(packageText)}</p>
-          </div>
+          <div class="proposal-benefits"><p>${escapeHtml(packageText)}</p></div>
+          ${liveloBenefit(results)}
         </article>
         <article>
           <h2>${detailed ? 'Condições comerciais por bandeira' : 'Condições comerciais gerais'}</h2>
@@ -89,6 +99,7 @@ export function renderProposal(container, state, results) {
         </article>
       </div>
 
+      ${equipmentSection(results)}
       ${state.meta.observacoes ? `<aside class="proposal-observations"><strong>Observações comerciais</strong><p>${escapeHtml(state.meta.observacoes)}</p></aside>` : ''}
       <p class="proposal-closing">Mais eficiência na operação de pagamentos, com uma visão integrada de custos e soluções para o seu negócio.</p>
       <aside class="important-info"><strong>Informações importantes</strong>${INFORMACOES_IMPORTANTES.map((p) => `<p>${escapeHtml(p)}</p>`).join('')}</aside>
