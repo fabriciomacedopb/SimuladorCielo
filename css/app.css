@@ -1,2 +1,39 @@
 @import url('./app-base.css');
 @import url('./app-components.css');
+
+/* Campos financeiros com afixos fixos e comportamento visual de sistema bancário */
+.input-control{position:relative;width:100%;min-width:0}
+.input-control input{width:100%}
+.field-affix{position:absolute;top:50%;transform:translateY(-50%);z-index:2;color:#60707b;font-size:11px;font-weight:900;pointer-events:none;line-height:1}
+.field-affix.prefix{left:11px}.field-affix.suffix{right:11px}
+.input-control.has-prefix input{padding-left:38px}.input-control.has-suffix input{padding-right:31px}
+.compact-control input{padding:7px 8px;font-size:11px}.compact-control.has-prefix input{padding-left:34px}.compact-control.has-suffix input{padding-right:27px}
+.input-control input[readonly]{background:#f3f6f8;color:#66747e;cursor:default}
+
+/* Etapa 2 — total calculado automaticamente */
+.auto-total-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+.auto-total-card{border:1px solid #cddce6;border-radius:14px;padding:16px 18px;background:linear-gradient(135deg,#fff,#f6fafc)}
+.auto-total-card.annual{border-color:#c9e5ef;background:linear-gradient(135deg,#fff,#f2fbfe)}
+.auto-total-card span,.auto-total-card small{display:block}.auto-total-card span{font-size:10px;color:#65747e;font-weight:900;text-transform:uppercase;letter-spacing:.45px}.auto-total-card strong{display:block;margin-top:6px;color:var(--navy);font-size:24px}.auto-total-card.annual strong{color:#0879a6}.auto-total-card small{margin-top:4px;color:#86939c;font-size:10px}
+
+/* Etapa 3 — escolha do nível de detalhe e replicação rápida de taxas */
+.analysis-mode-card{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:end;border:1px solid var(--line);background:#fbfcfd;border-radius:14px;padding:14px;margin-bottom:16px}
+.analysis-mode-card p{margin:0;color:#67757f;font-size:11px;line-height:1.5}
+.rate-bulk-card{border:1px solid #d6e3eb;background:linear-gradient(135deg,#f9fcfe,#f2f8fb);border-radius:14px;padding:14px;margin-bottom:16px}
+.rate-bulk-heading strong,.rate-bulk-heading span{display:block}.rate-bulk-heading strong{color:var(--navy);font-size:14px}.rate-bulk-heading span{color:#75828c;font-size:10px;margin-top:3px}
+.rate-bulk-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr auto;gap:10px;align-items:end;margin-top:12px}.rate-bulk-apply{height:39px;white-space:nowrap}
+.general-rate-card{border:1px solid var(--line);border-radius:14px;background:#fbfcfd;padding:16px;margin-top:14px;max-width:720px}.general-rate-card header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.general-rate-card header strong{color:var(--navy);font-size:16px}.general-rate-card header small{color:#75828c}.two-rate-fields{grid-template-columns:1fr 1fr}
+
+/* Identificação visual das bandeiras sem redesenhar os logotipos oficiais */
+.payment-brand{display:inline-flex;align-items:center;justify-content:center;min-height:25px;padding:4px 9px;border-radius:7px;border:1px solid #cbd7df;background:#fff;color:var(--navy);font-size:11px;font-weight:900;letter-spacing:.15px;white-space:nowrap}
+.brand-visa{border-color:#b9c8dc}.brand-mastercard{border-color:#dbc9c1}.brand-elo{border-color:#c9d4d8}.brand-dinersAmex{border-color:#c9cfe0}.brand-general{border-color:#b8dbea;background:#f5fbfe;color:#0879a6}
+.rate-entry .payment-brand,.brand-entry .payment-brand{font-size:12px}
+
+/* Etapa 7 — coluna para exclusão e melhor leitura dos valores */
+.collection-head,.collection-row{grid-template-columns:1.3fr .72fr 1fr 1fr 1fr 38px;min-width:920px}
+.collection-row>strong{text-align:right;font-size:11px}.collection-row .icon-btn{width:30px;height:30px}
+.collection-row .input-control{min-width:0}
+
+@media(max-width:1100px){.rate-bulk-grid{grid-template-columns:1fr 1fr 1fr 1fr}.rate-bulk-apply{grid-column:1/-1}.analysis-mode-card{grid-template-columns:1fr}}
+@media(max-width:820px){.auto-total-grid,.two-rate-fields{grid-template-columns:1fr}.rate-bulk-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.rate-bulk-grid{grid-template-columns:1fr}}
