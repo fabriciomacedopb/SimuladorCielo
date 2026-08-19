@@ -1,8 +1,8 @@
-const CACHE_NAME = 'proposta-pagamentos-v2.5.5';
+const CACHE_NAME = 'proposta-pagamentos-v2.5.6';
 const CORE = [
   './', './index.html', './manifest.json',
   './css/app.css', './css/app-base.css', './css/app-components.css',
-  './css/dashboard.css', './css/proposta.css', './css/print.css',
+  './css/dashboard.css', './css/proposta.css', './css/brand-fixes.css', './css/print.css',
   './config/parametros.js',
   './js/app.js', './js/state.js', './js/formatters.js', './js/cartoes.js', './js/pix.js',
   './js/equipamentos.js', './js/antecipacao.js', './js/cobranca.js', './js/mais-vantagens.js',
