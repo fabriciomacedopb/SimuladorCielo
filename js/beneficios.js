@@ -18,13 +18,26 @@ export function calculateBenefits(state, dependencies) {
   const cobrancaPts = boletos >= rules.cobranca.minimoBoletosLiquidados ? rules.cobranca.pontos : 0;
   const outros = Math.max(0, Math.floor(parseDecimal(state.benefits.outrosProdutosPontos) ?? 0));
 
-  const totalBase = Math.min(cieloPts + pixPts + cobrancaPts + outros, rules.limiteDemaisProdutosMensal);
+  const mensal = Math.min(cieloPts + pixPts + cobrancaPts + outros, rules.limiteDemaisProdutosMensal);
+  const anual = mensal * 12;
+  const liveloMin = rules.livelo?.transferenciaMinimaPontos ?? 1000;
+  const liveloMax = rules.livelo?.limiteTransferenciaMensalPontos ?? 500000;
+  const potencialTransferenciaMensal = Math.min(mensal, liveloMax);
+
   return {
     cielo: cieloPts,
     pix: pixPts,
     cobranca: cobrancaPts,
     outros,
-    mensal: totalBase,
-    anual: totalBase * 12
+    mensal,
+    anual,
+    livelo: {
+      pontosEstimadosMensal: mensal,
+      pontosEstimados12M: anual,
+      potencialTransferenciaMensal,
+      minimoTransferenciaPontos: liveloMin,
+      limiteTransferenciaMensalPontos: liveloMax,
+      atendeMinimoTransferencia: potencialTransferenciaMensal >= liveloMin
+    }
   };
 }
