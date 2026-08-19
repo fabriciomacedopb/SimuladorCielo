@@ -16,9 +16,20 @@
 .auto-total-card.annual{border-color:#c9e5ef;background:linear-gradient(135deg,#fff,#f2fbfe)}
 .auto-total-card span,.auto-total-card small{display:block}.auto-total-card span{font-size:10px;color:#65747e;font-weight:900;text-transform:uppercase;letter-spacing:.45px}.auto-total-card strong{display:block;margin-top:6px;color:var(--navy);font-size:24px}.auto-total-card.annual strong{color:#0879a6}.auto-total-card small{margin-top:4px;color:#86939c;font-size:10px}
 
-/* Etapa 3 — escolha do nível de detalhe e replicação rápida de taxas */
+/* Etapa 3 — faturamento e condições juntos por bandeira */
 .analysis-mode-card{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:end;border:1px solid var(--line);background:#fbfcfd;border-radius:14px;padding:14px;margin-bottom:16px}
-.analysis-mode-card p{margin:0;color:#67757f;font-size:11px;line-height:1.5}
+.analysis-mode-card p{margin:0;color:#67757f;font-size:11px;line-height:1.5}.analysis-mode-card p b{color:var(--navy)}
+.brand-toolbar.unified{display:block;margin-bottom:16px}
+.brand-mode-row.unified{display:grid;grid-template-columns:minmax(350px,.9fr) 1.1fr;gap:18px;align-items:end;margin:0 0 16px}
+.brand-mode-row.unified .helper-box{margin:0}
+.brand-combined-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:16px}
+.brand-combined-card{border:1px solid #d8e2e9;border-radius:15px;background:#fff;padding:15px;box-shadow:0 7px 22px rgba(8,43,73,.04)}
+.brand-combined-card>header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:11px;margin-bottom:12px;border-bottom:1px solid #edf2f5}
+.brand-combined-card>header small{color:#6f7d87;font-size:10px;font-weight:900}
+.brand-combined-fields{display:grid;grid-template-columns:1.2fr .9fr .9fr;gap:10px;align-items:end}
+.brand-combined-fields label>span{display:block;color:#5e6d77;font-size:10px;font-weight:850;margin:0 0 6px}
+.brand-combined-fields label:last-child>span{color:#008fc7}
+.brand-combined-card.disabled{background:#f7f9fa;box-shadow:none;opacity:.72}.brand-disabled-note{color:#71808a;font-size:11px;line-height:1.45;padding:4px 0 8px}
 .rate-bulk-card{border:1px solid #d6e3eb;background:linear-gradient(135deg,#f9fcfe,#f2f8fb);border-radius:14px;padding:14px;margin-bottom:16px}
 .rate-bulk-heading strong,.rate-bulk-heading span{display:block}.rate-bulk-heading strong{color:var(--navy);font-size:14px}.rate-bulk-heading span{color:#75828c;font-size:10px;margin-top:3px}
 .rate-bulk-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr auto;gap:10px;align-items:end;margin-top:12px}.rate-bulk-apply{height:39px;white-space:nowrap}
@@ -32,8 +43,8 @@
 .payment-brand.brand-dinersAmex img{max-width:150px}
 .brand-general{border-color:#b8dbea;background:#f5fbfe;color:#0879a6}
 .rate-entry .payment-brand,.brand-entry .payment-brand{font-size:12px}
-.rate-entry .payment-brand.brand-logo,.brand-entry .payment-brand.brand-logo{height:38px;min-width:92px}
-.rate-entry .payment-brand.brand-logo img,.brand-entry .payment-brand.brand-logo img{max-height:29px;max-width:145px}
+.rate-entry .payment-brand.brand-logo,.brand-entry .payment-brand.brand-logo,.brand-combined-card .payment-brand.brand-logo{height:38px;min-width:92px}
+.rate-entry .payment-brand.brand-logo img,.brand-entry .payment-brand.brand-logo img,.brand-combined-card .payment-brand.brand-logo img{max-height:29px;max-width:145px}
 .ranking-brand{display:inline-flex;align-items:center;gap:8px}.ranking-brand img{height:17px;max-width:62px;object-fit:contain}
 
 /* Etapa 7 — coluna para exclusão e melhor leitura dos valores */
@@ -47,6 +58,6 @@
 .points-breakdown{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:15px}.points-breakdown>div{border:1px solid #e0e8ed;border-radius:11px;background:#fff;padding:11px}.points-breakdown span,.points-breakdown strong{display:block}.points-breakdown span{font-size:10px;color:#6c7881}.points-breakdown strong{margin-top:4px;color:var(--navy);font-size:15px}
 .livelo-estimate{display:grid;grid-template-columns:.72fr 1.28fr;gap:18px;margin-top:14px;padding:14px;border-radius:12px;background:#f3f7ff;border:1px solid #d7e1f4}.livelo-estimate span,.livelo-estimate strong,.livelo-estimate small{display:block}.livelo-estimate span{font-size:10px;color:#596a7c;font-weight:900;text-transform:uppercase}.livelo-estimate strong{font-size:18px;color:#334d86;margin:5px 0}.livelo-estimate small{font-size:10px;color:#6f7c8b}.livelo-estimate p{margin:0;font-size:10px;line-height:1.5;color:#65717d}
 
-@media(max-width:1100px){.rate-bulk-grid{grid-template-columns:1fr 1fr 1fr 1fr}.rate-bulk-apply{grid-column:1/-1}.analysis-mode-card{grid-template-columns:1fr}.points-breakdown{grid-template-columns:1fr 1fr}}
-@media(max-width:820px){.auto-total-grid,.two-rate-fields{grid-template-columns:1fr}.rate-bulk-grid{grid-template-columns:1fr 1fr}.livelo-estimate{grid-template-columns:1fr}.points-benefit-head{display:block}.points-total{text-align:left;margin-top:12px}}
-@media(max-width:600px){.rate-bulk-grid{grid-template-columns:1fr}.points-breakdown{grid-template-columns:1fr}.payment-brand.brand-logo{min-width:64px}}
+@media(max-width:1100px){.rate-bulk-grid{grid-template-columns:1fr 1fr 1fr 1fr}.rate-bulk-apply{grid-column:1/-1}.analysis-mode-card{grid-template-columns:1fr}.points-breakdown{grid-template-columns:1fr 1fr}.brand-combined-fields{grid-template-columns:1fr 1fr}.brand-combined-fields label:first-child{grid-column:1/-1}.brand-mode-row.unified{grid-template-columns:1fr}}
+@media(max-width:820px){.auto-total-grid,.two-rate-fields{grid-template-columns:1fr}.rate-bulk-grid{grid-template-columns:1fr 1fr}.livelo-estimate{grid-template-columns:1fr}.points-benefit-head{display:block}.points-total{text-align:left;margin-top:12px}.brand-combined-grid{grid-template-columns:1fr}}
+@media(max-width:600px){.rate-bulk-grid{grid-template-columns:1fr}.points-breakdown{grid-template-columns:1fr}.payment-brand.brand-logo{min-width:64px}.brand-combined-fields{grid-template-columns:1fr}.brand-combined-fields label:first-child{grid-column:auto}}
