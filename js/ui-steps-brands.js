@@ -3,7 +3,7 @@ import { activeBrandsFor, brandShare, brandVolumeCents, modalityVolumeCents } fr
 import { escapeHtml, fmtBRLFromCents, fmtPct, parseDecimal } from './formatters.js';
 
 export function createBrandSteps(ctx) {
-  const { state, $, $$, updateState, segmented } = ctx;
+  const { state, $, $$, updateState, updateInputState, segmented } = ctx;
 function stepBrands(c) {
   const modalidade = state.ui.brandModalidade;
   const modalVol = modalityVolumeCents(state, modalidade);
@@ -22,7 +22,7 @@ function brandDistributionEditor(modalidade, active) {
 }
 function bindBrandDistribution(modalidade) {
   $$('[data-segmented="modoBandeiras"] .seg').forEach((b) => b.addEventListener('click', () => updateState((s) => { s.cards.modoBandeiras=b.dataset.value; })));
-  $$('.brand-dist-input').forEach((el) => el.addEventListener('input', (e) => updateState((s) => {
+  $$('.brand-dist-input').forEach((el) => el.addEventListener('input', (e) => updateInputState((s) => {
     const cell=s.cards.modalities[modalidade].brands[e.target.dataset.brand];
     if(s.cards.modoBandeiras==='share') cell.share=e.target.value; else cell.valor=e.target.value;
   })));
@@ -30,7 +30,7 @@ function bindBrandDistribution(modalidade) {
 function brandRateEditor(modalidade, active) {
   return `<div class="helper-box prominent"><b>Regra principal:</b> taxas comerciais são cadastradas por bandeira. A consolidação acontece nos valores financeiros; nenhuma média substitui Visa, Mastercard, Elo ou Diners/Amex.</div><div class="brand-rate-editor">${active.map((b)=>{const cell=state.cards.modalities[modalidade].brands[b.id];return `<article class="rate-entry"><header><span class="brand-wordmark">${b.nome}</span><small>${brandVolumeCents(state,modalidade,b.id)?fmtBRLFromCents(brandVolumeCents(state,modalidade,b.id)):'Sem volume'}</small></header><div class="rate-fields"><label><span>Condição atual (%)</span><input class="brand-rate-input" data-brand="${b.id}" data-side="taxaAtual" inputmode="decimal" value="${escapeHtml(cell.taxaAtual??'')}"></label><label><span>Condição Cielo (%)</span><input class="brand-rate-input cielo-input" data-brand="${b.id}" data-side="taxaCielo" inputmode="decimal" value="${escapeHtml(cell.taxaCielo??'')}"></label></div></article>`;}).join('')}</div>`;
 }
-function bindBrandRates(modalidade){ $$('.brand-rate-input').forEach((el)=>el.addEventListener('input',(e)=>updateState((s)=>{s.cards.modalities[modalidade].brands[e.target.dataset.brand][e.target.dataset.side]=e.target.value;}))); }
+function bindBrandRates(modalidade){ $$('.brand-rate-input').forEach((el)=>el.addEventListener('input',(e)=>updateInputState((s)=>{s.cards.modalities[modalidade].brands[e.target.dataset.brand][e.target.dataset.side]=e.target.value;}))); }
 
   return { stepBrands };
 }
