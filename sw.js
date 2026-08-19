@@ -1,4 +1,4 @@
-const CACHE_NAME = 'proposta-pagamentos-v2.3.0';
+const CACHE_NAME = 'proposta-pagamentos-v2.4.0';
 const CORE = [
   './', './index.html', './manifest.json',
   './css/app.css', './css/app-base.css', './css/app-components.css',
@@ -42,7 +42,6 @@ async function networkFirst(request, fallback) {
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
-
   const url = new URL(event.request.url);
   if (url.origin !== self.location.origin) return;
 
