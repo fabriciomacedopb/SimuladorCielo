@@ -6,8 +6,8 @@ const VIEW_SELECTORS = {
 
 const PAGE = {
   proposal: { widthMm: 210, heightMm: 297, marginMm: 4, fitOnePage: true },
-  dashboard: { widthMm: 210, heightMm: 297, marginMm: 5, fitOnePage: false },
-  results: { widthMm: 297, heightMm: 210, marginMm: 5, fitOnePage: false }
+  dashboard: { widthMm: 210, heightMm: 297, marginMm: 4, fitOnePage: false },
+  results: { widthMm: 210, heightMm: 297, marginMm: 4, fitOnePage: false }
 };
 
 let activeTarget = null;
