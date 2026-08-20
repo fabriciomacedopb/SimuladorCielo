@@ -2,6 +2,7 @@ import { BANDEIRAS } from '../config/parametros.js';
 import { calculateAll } from './calculos.js';
 import { escapeHtml, fmtBRLFromCents, fmtCompactCents, fmtDateBR, fmtPct, fmtPp, resultLabel } from './formatters.js';
 import { printView } from './print.js';
+import { renderRateLineCharts } from './rate-charts.js';
 import { validateState } from './validacao.js';
 
 function brandLabel(row, detailed) {
@@ -43,6 +44,7 @@ export function renderFinancialResults(ctx) {
     const detailed = state.cards.detalharBandeiras !== false;
     const detail = results.cards.detail.filter((r) => r.volumeCents > 0 || r.taxaAtual !== null || r.taxaCielo !== null);
     const ranked = detail.filter((r) => r.impactoMensalCents !== null).sort((a, b) => Math.abs(b.impactoMensalCents) - Math.abs(a.impactoMensalCents));
+    const rateCharts = renderRateLineCharts(state, { detailed, title: 'Curva de taxas Atual × Cielo', subtitle: 'Leitura visual das condições comerciais ao longo das modalidades.' });
 
     main.innerHTML = `<section class="results-page">
       <header class="print-only results-print-header">
@@ -60,10 +62,12 @@ export function renderFinancialResults(ctx) {
 
       <article class="panel result-consolidated-panel"><div class="panel-heading"><h2>Resultado consolidado por produto</h2></div><div class="table-scroll"><table class="pro-table"><thead><tr><th>Produto</th><th>Custo atual</th><th>Custo proposto</th><th>Impacto mensal</th><th>Impacto 12 meses</th><th>Resultado</th></tr></thead><tbody>${results.components.map((c) => { const a = c.custoAtualCents ?? c.mensalidadeAtualCents, b = c.custoCieloCents ?? c.mensalidadeEfetivaCents, d = c.impactoMensalCents; return `<tr><td>${escapeHtml(c.name)}</td><td>${a === null ? '—' : fmtBRLFromCents(a)}</td><td>${b === null ? '—' : fmtBRLFromCents(b)}</td><td class="${(d ?? 0) >= 0 ? 'positive' : 'negative'}">${d === null ? '—' : fmtBRLFromCents(d)}</td><td>${d === null ? '—' : fmtBRLFromCents(d * 12)}</td><td>${resultLabel(d)}</td></tr>`; }).join('')}</tbody></table></div></article>
 
+      <div class="results-rate-charts">${rateCharts}</div>
+
       <article class="panel result-detail-panel"><div class="panel-heading"><h2>${detailed ? 'Detalhamento por bandeira' : 'Condições gerais por modalidade'}</h2><span>${detailed ? 'Modalidade + bandeira' : 'Modalidade + condição geral'}</span></div><div class="table-scroll"><table class="pro-table"><thead><tr><th>Modalidade</th><th>${detailed ? 'Bandeira' : 'Tipo'}</th><th>Volume</th><th>Condição atual</th><th>Condição Cielo</th><th>Dif. taxa</th><th>Custo atual</th><th>Custo Cielo</th><th>Benefício / impacto mês</th><th>Benefício / impacto 12 meses</th><th>Resultado</th></tr></thead><tbody>${detail.map((r) => { const diff = rateDifference(r); return `<tr><td>${escapeHtml(r.modalidade)}</td><td>${brandLabel(r, detailed)}</td><td>${fmtBRLFromCents(r.volumeCents)}</td><td>${fmtPct(r.taxaAtual)}</td><td>${fmtPct(r.taxaCielo)}</td><td class="${diff.cls}">${diff.text}</td><td>${r.custoAtualCents === null ? '—' : fmtBRLFromCents(r.custoAtualCents)}</td><td>${r.custoCieloCents === null ? '—' : fmtBRLFromCents(r.custoCieloCents)}</td><td class="${(r.impactoMensalCents ?? 0) >= 0 ? 'positive' : 'negative'}">${r.impactoMensalCents === null ? '—' : fmtBRLFromCents(r.impactoMensalCents)}</td><td class="${(r.impacto12Cents ?? 0) >= 0 ? 'positive' : 'negative'}">${r.impacto12Cents === null ? '—' : fmtBRLFromCents(r.impacto12Cents)}</td><td>${resultLabel(r.impactoMensalCents)}</td></tr>`; }).join('')}</tbody></table></div></article>
 
       <div class="ranking-grid"><article class="panel"><div class="panel-heading"><h2>Maiores economias</h2></div>${rankingList(ranked.filter((x) => x.impactoMensalCents > 0), detailed)}</article><article class="panel"><div class="panel-heading"><h2>Maiores acréscimos</h2></div>${rankingList(ranked.filter((x) => x.impactoMensalCents < 0), detailed)}</article><article class="panel"><div class="panel-heading"><h2>Maiores impactos absolutos</h2></div>${rankingList(ranked, detailed)}</article></div>
-      <p class="print-only print-note">A versão impressa apresenta uma visão executiva. O detalhamento completo por modalidade e bandeira permanece disponível na aplicação.</p>
+      <p class="print-only print-note">Resultado financeiro com visão executiva, curvas de taxas e detalhamento por modalidade e bandeira. Valores são estimativas baseadas nas premissas informadas.</p>
     </section>`;
 
     $('#btnPrintResults')?.addEventListener('click', () => printView('results'));
