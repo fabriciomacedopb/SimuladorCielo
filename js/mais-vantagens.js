@@ -11,7 +11,9 @@ export function discountByReceipts(plan, eligibleCents) {
 export function calculateMaisVantagens(state, dependencies) {
   const plan = state.package.planoProposto;
   const fullMonthlyCents = Math.round((MAIS_VANTAGENS_PLANOS[plan]?.mensalidadeCheia ?? 0) * 100);
-  const currentMonthlyCents = state.package.tipoInstituicaoAtual === 'Sem pacote' && (state.package.mensalidadeAtual === null || state.package.mensalidadeAtual === '')
+  const semPacote = state.package.tipoInstituicaoAtual === 'Sem pacote';
+  const mensalidadeAtualNaoInformada = state.package.mensalidadeAtual == null || state.package.mensalidadeAtual === '';
+  const currentMonthlyCents = semPacote && mensalidadeAtualNaoInformada
     ? 0
     : toCents(state.package.mensalidadeAtual);
   const eligibleCents = (dependencies.cardsVolumeCents || 0)
