@@ -1,107 +1,181 @@
-@page{size:A4 portrait;margin:5mm}
+@page{size:A4 portrait;margin:3.2mm}
 
-*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
-html,body{width:210mm!important;min-width:0!important;background:#fff!important}
-body{margin:0!important;font-family:Aptos,"Segoe UI",Arial,sans-serif!important}
-.no-print,.topbar,.tabs,.app-footer{display:none!important}
-main{padding:0!important;margin:0!important;max-width:none!important;width:auto!important}
-.client-sheet,.proposal-sheet{width:200mm!important;max-width:200mm!important;margin:0 auto!important;box-shadow:none!important;border-radius:0!important;overflow:visible!important;background:#fff!important}
+:is(.print-measure-root,body.print-layout){font-family:Arial,"Segoe UI",sans-serif;color:#0b2942;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+:is(.print-measure-root,body.print-layout) .no-print{display:none!important}
+:is(.print-measure-root,body.print-layout) .print-only{display:block!important}
+:is(.print-measure-root,body.print-layout) .panel{box-shadow:none!important}
+:is(.print-measure-root,body.print-layout) .client-sheet,
+:is(.print-measure-root,body.print-layout) .proposal-sheet,
+:is(.print-measure-root,body.print-layout) .dashboard-sheet,
+:is(.print-measure-root,body.print-layout) .results-page{max-width:none!important;margin:0!important;box-shadow:none!important;border-radius:0!important;overflow:visible!important}
 
-/* Cabeçalho mais compacto, mas com tipografia legível */
-.proposal-hero{padding:3mm 3.5mm!important;min-height:15mm!important;border-bottom-width:2px!important}
-.proposal-hero h1{font-size:13pt!important;line-height:1.1!important;margin:1mm 0 .4mm!important}
-.proposal-hero p{font-size:7.4pt!important;line-height:1.1!important;margin:0!important}
-.proposal-hero .eyebrow{font-size:6.2pt!important;letter-spacing:.8px!important}
-.proposal-hero img{max-height:10mm!important;max-width:26mm!important}
-.client-meta{padding:1.4mm 3.5mm 1.7mm!important;font-size:6.3pt!important;line-height:1.15!important;gap:2mm 5mm!important}
-.client-meta span{white-space:nowrap!important}
+/* PROPOSTA COMERCIAL — base maior, ajuste automático só se necessário */
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-hero{padding:7px 10px!important;border-bottom-width:2.5px!important;grid-template-columns:84px 1fr 84px!important;gap:9px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-hero h1{font-size:16px!important;line-height:1.12!important;margin:2px 0!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-hero .eyebrow{font-size:7.6px!important;letter-spacing:.8px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-hero p{font-size:8.4px!important;margin:1px 0!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-hero img{max-height:34px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .client-meta{padding:4px 10px 5px!important;gap:12px!important;font-size:7.4px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-summary-grid{grid-template-columns:repeat(3,1fr)!important;gap:4px!important;padding:4px 10px 0!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-kpi{padding:5px 7px!important;border-radius:6px!important;min-height:0!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-kpi span{font-size:6.8px!important;line-height:1.15!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-kpi strong{font-size:11.2px!important;margin-top:2px!important;line-height:1.05!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-result{margin:4px 10px!important;padding:5px 7px!important;border-radius:6px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-result span{font-size:6.5px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-result strong{font-size:8.6px!important;line-height:1.22!important;margin-top:1px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-estimated-mix{margin:3px 10px 4px!important;padding:5px 7px!important;font-size:6.8px!important;line-height:1.25!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-body-grid{grid-template-columns:.82fr 1.72fr!important;gap:9px!important;padding:0 10px!important;align-items:start!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-body-grid h2{font-size:9.2px!important;margin:4px 0 3px!important;padding-bottom:3px!important;border-bottom-width:1.5px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-impact-row{padding:2.3px 0!important;font-size:7px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-impact-row strong{font-size:7.2px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-benefits{margin-top:4px!important;padding:5px 6px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-benefits p{font-size:6.1px!important;line-height:1.22!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo{margin-top:4px!important;padding:5px 6px!important;border-radius:6px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-title span{font-size:5.8px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-title strong{font-size:9.2px!important;margin-top:1px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-title small{font-size:5.6px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-points-breakdown{margin-top:3px!important;padding-top:3px!important;gap:2px 5px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-points-breakdown span{font-size:5.6px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-reference{margin-top:4px!important;padding-top:4px!important;gap:4px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-reference>div{padding:4px 5px!important;border-radius:5px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-reference span{font-size:5.1px!important;line-height:1.15!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-reference strong{font-size:7.6px!important;margin-top:1px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-transfer{margin-top:4px!important;padding-top:4px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-transfer span{font-size:5.4px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-transfer strong{font-size:7.8px!important;margin:1px 0!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-transfer small{font-size:5.1px!important;line-height:1.16!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:4px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-brand{break-inside:avoid!important;page-break-inside:avoid!important;border-radius:5px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-head{padding:3px 4px!important;min-height:24px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-head>span:last-child{display:none!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-head .payment-brand.brand-logo{width:76px!important;min-width:76px!important;height:24px!important;padding:2px 5px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-head .payment-brand.brand-logo img{max-width:66px!important;max-height:18px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-scroll{overflow:visible!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-brand.enriched table{width:100%!important;min-width:0!important;table-layout:fixed!important;border-collapse:collapse!important;font-size:7.15px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-brand.enriched thead th{font-size:5.75px!important;padding:2.1px 2px!important;white-space:nowrap!important;letter-spacing:0!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-brand.enriched th:first-child{width:25%!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-brand.enriched td{font-size:7px!important;padding:1.7px 2px!important;line-height:1.05!important;white-space:nowrap!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-equipment{margin:4px 10px 0!important;border-radius:5px!important;break-inside:avoid!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-section-heading{padding:3px 5px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-section-heading span{font-size:5.6px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-section-heading h2{font-size:8px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .equipment-total span{font-size:5.2px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .equipment-total strong{font-size:7.8px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-equipment-scroll{overflow:visible!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-equipment-table{width:100%!important;table-layout:fixed!important;font-size:6px!important;white-space:nowrap!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-equipment-table th{font-size:5px!important;padding:2.3px 2px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-equipment-table td{font-size:5.8px!important;padding:2px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-equipment-table td:first-child small{font-size:5px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-observations{margin:4px 10px!important;padding:4px 6px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-observations strong{font-size:6.2px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-observations p{font-size:6px!important;line-height:1.18!important;margin-top:2px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-closing{margin:4px 10px 3px!important;font-size:6.8px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .important-info{margin:0 10px!important;padding:4px 6px!important;font-size:5.55px!important;line-height:1.18!important;column-count:2!important;column-gap:12px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .important-info>strong{font-size:6.4px!important;column-span:all!important;margin-bottom:2px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .important-info p{margin:2px 0!important;break-inside:avoid!important}
 
-/* KPIs em 3 colunas x 2 linhas: ocupa menos largura e permite fonte maior */
-.proposal-summary-grid{grid-template-columns:repeat(3,1fr)!important;gap:1.3mm!important;padding:1.8mm 3.5mm 0!important}
-.proposal-kpi{padding:1.7mm 2mm!important;min-height:10.8mm!important;border-radius:2mm!important}
-.proposal-kpi span{font-size:5.5pt!important;line-height:1.08!important;letter-spacing:.18px!important}
-.proposal-kpi strong{font-size:9.2pt!important;line-height:1.05!important;margin-top:.8mm!important}
+/* RESULTADO FINANCEIRO — versão executiva para impressão */
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-page>.page-heading{display:none!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-header{display:grid!important;grid-template-columns:78px 1fr 78px;align-items:center;text-align:center;gap:10px;padding:6px 9px;border-bottom:2.5px solid #0b69b7}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-header img{max-width:72px;max-height:30px;object-fit:contain}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-header span{font-size:7px;font-weight:900;letter-spacing:.8px;color:#0966ad}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-header h1{font-size:15px;margin:2px 0 1px;line-height:1.1}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-header p{font-size:8px;margin:0;color:#6a7780}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-meta{display:flex!important;gap:18px;padding:4px 9px 6px;font-size:7px;color:#64737c}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-kpis{grid-template-columns:repeat(4,1fr)!important;gap:5px!important;margin:0 0 6px!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-kpis article{padding:7px!important;border-radius:7px!important;box-shadow:none!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-kpis span{font-size:6.5px!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-kpis strong{font-size:12px!important;margin-top:3px!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-visuals{display:grid!important;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px}
+:is(.print-measure-root.print-view-results,body.print-view-results) .print-chart-card{border:1px solid #dce5eb;border-radius:7px;padding:6px;background:#fff;break-inside:avoid}
+:is(.print-measure-root.print-view-results,body.print-view-results) .print-chart-title span{display:block;font-size:5.8px;font-weight:900;color:#60727e;letter-spacing:.45px}
+:is(.print-measure-root.print-view-results,body.print-view-results) .print-chart-title strong{display:block;font-size:8.3px;margin-top:1px}
+:is(.print-measure-root.print-view-results,body.print-view-results) .print-cost-row{margin-top:7px}
+:is(.print-measure-root.print-view-results,body.print-view-results) .print-cost-row>div:first-child{display:flex;justify-content:space-between;gap:8px;font-size:6.5px}
+:is(.print-measure-root.print-view-results,body.print-view-results) .print-bar-track{height:12px;background:#edf2f5;border-radius:4px;overflow:hidden;margin-top:2px}
+:is(.print-measure-root.print-view-results,body.print-view-results) .print-bar-track.slim{height:6px;margin:0}
+:is(.print-measure-root.print-view-results,body.print-view-results) .print-bar-track i{display:block;height:100%;border-radius:4px;background:#b58a3b}
+:is(.print-measure-root.print-view-results,body.print-view-results) .print-bar-track i.proposed{background:#00a8df}
+:is(.print-measure-root.print-view-results,body.print-view-results) .print-bar-track i.positive{background:#1c9b5f}
+:is(.print-measure-root.print-view-results,body.print-view-results) .print-bar-track i.negative{background:#d94a43}
+:is(.print-measure-root.print-view-results,body.print-view-results) .print-component-bars{display:grid;gap:3px;margin-top:5px}
+:is(.print-measure-root.print-view-results,body.print-view-results) .print-component-row{display:grid;grid-template-columns:85px 1fr 65px;gap:5px;align-items:center;font-size:6px}
+:is(.print-measure-root.print-view-results,body.print-view-results) .print-component-row strong{text-align:right;font-size:6px}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-consolidated-panel{margin-bottom:6px!important;break-inside:avoid!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-consolidated-panel .panel-heading{padding:5px 7px!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-consolidated-panel .panel-heading h2{font-size:8.5px!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .pro-table{font-size:7px!important;white-space:nowrap!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .pro-table th{font-size:5.8px!important;padding:3px 4px!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .pro-table td{padding:2.7px 4px!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-detail-panel{display:none!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .ranking-grid{grid-template-columns:repeat(3,1fr)!important;gap:6px!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .ranking-grid .panel{padding:6px!important;break-inside:avoid!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .ranking-grid .panel-heading{padding:0 0 3px!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .ranking-grid .panel-heading h2{font-size:8px!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .ranking-list{gap:1px!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .ranking-list>div{padding:3px 0!important;gap:5px!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .ranking-list i{width:18px!important;height:18px!important;font-size:7px!important;border-radius:5px!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .ranking-list span b{font-size:6.8px!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .ranking-list span small{font-size:6px!important;margin-top:0!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .ranking-brand img{max-height:12px!important;max-width:32px!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .print-note{margin:5px 0 0!important;font-size:5.8px!important;color:#71808a;text-align:center}
 
-.proposal-result{margin:1.6mm 3.5mm!important;padding:1.8mm 2.2mm!important;border-radius:2mm!important}
-.proposal-result span{font-size:5.5pt!important;line-height:1!important}
-.proposal-result strong{font-size:7.2pt!important;line-height:1.18!important;margin-top:.6mm!important}
-.proposal-estimated-mix{margin:0 3.5mm 1.5mm!important;padding:1.5mm 2mm!important;gap:1.5mm!important}
-.proposal-estimated-mix strong,.proposal-estimated-mix span{font-size:5.8pt!important;line-height:1.15!important}
+/* VISÃO FINANCEIRA — dashboard executivo com gráficos */
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .dashboard-print-actions{display:none!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .client-hero{grid-template-columns:82px 1fr 82px!important;gap:8px!important;padding:7px 10px!important;border-bottom-width:2.5px!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .client-hero img{max-height:34px!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .client-hero h1{font-size:16px!important;margin:2px 0!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .client-hero .eyebrow{font-size:7px!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .client-hero p{font-size:8px!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .client-meta{padding:4px 10px 6px!important;font-size:7px!important;gap:14px!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .section-kicker{margin:6px 0 4px!important;gap:6px!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .section-kicker>span{width:20px!important;height:20px!important;font-size:7px!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .section-kicker strong{font-size:8.4px!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .section-kicker small{font-size:6.2px!important;margin-top:0!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .kpi-grid{grid-template-columns:repeat(4,1fr)!important;gap:5px!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .kpi-card{padding:7px!important;border-radius:7px!important;box-shadow:none!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .kpi-card>span{font-size:6px!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .kpi-card>strong{font-size:11.5px!important;margin-top:3px!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .kpi-card>small{font-size:5.5px!important;margin-top:1px!important;line-height:1.15!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .result-banner{margin:6px 0!important;padding:7px 9px!important;border-radius:7px!important;box-shadow:none!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .result-banner strong{font-size:10px!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .result-banner p{font-size:6.8px!important;margin-top:2px!important;line-height:1.2!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .dashboard-grid{grid-template-columns:1fr 1fr!important;gap:6px!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .dashboard-grid .panel{min-height:0!important;padding:7px!important;break-inside:avoid!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .dashboard-grid .panel-heading{padding:0 0 4px!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .dashboard-grid .panel-heading h2{font-size:8.5px!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .dashboard-grid .panel-heading span{font-size:5.8px!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .cost-bars{gap:8px!important;padding:4px 2px!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .cost-bar-label{margin-bottom:2px!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .cost-bar-label span,
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .cost-bar-label strong{font-size:6.5px!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .cost-track{height:16px!important;border-radius:4px!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .impact-bars{gap:4px!important;padding-top:2px!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .impact-row{grid-template-columns:82px 1fr 66px!important;gap:5px!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .impact-row>span{font-size:6px!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .impact-track{height:6px!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .impact-row>strong{font-size:6px!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .brand-impact-grid{grid-template-columns:repeat(4,1fr)!important;gap:5px!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .brand-impact-card{padding:6px!important;border-radius:7px!important;break-inside:avoid!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .brand-impact-card header{padding-bottom:4px!important;margin-bottom:2px!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .brand-impact-card header .payment-brand.brand-logo{width:70px!important;min-width:70px!important;height:24px!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .brand-impact-card header .payment-brand.brand-logo img{max-width:60px!important;max-height:17px!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .brand-impact-card header small{font-size:6px!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .brand-impact-card>div{padding:2px 0!important;font-size:6.2px!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .dashboard-rates-section,
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .dashboard-rate-matrix{display:none!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .dashboard-print-note{margin:6px 0 0!important;padding:5px 7px!important;background:#f4f7f9;border-radius:6px;font-size:6px!important;color:#697985;text-align:center}
 
-/* Corpo: composição e Livelo lado a lado; condições passam a ocupar toda a largura abaixo */
-.proposal-body-grid{display:grid!important;grid-template-columns:1fr!important;gap:1.6mm!important;padding:0 3.5mm!important}
-.proposal-body-grid>article{min-width:0!important}
-.proposal-body-grid>article:first-child{display:grid!important;grid-template-columns:.92fr 1.08fr!important;grid-template-rows:auto auto auto!important;column-gap:2mm!important;row-gap:1mm!important;align-items:start!important}
-.proposal-body-grid>article:first-child>h2{grid-column:1/-1!important;margin:0!important}
-.proposal-body-grid>article:first-child>.proposal-composition{grid-column:1!important;grid-row:2!important}
-.proposal-body-grid>article:first-child>.proposal-benefits{grid-column:1!important;grid-row:3!important}
-.proposal-body-grid>article:first-child>.proposal-livelo{grid-column:2!important;grid-row:2/4!important;margin-top:0!important}
-.proposal-body-grid h2{font-size:7.5pt!important;line-height:1.05!important;margin:1mm 0 .8mm!important;padding-bottom:.7mm!important;border-bottom-width:1.2px!important}
-
-.proposal-impact-row{padding:.65mm 0!important;font-size:6.1pt!important;line-height:1.08!important}
-.proposal-impact-row strong{font-size:6.2pt!important;white-space:nowrap!important}
-.proposal-benefits{margin-top:.8mm!important;padding:1.3mm 1.5mm!important;border-radius:1.5mm!important}
-.proposal-benefits p{font-size:5.5pt!important;line-height:1.18!important;margin:0!important}
-
-/* Livelo: maior do que antes, mas com espaços internos reduzidos */
-.proposal-livelo{padding:1.5mm!important;border-radius:1.7mm!important;break-inside:avoid!important;page-break-inside:avoid!important}
-.proposal-livelo-title span{font-size:5.5pt!important;line-height:1.05!important}
-.proposal-livelo-title strong{font-size:8.5pt!important;line-height:1.05!important;margin-top:.7mm!important}
-.proposal-livelo-title small{font-size:5.3pt!important;line-height:1.1!important;margin-top:.3mm!important}
-.proposal-points-breakdown{margin-top:1mm!important;padding-top:1mm!important;gap:.6mm 1.5mm!important}
-.proposal-points-breakdown span{font-size:5.3pt!important;line-height:1.05!important}
-.proposal-livelo-reference{grid-template-columns:1fr 1fr!important;gap:1mm!important;margin-top:1mm!important;padding-top:1mm!important}
-.proposal-livelo-reference>div{padding:1mm 1.2mm!important;border-radius:1.2mm!important}
-.proposal-livelo-reference span{font-size:4.9pt!important;line-height:1.08!important}
-.proposal-livelo-reference strong{font-size:7.2pt!important;line-height:1.05!important;margin-top:.4mm!important}
-.proposal-livelo-transfer{margin-top:1mm!important;padding-top:1mm!important}
-.proposal-livelo-transfer span{font-size:5.1pt!important;line-height:1.08!important}
-.proposal-livelo-transfer strong{font-size:7.3pt!important;line-height:1.05!important;margin:.5mm 0!important}
-.proposal-livelo-transfer small{font-size:5pt!important;line-height:1.16!important;overflow-wrap:normal!important;word-break:normal!important;hyphens:none!important}
-
-/* Condições: quatro bandeiras em 2 x 2, sem quebrar uma bandeira entre páginas */
-.proposal-body-grid>article:nth-child(2){display:block!important}
-.proposal-rate-grid,.proposal-rate-grid.single{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:1.5mm!important;width:100%!important}
-.proposal-rate-brand{min-width:0!important;width:100%!important;border-radius:1.5mm!important;overflow:hidden!important;break-inside:avoid!important;page-break-inside:avoid!important}
-.proposal-rate-brand.general{grid-column:1/-1!important;max-width:none!important}
-.proposal-rate-head,.proposal-rate-head.enriched{display:flex!important;align-items:center!important;justify-content:space-between!important;min-height:6mm!important;padding:.8mm 1.2mm!important;gap:1mm!important}
-.proposal-rate-head.enriched>span:last-child{display:none!important}
-.proposal-rate-head .payment-brand.brand-logo{width:27mm!important;min-width:27mm!important;height:5.4mm!important;padding:.4mm 1mm!important;border-radius:1mm!important}
-.proposal-rate-head .payment-brand.brand-logo img{max-width:24mm!important;max-height:4.2mm!important;width:auto!important;height:auto!important;object-fit:contain!important}
-.proposal-rate-head .brand-mastercard img{max-width:14mm!important}
-.proposal-rate-head .brand-dinersAmex img{max-width:24mm!important}
-.proposal-rate-scroll{overflow:visible!important;width:100%!important}
-.proposal-rate-brand table,.proposal-rate-brand.enriched table{width:100%!important;min-width:0!important;table-layout:fixed!important;border-collapse:collapse!important;font-size:5.8pt!important;line-height:1.02!important}
-.proposal-rate-brand thead{display:table-header-group!important}
-.proposal-rate-brand thead th,.proposal-rate-brand.enriched thead th{padding:.55mm .55mm!important;font-size:4.8pt!important;line-height:1.05!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:clip!important}
-.proposal-rate-brand td,.proposal-rate-brand.enriched td{padding:.38mm .55mm!important;font-size:5.7pt!important;line-height:1.02!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:clip!important}
-.proposal-rate-brand th:nth-child(1),.proposal-rate-brand td:nth-child(1){width:20%!important;text-align:left!important}
-.proposal-rate-brand th:nth-child(2),.proposal-rate-brand td:nth-child(2){width:12%!important}
-.proposal-rate-brand th:nth-child(3),.proposal-rate-brand td:nth-child(3){width:12%!important}
-.proposal-rate-brand th:nth-child(4),.proposal-rate-brand td:nth-child(4){width:15%!important}
-.proposal-rate-brand th:nth-child(5),.proposal-rate-brand td:nth-child(5){width:20.5%!important}
-.proposal-rate-brand th:nth-child(6),.proposal-rate-brand td:nth-child(6){width:20.5%!important}
-
-/* Equipamentos compactos e sem quebra interna */
-.proposal-equipment{margin:1.6mm 3.5mm 0!important;border-radius:1.6mm!important;break-inside:avoid!important;page-break-inside:avoid!important}
-.proposal-section-heading{padding:1mm 1.5mm!important;gap:2mm!important}
-.proposal-section-heading span{font-size:5pt!important;line-height:1!important}
-.proposal-section-heading h2{font-size:6.6pt!important;line-height:1.05!important;margin:.3mm 0 0!important}
-.equipment-total span{font-size:4.8pt!important}.equipment-total strong{font-size:6.8pt!important;line-height:1.05!important}
-.proposal-equipment-scroll{overflow:visible!important}
-.proposal-equipment-table{width:100%!important;table-layout:fixed!important;white-space:normal!important;font-size:5.2pt!important;line-height:1.05!important}
-.proposal-equipment-table th{font-size:4.6pt!important;line-height:1.05!important;padding:.7mm .6mm!important;white-space:normal!important}
-.proposal-equipment-table td{font-size:5.1pt!important;line-height:1.05!important;padding:.65mm .6mm!important;white-space:normal!important;word-break:normal!important}
-.proposal-equipment-table td:first-child small{font-size:4.6pt!important}
-
-/* Rodapé informativo em duas colunas para reduzir altura */
-.proposal-observations{margin:1.4mm 3.5mm!important;padding:1.2mm 1.5mm!important;break-inside:avoid!important}
-.proposal-observations strong{font-size:5.5pt!important}.proposal-observations p{font-size:5.4pt!important;line-height:1.15!important;margin:.5mm 0 0!important}
-.proposal-closing{margin:1.2mm 3.5mm .7mm!important;font-size:5.9pt!important;line-height:1.1!important}
-.important-info{margin:0 3.5mm!important;padding:1.2mm 1.5mm!important;font-size:5.15pt!important;line-height:1.14!important;border-radius:1.5mm!important;column-count:2!important;column-gap:3mm!important;overflow-wrap:normal!important;word-break:normal!important;hyphens:none!important;break-inside:avoid!important;page-break-inside:avoid!important}
-.important-info>strong{display:block!important;column-span:all!important;font-size:5.7pt!important;line-height:1.05!important;margin-bottom:.6mm!important}
-.important-info p{margin:0 0 .7mm!important;break-inside:avoid!important;page-break-inside:avoid!important}
-
-/* Evita linhas órfãs e fragmentos soltos */
-.proposal-rate-brand tr,.proposal-equipment-table tr{break-inside:avoid!important;page-break-inside:avoid!important}
-.proposal-body-grid,.proposal-summary-grid,.proposal-result{break-inside:avoid!important;page-break-inside:avoid!important}
+@media print{
+  html,body{margin:0!important;padding:0!important;background:#fff!important;width:100%!important;min-height:0!important}
+  body{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  .topbar,.tabs,.app-footer,.no-print{display:none!important}
+  main{padding:0!important;margin:0!important;max-width:none!important;width:100%!important}
+  .app-shell{min-height:0!important;background:#fff!important}
+  .print-measure-root{display:none!important}
+  body.print-layout .print-only{display:block!important}
+  body.print-layout *{box-sizing:border-box!important}
+  body.print-view-proposal .proposal-sheet,
+  body.print-view-dashboard .dashboard-sheet,
+  body.print-view-results .results-page{page-break-after:avoid!important;break-after:avoid-page!important}
+}
