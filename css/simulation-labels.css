@@ -1,0 +1,7 @@
+.client-hero>div::after,.results-page>.page-heading>div:first-child::after,.results-print-header>div::after{content:"SIMULAÇÃO COMERCIAL · VALORES ESTIMADOS";display:inline-flex;align-items:center;margin-top:6px;padding:4px 8px;border:1px solid #c9dbe7;border-radius:999px;background:#f3f8fb;color:#496678;font-size:8px;font-weight:900;letter-spacing:.55px;line-height:1;text-transform:uppercase}
+.results-page>.page-heading>div:first-child::after{margin-top:9px}
+.results-print-header>div::after{margin-top:3px;padding:3px 7px;font-size:6.6px;background:#f5f9fc}
+@media print{
+  .client-hero>div::after{margin-top:3px;padding:3px 7px;font-size:6.4px;letter-spacing:.4px}
+  .results-print-header>div::after{font-size:6.4px}
+}
