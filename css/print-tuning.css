@@ -1,0 +1,23 @@
+/* Ajustes finos de legibilidade após correção do motor de medição. */
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-brand thead th{font-size:5pt!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-brand td{font-size:6pt!important;padding:.38mm .48mm!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-impact-row{font-size:6.15pt!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-impact-row strong{font-size:6.25pt!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-benefits p{font-size:5.35pt!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-equipment-table th{font-size:4.5pt!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-equipment-table td{font-size:5.15pt!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .important-info{font-size:5pt!important;line-height:1.12!important}
+
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .rate-brand-card thead th{font-size:5.15pt!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .rate-brand-card td{font-size:5.95pt!important}
+
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-detail-panel .pro-table th{font-size:5.55pt!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-detail-panel .pro-table td{font-size:6.25pt!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-rankings{margin-top:2mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .screen-ranking-grid{display:none!important}
+
+@media print{
+  body.print-view-proposal .proposal-rate-brand td{font-size:6pt!important}
+  body.print-view-dashboard .rate-brand-card td{font-size:5.95pt!important}
+  body.print-view-results .result-detail-panel .pro-table td{font-size:6.25pt!important}
+}
