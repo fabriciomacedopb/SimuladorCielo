@@ -4,10 +4,10 @@ const VIEW_SELECTORS = {
   results: '.results-page'
 };
 
-const A4 = {
-  widthMm: 210,
-  heightMm: 297,
-  marginMm: 3.2
+const PAGE = {
+  proposal: { widthMm: 210, heightMm: 297, marginMm: 4, fitOnePage: true },
+  dashboard: { widthMm: 210, heightMm: 297, marginMm: 5, fitOnePage: false },
+  results: { widthMm: 297, heightMm: 210, marginMm: 5, fitOnePage: false }
 };
 
 let activeTarget = null;
@@ -19,12 +19,16 @@ function mmToPx(mm) {
 }
 
 function cleanupPrintState() {
-  if (activeTarget && previousStyle !== null) {
-    activeTarget.setAttribute('style', previousStyle);
-  } else if (activeTarget) {
-    activeTarget.removeAttribute('style');
-  }
-  document.body.classList.remove('print-layout', 'print-view-proposal', 'print-view-dashboard', 'print-view-results');
+  if (activeTarget && previousStyle !== null) activeTarget.setAttribute('style', previousStyle);
+  else if (activeTarget) activeTarget.removeAttribute('style');
+
+  document.body.classList.remove(
+    'print-layout',
+    'print-view-proposal',
+    'print-view-dashboard',
+    'print-view-results',
+    'print-proposal-scaled'
+  );
   document.body.style.removeProperty('--print-scale');
   activeTarget = null;
   previousStyle = null;
@@ -32,30 +36,41 @@ function cleanupPrintState() {
 }
 
 function measurePrintLayout(view, target) {
+  const page = PAGE[view];
   const root = document.createElement('div');
   root.className = `print-measure-root print-view-${view}`;
-  root.style.width = `${A4.widthMm - A4.marginMm * 2}mm`;
+  root.style.width = `${page.widthMm - page.marginMm * 2}mm`;
+  root.style.position = 'fixed';
+  root.style.left = '-200vw';
+  root.style.top = '0';
+  root.style.visibility = 'hidden';
+  root.style.pointerEvents = 'none';
+  root.style.zIndex = '-1';
+
   const clone = target.cloneNode(true);
   clone.style.width = '100%';
   clone.style.maxWidth = 'none';
+  clone.style.zoom = '1';
   root.appendChild(clone);
   document.body.appendChild(root);
 
   const rect = clone.getBoundingClientRect();
-  const height = Math.max(rect.height, clone.scrollHeight, 1);
-  const width = Math.max(rect.width, clone.scrollWidth, 1);
+  const size = {
+    width: Math.max(rect.width, clone.scrollWidth, 1),
+    height: Math.max(rect.height, clone.scrollHeight, 1)
+  };
   root.remove();
-  return { width, height };
+  return size;
 }
 
-function calculateScale(view, target) {
-  const measured = measurePrintLayout(view, target);
-  const printableHeight = mmToPx(A4.heightMm - A4.marginMm * 2);
-  const printableWidth = mmToPx(A4.widthMm - A4.marginMm * 2);
-  const heightScale = printableHeight / measured.height;
-  const widthScale = printableWidth / measured.width;
-  const safety = 0.985;
-  return Math.min(1, heightScale, widthScale) * safety;
+function proposalScale(target) {
+  const page = PAGE.proposal;
+  const measured = measurePrintLayout('proposal', target);
+  const printableHeight = mmToPx(page.heightMm - page.marginMm * 2);
+  const printableWidth = mmToPx(page.widthMm - page.marginMm * 2);
+  const scaleH = printableHeight / measured.height;
+  const scaleW = printableWidth / measured.width;
+  return Math.min(1, scaleH, scaleW) * 0.995;
 }
 
 export function printView(view = 'proposal') {
@@ -71,15 +86,27 @@ export function printView(view = 'proposal') {
   activeView = normalizedView;
   previousStyle = target.getAttribute('style');
 
-  const scale = Math.max(0.42, calculateScale(normalizedView, target));
   document.body.classList.add('print-layout', `print-view-${normalizedView}`);
-  document.body.style.setProperty('--print-scale', String(scale));
-
-  target.style.width = scale < 0.999 ? `${100 / scale}%` : '100%';
   target.style.maxWidth = 'none';
-  target.style.zoom = String(scale);
 
-  requestAnimationFrame(() => setTimeout(() => window.print(), 60));
+  if (PAGE[normalizedView].fitOnePage) {
+    const scale = proposalScale(target);
+    document.body.style.setProperty('--print-scale', String(scale));
+    if (scale < 0.998) {
+      document.body.classList.add('print-proposal-scaled');
+      target.style.width = `${100 / scale}%`;
+      target.style.zoom = String(scale);
+    } else {
+      target.style.width = '100%';
+      target.style.zoom = '1';
+    }
+  } else {
+    document.body.style.setProperty('--print-scale', '1');
+    target.style.width = '100%';
+    target.style.zoom = '1';
+  }
+
+  requestAnimationFrame(() => setTimeout(() => window.print(), 90));
 }
 
 window.addEventListener('afterprint', cleanupPrintState);
