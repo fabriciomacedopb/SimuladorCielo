@@ -18,7 +18,12 @@ function mmToPx(mm) {
   return mm * 96 / 25.4;
 }
 
+function hasBrowserEnvironment() {
+  return typeof window !== 'undefined' && typeof document !== 'undefined';
+}
+
 function cleanupPrintState() {
+  if (!hasBrowserEnvironment()) return;
   if (activeTarget && previousStyle !== null) activeTarget.setAttribute('style', previousStyle);
   else if (activeTarget) activeTarget.removeAttribute('style');
 
@@ -74,6 +79,7 @@ function proposalScale(target) {
 }
 
 export function printView(view = 'proposal') {
+  if (!hasBrowserEnvironment()) return;
   cleanupPrintState();
   const normalizedView = VIEW_SELECTORS[view] ? view : 'proposal';
   const target = document.querySelector(VIEW_SELECTORS[normalizedView]);
@@ -109,4 +115,6 @@ export function printView(view = 'proposal') {
   requestAnimationFrame(() => setTimeout(() => window.print(), 90));
 }
 
-window.addEventListener('afterprint', cleanupPrintState);
+if (hasBrowserEnvironment()) {
+  window.addEventListener('afterprint', cleanupPrintState);
+}
