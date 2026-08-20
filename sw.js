@@ -1,12 +1,12 @@
-const CACHE_NAME = 'proposta-pagamentos-v2.7.0';
+const CACHE_NAME = 'proposta-pagamentos-v2.8.0';
 const CORE = [
   './', './index.html', './manifest.json',
   './css/app.css', './css/app-base.css', './css/app-components.css',
-  './css/dashboard.css', './css/proposta.css', './css/brand-fixes.css', './css/print.css',
+  './css/dashboard.css', './css/proposta.css', './css/brand-fixes.css', './css/rate-charts.css', './css/print.css',
   './config/parametros.js',
   './js/app.js', './js/state.js', './js/formatters.js', './js/cartoes.js', './js/pix.js',
   './js/equipamentos.js', './js/antecipacao.js', './js/cobranca.js', './js/mais-vantagens.js',
-  './js/beneficios.js', './js/calculos.js', './js/validacao.js', './js/storage.js', './js/print.js',
+  './js/beneficios.js', './js/calculos.js', './js/validacao.js', './js/storage.js', './js/print.js', './js/rate-charts.js',
   './js/dashboard.js', './js/proposta.js', './js/ui-shell.js', './js/ui-steps-cards.js',
   './js/ui-steps-brands.js', './js/ui-steps-operations.js', './js/ui-steps-commercial.js',
   './js/ui-steps-final.js', './js/ui-results.js', './js/ui-saved.js',
