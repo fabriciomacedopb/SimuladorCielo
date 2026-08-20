@@ -52,3 +52,88 @@
 @media(max-width:820px){.brand-combined-card>header .brand-dinersAmex{width:190px!important;min-width:190px!important}.brand-combined-card>header .brand-dinersAmex img{width:168px!important;max-width:168px!important}.brand-impact-card header .brand-dinersAmex,.rate-brand-card header .brand-dinersAmex{width:138px!important;min-width:138px!important}.brand-impact-card header .brand-dinersAmex img,.rate-brand-card header .brand-dinersAmex img{width:122px!important;max-width:122px!important}.rate-comparison-strip{grid-template-columns:1fr}}
 @media(max-width:600px){.brand-combined-card>header .brand-mastercard{width:94px!important;min-width:94px!important;height:40px!important}.brand-combined-card>header .brand-mastercard img{width:72px!important;max-width:72px!important}.brand-combined-card>header .brand-dinersAmex{width:160px!important;min-width:160px!important;height:42px!important}.brand-combined-card>header .brand-dinersAmex img{width:140px!important;max-width:140px!important}.livelo-value-reference,.proposal-livelo-reference{grid-template-columns:1fr}}
 @media print{.rate-comparison-strip{break-inside:avoid}.proposal-rate-scroll{overflow:visible}.proposal-rate-brand.enriched table{min-width:0;width:100%}.proposal-rate-brand.enriched td{font-size:7.2px}.proposal-rate-brand.enriched thead th{font-size:6.4px}}
+
+/* =========================================================
+   NORMALIZAÇÃO ÓPTICA FINAL DAS BANDEIRAS
+   Todas usam a mesma caixa externa. Apenas o desenho interno
+   recebe ajuste proporcional para preservar a identidade visual.
+   ========================================================= */
+
+/* Etapa 3 */
+.brand-combined-card>header .payment-brand.brand-logo{
+  width:122px!important;
+  min-width:122px!important;
+  max-width:122px!important;
+  height:46px!important;
+  min-height:46px!important;
+  padding:6px 10px!important;
+  justify-content:center!important;
+}
+.brand-combined-card>header .payment-brand.brand-logo img{
+  width:auto!important;
+  height:auto!important;
+  object-position:center!important;
+}
+.brand-combined-card>header .brand-visa img{max-width:96px!important;max-height:31px!important}
+.brand-combined-card>header .brand-mastercard img{max-width:72px!important;max-height:31px!important}
+.brand-combined-card>header .brand-elo img{max-width:92px!important;max-height:31px!important}
+.brand-combined-card>header .brand-dinersAmex img{max-width:102px!important;max-height:29px!important}
+
+/* Mix estimado */
+.estimated-mix-list .payment-brand.brand-logo{
+  width:88px!important;
+  min-width:88px!important;
+  max-width:88px!important;
+  height:32px!important;
+  min-height:32px!important;
+  padding:4px 6px!important;
+  justify-content:center!important;
+}
+.estimated-mix-list .brand-visa img{max-width:70px!important;max-height:21px!important}
+.estimated-mix-list .brand-mastercard img{max-width:52px!important;max-height:21px!important}
+.estimated-mix-list .brand-elo img{max-width:67px!important;max-height:21px!important}
+.estimated-mix-list .brand-dinersAmex img{max-width:73px!important;max-height:20px!important}
+
+/* Dashboard */
+.brand-impact-card header .payment-brand.brand-logo,
+.rate-brand-card header .payment-brand.brand-logo{
+  width:96px!important;
+  min-width:96px!important;
+  max-width:96px!important;
+  height:34px!important;
+  min-height:34px!important;
+  padding:4px 7px!important;
+  justify-content:center!important;
+}
+.brand-impact-card header .brand-visa img,.rate-brand-card header .brand-visa img{max-width:76px!important;max-height:23px!important}
+.brand-impact-card header .brand-mastercard img,.rate-brand-card header .brand-mastercard img{max-width:56px!important;max-height:23px!important}
+.brand-impact-card header .brand-elo img,.rate-brand-card header .brand-elo img{max-width:72px!important;max-height:23px!important}
+.brand-impact-card header .brand-dinersAmex img,.rate-brand-card header .brand-dinersAmex img{max-width:79px!important;max-height:21px!important}
+
+/* Proposta comercial */
+.proposal-rate-head .payment-brand.brand-logo{
+  width:88px!important;
+  min-width:88px!important;
+  max-width:88px!important;
+  height:31px!important;
+  min-height:31px!important;
+  padding:3px 6px!important;
+  justify-content:center!important;
+}
+.proposal-rate-head .brand-visa img{max-width:70px!important;max-height:21px!important}
+.proposal-rate-head .brand-mastercard img{max-width:52px!important;max-height:21px!important}
+.proposal-rate-head .brand-elo img{max-width:66px!important;max-height:21px!important}
+.proposal-rate-head .brand-dinersAmex img{max-width:73px!important;max-height:19px!important}
+
+@media(max-width:600px){
+  .brand-combined-card>header .payment-brand.brand-logo{
+    width:108px!important;
+    min-width:108px!important;
+    max-width:108px!important;
+    height:42px!important;
+  }
+  .brand-combined-card>header .brand-visa img{max-width:85px!important}
+  .brand-combined-card>header .brand-mastercard img{max-width:64px!important}
+  .brand-combined-card>header .brand-elo img{max-width:81px!important}
+  .brand-combined-card>header .brand-dinersAmex img{max-width:90px!important}
+}
