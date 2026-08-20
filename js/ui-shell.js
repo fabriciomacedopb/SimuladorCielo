@@ -1,4 +1,5 @@
 import { escapeHtml, parseDecimal } from './formatters.js';
+import { printView } from './print.js';
 import { validateState } from './validacao.js';
 
 export const $ = (s, root = document) => root.querySelector(s);
@@ -70,7 +71,16 @@ export function createShell(ctx) {
   const { state, getCurrentView, setCurrentView, render, newSimulation, saveCurrent } = ctx;
   function bindCommon() {
     $$('[data-nav-view]').forEach((el) => el.addEventListener('click', () => { setCurrentView(el.dataset.navView); render(); }));
-    $('#btnPrint')?.addEventListener('click', () => { setCurrentView('proposal'); render(); setTimeout(() => window.print(), 120); });
+    $('#btnPrint')?.addEventListener('click', () => {
+      const current = getCurrentView();
+      if (current === 'proposal' || current === 'dashboard' || current === 'results') {
+        printView(current);
+        return;
+      }
+      setCurrentView('proposal');
+      render();
+      setTimeout(() => printView('proposal'), 120);
+    });
     $('#btnNew')?.addEventListener('click', newSimulation);
     $('#btnSave')?.addEventListener('click', saveCurrent);
   }
