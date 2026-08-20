@@ -70,6 +70,21 @@ export function segmented(name, value, options) {
 export function createShell(ctx) {
   const { state, getCurrentView, setCurrentView, render, newSimulation, saveCurrent } = ctx;
 
+  function runPrintQueue(views) {
+    const queue = [...views];
+    const next = () => {
+      const view = queue.shift();
+      if (!view) return;
+      setCurrentView(view);
+      render();
+      setTimeout(() => {
+        if (queue.length) window.addEventListener('afterprint', next, { once: true });
+        printView(view);
+      }, 200);
+    };
+    next();
+  }
+
   function openPdfCenter() {
     document.querySelector('#pdfCenter')?.remove();
     const overlay = document.createElement('div');
@@ -79,48 +94,47 @@ export function createShell(ctx) {
       <section class="pdf-center-dialog" role="dialog" aria-modal="true" aria-labelledby="pdfCenterTitle">
         <header class="pdf-center-head">
           <div>
-            <span>DOCUMENTOS PARA O CLIENTE</span>
+            <span>DOCUMENTOS DA SIMULAÇÃO</span>
             <h2 id="pdfCenterTitle">Gerar PDF</h2>
-            <p>Escolha qual visão deseja imprimir ou salvar em PDF. Cada documento possui um leiaute próprio para a sua finalidade.</p>
+            <p>Selecione um, dois ou os três documentos. Cada arquivo mantém seu próprio leiaute, orientação e finalidade.</p>
           </div>
           <button class="pdf-center-close" type="button" data-pdf-close aria-label="Fechar">×</button>
         </header>
+        <div class="pdf-center-toolbar">
+          <strong>O que deseja gerar?</strong>
+          <div><button type="button" data-pdf-all>Selecionar todos</button><button type="button" data-pdf-clear>Limpar seleção</button></div>
+        </div>
         <div class="pdf-center-grid">
-          <article class="pdf-choice proposal">
+          <label class="pdf-choice proposal selected">
+            <input class="pdf-choice-input" type="checkbox" value="proposal" checked>
+            <span class="pdf-choice-check" aria-hidden="true">✓</span>
             <span class="pdf-choice-tag">A4 retrato</span>
             <h3>Proposta Comercial</h3>
-            <p>Documento de fechamento com condições, benefícios e comparativo comercial.</p>
-            <ul>
-              <li>Resumo financeiro</li>
-              <li>Condições por bandeira</li>
-              <li>Equipamentos e Livelo</li>
-            </ul>
-            <button class="btn btn-primary" type="button" data-pdf-view="proposal">Gerar Proposta Comercial</button>
-          </article>
-          <article class="pdf-choice dashboard">
+            <p>Documento comercial da simulação, com condições, benefícios e comparativo.</p>
+            <ul><li>Resumo financeiro</li><li>Condições por bandeira</li><li>Equipamentos e Livelo</li></ul>
+          </label>
+          <label class="pdf-choice dashboard selected">
+            <input class="pdf-choice-input" type="checkbox" value="dashboard" checked>
+            <span class="pdf-choice-check" aria-hidden="true">✓</span>
             <span class="pdf-choice-tag">A4 retrato</span>
             <h3>Visão Financeira</h3>
-            <p>Apresentação executiva para conduzir a conversa com o cliente de forma visual.</p>
-            <ul>
-              <li>KPIs e gráficos financeiros</li>
-              <li>Curvas Atual × Cielo</li>
-              <li>Condições por bandeira</li>
-            </ul>
-            <button class="btn btn-primary" type="button" data-pdf-view="dashboard">Gerar Visão Financeira</button>
-          </article>
-          <article class="pdf-choice results">
+            <p>Visão executiva da simulação para conduzir a conversa com o cliente.</p>
+            <ul><li>KPIs e gráficos financeiros</li><li>Curvas Atual × Cielo</li><li>Condições por bandeira</li></ul>
+          </label>
+          <label class="pdf-choice results selected">
+            <input class="pdf-choice-input" type="checkbox" value="results" checked>
+            <span class="pdf-choice-check" aria-hidden="true">✓</span>
             <span class="pdf-choice-tag">A4 paisagem</span>
             <h3>Resultado Financeiro</h3>
-            <p>Relatório analítico com consolidação de custos e detalhamento das condições.</p>
-            <ul>
-              <li>Resultado por produto</li>
-              <li>Rankings e curvas de taxas</li>
-              <li>Detalhamento financeiro</li>
-            </ul>
-            <button class="btn btn-primary" type="button" data-pdf-view="results">Gerar Resultado Financeiro</button>
-          </article>
+            <p>Relatório analítico da simulação com consolidação de custos e detalhamento.</p>
+            <ul><li>Resultado por produto</li><li>Rankings e curvas de taxas</li><li>Detalhamento financeiro</li></ul>
+          </label>
         </div>
-        <footer class="pdf-center-foot"><b>Observação:</b> a impressão é gerada localmente pelo navegador. Selecione “Salvar como PDF” na janela de impressão.</footer>
+        <footer class="pdf-center-foot">
+          <div><b>Importante:</b> todos os documentos são identificados como simulação e não representam contratação definitiva.</div>
+          <div class="pdf-center-actions"><span id="pdfSelectionCount">3 documentos selecionados</span><button class="btn btn-primary" id="btnGenerateSelectedPdf" type="button">Gerar 3 documentos</button></div>
+          <small>Ao selecionar mais de um documento, o navegador abrirá uma janela de impressão por documento para preservar a formatação de cada página. Em cada janela, escolha “Salvar como PDF”.</small>
+        </footer>
       </section>`;
     document.body.appendChild(overlay);
 
@@ -133,13 +147,27 @@ export function createShell(ctx) {
     overlay.addEventListener('click', (event) => {
       if (event.target === overlay || event.target.closest('[data-pdf-close]')) close();
     });
-    $$('[data-pdf-view]', overlay).forEach((button) => button.addEventListener('click', () => {
-      const view = button.dataset.pdfView;
+
+    const boxes = $$('.pdf-choice-input', overlay);
+    const countLabel = $('#pdfSelectionCount', overlay);
+    const generateButton = $('#btnGenerateSelectedPdf', overlay);
+    const refreshSelection = () => {
+      boxes.forEach((box) => box.closest('.pdf-choice')?.classList.toggle('selected', box.checked));
+      const count = boxes.filter((box) => box.checked).length;
+      countLabel.textContent = count === 1 ? '1 documento selecionado' : `${count} documentos selecionados`;
+      generateButton.disabled = count === 0;
+      generateButton.textContent = count === 0 ? 'Selecione um documento' : count === 1 ? 'Gerar documento' : `Gerar ${count} documentos`;
+    };
+    boxes.forEach((box) => box.addEventListener('change', refreshSelection));
+    $('[data-pdf-all]', overlay)?.addEventListener('click', () => { boxes.forEach((box) => { box.checked = true; }); refreshSelection(); });
+    $('[data-pdf-clear]', overlay)?.addEventListener('click', () => { boxes.forEach((box) => { box.checked = false; }); refreshSelection(); });
+    generateButton.addEventListener('click', () => {
+      const selected = boxes.filter((box) => box.checked).map((box) => box.value);
+      if (!selected.length) return;
       close();
-      setCurrentView(view);
-      render();
-      setTimeout(() => printView(view), 180);
-    }));
+      runPrintQueue(selected);
+    });
+    refreshSelection();
   }
 
   function bindCommon() {
