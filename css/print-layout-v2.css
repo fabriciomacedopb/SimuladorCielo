@@ -1,0 +1,119 @@
+@page resultsPage{size:A4 portrait;margin:4mm}
+
+/* ===== PROPOSTA COMERCIAL: usar melhor a folha sem sacrificar leitura ===== */
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-hero{padding:3mm 3.2mm!important;min-height:17mm!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-hero h1{font-size:14pt!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-hero .eyebrow{font-size:6.8pt!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-hero p{font-size:7.5pt!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .client-meta{font-size:6.8pt!important;padding:1.5mm 3.2mm 1.8mm!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-kpi{padding:1.9mm 2mm!important;min-height:12mm!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-kpi span{font-size:6pt!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-kpi strong{font-size:10pt!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-result{padding:2mm 2.2mm!important;margin:1.7mm 3mm!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-result span{font-size:5.9pt!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-result strong{font-size:7.7pt!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-body-grid h2{font-size:8.2pt!important;margin:1mm 0 .8mm!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-impact-row{padding:.72mm 0!important;font-size:6.3pt!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-impact-row strong{font-size:6.45pt!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-benefits{padding:1.5mm 1.6mm!important;margin-top:1.3mm!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-benefits p{font-size:5.5pt!important;line-height:1.18!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo{padding:1.55mm 1.65mm!important;margin-top:1.3mm!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-title span{font-size:5.5pt!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-title strong{font-size:8.4pt!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-title small{font-size:5.15pt!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-points-breakdown span{font-size:5.15pt!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-reference span{font-size:4.9pt!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-reference strong{font-size:7pt!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-transfer span{font-size:5pt!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-transfer strong{font-size:7.1pt!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-transfer small{font-size:4.8pt!important;line-height:1.16!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-brand thead th{font-size:5.05pt!important;line-height:1.08!important;padding:.5mm .38mm!important;white-space:normal!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-brand td{font-size:5.85pt!important;padding:.43mm .42mm!important;line-height:1.03!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-head{min-height:6.5mm!important;padding:.75mm 1mm!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-equipment{margin-top:1.7mm!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-section-heading h2{font-size:7pt!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-equipment-table th{font-size:4.55pt!important;padding:.7mm .5mm!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-equipment-table td{font-size:5.2pt!important;padding:.65mm .5mm!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-closing{font-size:6pt!important;margin:1.2mm 3mm .8mm!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .important-info{font-size:5.25pt!important;line-height:1.17!important;padding:1.4mm 1.5mm!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .important-info>strong{font-size:5.8pt!important}
+
+/* ===== VISÃO FINANCEIRA: preencher a 1ª página e concentrar análise detalhada na 2ª ===== */
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .dashboard-sheet{display:flex!important;flex-direction:column!important;width:202mm!important;max-width:202mm!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .dashboard-sheet>*{flex:0 0 auto!important;width:100%!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .dashboard-brand-section{order:10!important;margin-top:3mm!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .brand-impact-grid{order:11!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .dashboard-rate-charts{order:20!important;break-before:page!important;page-break-before:always!important;margin-top:0!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .dashboard-rates-section{order:30!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .dashboard-rate-matrix{order:31!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .dashboard-print-note{order:40!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .brand-impact-card{padding:1.8mm!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .brand-impact-card>div{padding:.55mm 0!important;font-size:6.2pt!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .rate-chart-grid{gap:2mm!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .rate-line-card{padding:1.8mm!important;border-radius:2mm!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .rate-line-card header{padding-bottom:1mm!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .rate-line-svg{height:37mm!important;width:100%!important;margin-top:.5mm!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .dashboard-rates-section{margin-top:2.2mm!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .rate-brand-card{break-inside:avoid!important;page-break-inside:avoid!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .rate-brand-card thead th{font-size:5.1pt!important;padding:.45mm .35mm!important;white-space:normal!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .rate-brand-card td{font-size:5.7pt!important;padding:.38mm .38mm!important;line-height:1.02!important}
+
+/* ===== RESULTADO FINANCEIRO: A4 retrato, primeira página executiva e rankings claros ===== */
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-page{page:resultsPage;width:202mm!important;max-width:202mm!important;margin:0 auto!important;background:#fff!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-header{grid-template-columns:24mm 1fr 28mm!important;padding:2.5mm 3mm!important;gap:3mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-header img{max-height:9mm!important;max-width:25mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-header h1{font-size:13.5pt!important;margin:.4mm 0!important;line-height:1.05!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-header span{font-size:6.2pt!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-header p{font-size:7pt!important;margin:0!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-meta{font-size:6.5pt!important;padding:1.2mm 3mm 1.8mm!important;gap:4mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-kpis{grid-template-columns:repeat(2,1fr)!important;gap:1.5mm!important;margin:1mm 3mm 2mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-kpis article{padding:1.8mm 2mm!important;min-height:12mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-kpis span{font-size:5.9pt!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-kpis strong{font-size:10.5pt!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-visuals{grid-template-columns:1fr 1fr!important;gap:2mm!important;margin:0 3mm 2mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .print-chart-card{padding:2mm!important;min-height:31mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-consolidated-panel{margin:1.5mm 3mm 2mm!important;padding:2mm!important;border-radius:2mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-consolidated-panel .panel-heading{margin-bottom:1.5mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-consolidated-panel .panel-heading h2{font-size:9pt!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-consolidated-panel .pro-table th{font-size:5.8pt!important;padding:.7mm .6mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-consolidated-panel .pro-table td{font-size:6.4pt!important;padding:.65mm .6mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-rankings{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:1.5mm!important;margin:0 3mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-rankings .panel{padding:1.7mm!important;border-radius:2mm!important;min-height:0!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-rankings .panel-heading{margin-bottom:1mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-rankings .panel-heading h2{font-size:7.4pt!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-rankings .ranking-list>div{display:grid!important;grid-template-columns:4mm 1fr!important;gap:1mm!important;padding:.55mm 0!important;border-bottom:1px solid #e9eff3!important;align-items:center!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-rankings .ranking-list>div:last-child{border-bottom:0!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-rankings .ranking-list i{width:4mm!important;height:4mm!important;font-size:5.4pt!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-rankings .ranking-list span b{font-size:5.9pt!important;line-height:1.05!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-rankings .ranking-list span small{font-size:5.2pt!important;line-height:1.05!important;margin-top:.2mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-rankings .ranking-brand img{height:3.2mm!important;max-width:8mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-rate-charts{break-before:page!important;page-break-before:always!important;margin:0 3mm 2mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .rate-chart-grid{gap:2mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .rate-line-card{padding:1.7mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .rate-line-svg{height:36mm!important;margin-top:.5mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-detail-panel{margin:2mm 3mm!important;padding:1.8mm!important;border-radius:2mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-detail-panel .panel-heading{margin-bottom:1.2mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-detail-panel .panel-heading h2{font-size:8pt!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-detail-panel .pro-table{table-layout:fixed!important;width:100%!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-detail-panel .pro-table th{font-size:5pt!important;padding:.55mm .35mm!important;white-space:normal!important;line-height:1.05!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-detail-panel .pro-table td{font-size:5.6pt!important;padding:.5mm .35mm!important;line-height:1.05!important;white-space:nowrap!important}
+/* No PDF retrato, custos individuais já aparecem no consolidado. Mantemos aqui o que ajuda a decisão por modalidade. */
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-detail-panel .pro-table th:nth-child(7),
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-detail-panel .pro-table td:nth-child(7),
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-detail-panel .pro-table th:nth-child(8),
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-detail-panel .pro-table td:nth-child(8),
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-detail-panel .pro-table th:nth-child(11),
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-detail-panel .pro-table td:nth-child(11){display:none!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-detail-panel .pro-table th:nth-child(1){width:12%!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-detail-panel .pro-table th:nth-child(2){width:14%!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-detail-panel .pro-table th:nth-child(3){width:15%!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-detail-panel .pro-table th:nth-child(4),
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-detail-panel .pro-table th:nth-child(5){width:11%!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-detail-panel .pro-table th:nth-child(6){width:13%!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-detail-panel .pro-table th:nth-child(9),
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-detail-panel .pro-table th:nth-child(10){width:12%!important}
+
+@media print{
+  body.print-view-dashboard .dashboard-sheet{display:flex!important;flex-direction:column!important}
+  body.print-view-results .results-print-rankings{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
