@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import { createDefaultState } from '../js/state.js';
-import { input, select, segmented, statusBadge } from '../js/ui-shell.js';
+import { inlineInput, input, select, segmented, statusBadge } from '../js/ui-shell.js';
 import { createCardSteps } from '../js/ui-steps-cards.js';
 import { createBrandSteps } from '../js/ui-steps-brands.js';
 import { createOperationsSteps } from '../js/ui-steps-operations.js';
@@ -17,7 +17,9 @@ function makeContext(state) {
     $: () => fakeElement(),
     $$: () => [],
     updateState: (mutator) => mutator(state),
+    updateInputState: (mutator) => mutator(state),
     input,
+    inlineInput,
     select,
     segmented,
     statusBadge,
