@@ -1,181 +1,220 @@
-@page{size:A4 portrait;margin:3.2mm}
+@page proposalPage{size:A4 portrait;margin:4mm}
+@page dashboardPage{size:A4 portrait;margin:5mm}
+@page resultsPage{size:A4 landscape;margin:5mm}
 
-:is(.print-measure-root,body.print-layout){font-family:Arial,"Segoe UI",sans-serif;color:#0b2942;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.print-only{display:none!important}
+.print-measure-root{position:fixed!important;left:-200vw!important;top:0!important;visibility:hidden!important;pointer-events:none!important;z-index:-1!important;background:#fff!important}
+
+:is(.print-measure-root,body.print-layout){font-family:Aptos,"Segoe UI",Arial,sans-serif!important;color:#0b2942!important;background:#fff!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+:is(.print-measure-root,body.print-layout) *{box-sizing:border-box!important}
 :is(.print-measure-root,body.print-layout) .no-print{display:none!important}
 :is(.print-measure-root,body.print-layout) .print-only{display:block!important}
 :is(.print-measure-root,body.print-layout) .panel{box-shadow:none!important}
-:is(.print-measure-root,body.print-layout) .client-sheet,
-:is(.print-measure-root,body.print-layout) .proposal-sheet,
-:is(.print-measure-root,body.print-layout) .dashboard-sheet,
-:is(.print-measure-root,body.print-layout) .results-page{max-width:none!important;margin:0!important;box-shadow:none!important;border-radius:0!important;overflow:visible!important}
+:is(.print-measure-root,body.print-layout) .table-scroll,
+:is(.print-measure-root,body.print-layout) .rate-table-scroll,
+:is(.print-measure-root,body.print-layout) .proposal-rate-scroll,
+:is(.print-measure-root,body.print-layout) .proposal-equipment-scroll{overflow:visible!important}
 
-/* PROPOSTA COMERCIAL — base maior, ajuste automático só se necessário */
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-hero{padding:7px 10px!important;border-bottom-width:2.5px!important;grid-template-columns:84px 1fr 84px!important;gap:9px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-hero h1{font-size:16px!important;line-height:1.12!important;margin:2px 0!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-hero .eyebrow{font-size:7.6px!important;letter-spacing:.8px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-hero p{font-size:8.4px!important;margin:1px 0!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-hero img{max-height:34px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .client-meta{padding:4px 10px 5px!important;gap:12px!important;font-size:7.4px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-summary-grid{grid-template-columns:repeat(3,1fr)!important;gap:4px!important;padding:4px 10px 0!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-kpi{padding:5px 7px!important;border-radius:6px!important;min-height:0!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-kpi span{font-size:6.8px!important;line-height:1.15!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-kpi strong{font-size:11.2px!important;margin-top:2px!important;line-height:1.05!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-result{margin:4px 10px!important;padding:5px 7px!important;border-radius:6px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-result span{font-size:6.5px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-result strong{font-size:8.6px!important;line-height:1.22!important;margin-top:1px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-estimated-mix{margin:3px 10px 4px!important;padding:5px 7px!important;font-size:6.8px!important;line-height:1.25!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-body-grid{grid-template-columns:.82fr 1.72fr!important;gap:9px!important;padding:0 10px!important;align-items:start!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-body-grid h2{font-size:9.2px!important;margin:4px 0 3px!important;padding-bottom:3px!important;border-bottom-width:1.5px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-impact-row{padding:2.3px 0!important;font-size:7px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-impact-row strong{font-size:7.2px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-benefits{margin-top:4px!important;padding:5px 6px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-benefits p{font-size:6.1px!important;line-height:1.22!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo{margin-top:4px!important;padding:5px 6px!important;border-radius:6px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-title span{font-size:5.8px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-title strong{font-size:9.2px!important;margin-top:1px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-title small{font-size:5.6px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-points-breakdown{margin-top:3px!important;padding-top:3px!important;gap:2px 5px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-points-breakdown span{font-size:5.6px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-reference{margin-top:4px!important;padding-top:4px!important;gap:4px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-reference>div{padding:4px 5px!important;border-radius:5px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-reference span{font-size:5.1px!important;line-height:1.15!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-reference strong{font-size:7.6px!important;margin-top:1px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-transfer{margin-top:4px!important;padding-top:4px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-transfer span{font-size:5.4px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-transfer strong{font-size:7.8px!important;margin:1px 0!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-transfer small{font-size:5.1px!important;line-height:1.16!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:4px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-brand{break-inside:avoid!important;page-break-inside:avoid!important;border-radius:5px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-head{padding:3px 4px!important;min-height:24px!important}
+/* PROPOSTA COMERCIAL */
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-sheet{page:proposalPage;width:202mm!important;max-width:202mm!important;margin:0 auto!important;box-shadow:none!important;border-radius:0!important;overflow:visible!important;background:#fff!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-hero{grid-template-columns:24mm 1fr 27mm!important;gap:3mm!important;padding:2.4mm 3mm!important;border-bottom-width:2px!important;min-height:15mm!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-hero img{max-width:25mm!important;max-height:9mm!important;object-fit:contain!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-hero h1{font-size:13pt!important;line-height:1.05!important;margin:.5mm 0!important;letter-spacing:-.2px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-hero .eyebrow{font-size:6.4pt!important;letter-spacing:.75px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-hero p{font-size:7pt!important;line-height:1!important;margin:0!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .client-meta{padding:1.2mm 3mm 1.5mm!important;gap:2mm 5mm!important;font-size:6.4pt!important;line-height:1.1!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .client-meta span{white-space:nowrap!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-summary-grid{grid-template-columns:repeat(3,1fr)!important;gap:1.2mm!important;padding:1.4mm 3mm 0!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-kpi{padding:1.5mm 1.7mm!important;border-radius:1.8mm!important;min-height:10.5mm!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-kpi span{font-size:5.6pt!important;line-height:1.08!important;letter-spacing:.15px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-kpi strong{font-size:9.2pt!important;line-height:1.05!important;margin-top:.7mm!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-result{margin:1.4mm 3mm!important;padding:1.6mm 2mm!important;border-radius:1.8mm!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-result span{font-size:5.6pt!important;line-height:1!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-result strong{font-size:7.2pt!important;line-height:1.15!important;margin-top:.5mm!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-estimated-mix{margin:0 3mm 1.2mm!important;padding:1.2mm 1.6mm!important;gap:1mm!important;border-radius:1.6mm!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-estimated-mix strong,
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-estimated-mix span{font-size:5.6pt!important;line-height:1.12!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-body-grid{display:grid!important;grid-template-columns:.72fr 1.78fr!important;gap:2.2mm!important;padding:0 3mm!important;align-items:start!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-body-grid h2{font-size:7.6pt!important;line-height:1.05!important;margin:.8mm 0 .6mm!important;padding-bottom:.6mm!important;border-bottom-width:1.2px!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-impact-row{padding:.55mm 0!important;font-size:5.9pt!important;line-height:1.05!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-impact-row strong{font-size:6pt!important;white-space:nowrap!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-benefits{margin-top:1mm!important;padding:1.2mm 1.4mm!important;border-radius:1.4mm!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-benefits p{font-size:5.15pt!important;line-height:1.14!important;margin:0!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo{margin-top:1mm!important;padding:1.2mm 1.4mm!important;border-radius:1.4mm!important;break-inside:avoid!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-title span{font-size:5.2pt!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-title strong{font-size:7.8pt!important;margin-top:.4mm!important;line-height:1!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-title small{font-size:4.9pt!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-points-breakdown{margin-top:.8mm!important;padding-top:.8mm!important;gap:.5mm 1.2mm!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-points-breakdown span{font-size:4.9pt!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-reference{grid-template-columns:1fr 1fr!important;gap:.8mm!important;margin-top:.8mm!important;padding-top:.8mm!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-reference>div{padding:.8mm 1mm!important;border-radius:1mm!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-reference span{font-size:4.5pt!important;line-height:1.07!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-reference strong{font-size:6.5pt!important;margin-top:.3mm!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-transfer{margin-top:.8mm!important;padding-top:.8mm!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-transfer span{font-size:4.7pt!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-transfer strong{font-size:6.7pt!important;margin:.3mm 0!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-livelo-transfer small{font-size:4.55pt!important;line-height:1.12!important;word-break:normal!important;hyphens:none!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:1mm!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-brand{min-width:0!important;width:100%!important;border-radius:1.2mm!important;break-inside:avoid!important;page-break-inside:avoid!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-head{display:flex!important;justify-content:space-between!important;align-items:center!important;min-height:6mm!important;padding:.6mm .9mm!important}
 :is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-head>span:last-child{display:none!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-head .payment-brand.brand-logo{width:76px!important;min-width:76px!important;height:24px!important;padding:2px 5px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-head .payment-brand.brand-logo img{max-width:66px!important;max-height:18px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-scroll{overflow:visible!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-brand.enriched table{width:100%!important;min-width:0!important;table-layout:fixed!important;border-collapse:collapse!important;font-size:7.15px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-brand.enriched thead th{font-size:5.75px!important;padding:2.1px 2px!important;white-space:nowrap!important;letter-spacing:0!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-brand.enriched th:first-child{width:25%!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-brand.enriched td{font-size:7px!important;padding:1.7px 2px!important;line-height:1.05!important;white-space:nowrap!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-equipment{margin:4px 10px 0!important;border-radius:5px!important;break-inside:avoid!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-section-heading{padding:3px 5px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-section-heading span{font-size:5.6px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-section-heading h2{font-size:8px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .equipment-total span{font-size:5.2px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .equipment-total strong{font-size:7.8px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-equipment-scroll{overflow:visible!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-equipment-table{width:100%!important;table-layout:fixed!important;font-size:6px!important;white-space:nowrap!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-equipment-table th{font-size:5px!important;padding:2.3px 2px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-equipment-table td{font-size:5.8px!important;padding:2px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-equipment-table td:first-child small{font-size:5px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-observations{margin:4px 10px!important;padding:4px 6px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-observations strong{font-size:6.2px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-observations p{font-size:6px!important;line-height:1.18!important;margin-top:2px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-closing{margin:4px 10px 3px!important;font-size:6.8px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .important-info{margin:0 10px!important;padding:4px 6px!important;font-size:5.55px!important;line-height:1.18!important;column-count:2!important;column-gap:12px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .important-info>strong{font-size:6.4px!important;column-span:all!important;margin-bottom:2px!important}
-:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .important-info p{margin:2px 0!important;break-inside:avoid!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-head .payment-brand.brand-logo{width:27mm!important;min-width:27mm!important;height:5.1mm!important;padding:.3mm .8mm!important;border-radius:.8mm!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-head .payment-brand.brand-logo img{max-width:23mm!important;max-height:3.9mm!important;width:auto!important;height:auto!important;object-fit:contain!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-brand table{width:100%!important;min-width:0!important;table-layout:fixed!important;border-collapse:collapse!important;font-size:5.6pt!important;line-height:1!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-brand thead th{font-size:4.55pt!important;padding:.45mm .45mm!important;white-space:nowrap!important;letter-spacing:0!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-brand td{font-size:5.45pt!important;padding:.32mm .45mm!important;line-height:1!important;white-space:nowrap!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-brand th:first-child,
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-rate-brand td:first-child{width:22%!important;text-align:left!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-equipment{margin:1.2mm 3mm 0!important;border-radius:1.2mm!important;break-inside:avoid!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-section-heading{padding:.7mm 1mm!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-section-heading span{font-size:4.8pt!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-section-heading h2{font-size:6.4pt!important;margin:.2mm 0 0!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .equipment-total span{font-size:4.5pt!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .equipment-total strong{font-size:6.3pt!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-equipment-table{width:100%!important;table-layout:fixed!important;white-space:normal!important;font-size:4.9pt!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-equipment-table th{font-size:4.1pt!important;line-height:1.04!important;padding:.55mm .45mm!important;white-space:normal!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-equipment-table td{font-size:4.8pt!important;line-height:1.04!important;padding:.5mm .45mm!important;white-space:normal!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-observations{margin:1mm 3mm!important;padding:1mm 1.2mm!important;break-inside:avoid!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-observations strong{font-size:5.2pt!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-observations p{font-size:5pt!important;line-height:1.12!important;margin:.3mm 0 0!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .proposal-closing{margin:.9mm 3mm .5mm!important;font-size:5.5pt!important;line-height:1.05!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .important-info{margin:0 3mm!important;padding:1mm 1.2mm!important;font-size:4.8pt!important;line-height:1.1!important;column-count:2!important;column-gap:2.5mm!important;word-break:normal!important;hyphens:none!important;break-inside:avoid!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .important-info>strong{display:block!important;column-span:all!important;font-size:5.3pt!important;margin-bottom:.4mm!important}
+:is(.print-measure-root.print-view-proposal,body.print-view-proposal) .important-info p{margin:0 0 .5mm!important;break-inside:avoid!important}
 
-/* RESULTADO FINANCEIRO — versão executiva para impressão */
-:is(.print-measure-root.print-view-results,body.print-view-results) .results-page>.page-heading{display:none!important}
-:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-header{display:grid!important;grid-template-columns:78px 1fr 78px;align-items:center;text-align:center;gap:10px;padding:6px 9px;border-bottom:2.5px solid #0b69b7}
-:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-header img{max-width:72px;max-height:30px;object-fit:contain}
-:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-header span{font-size:7px;font-weight:900;letter-spacing:.8px;color:#0966ad}
-:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-header h1{font-size:15px;margin:2px 0 1px;line-height:1.1}
-:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-header p{font-size:8px;margin:0;color:#6a7780}
-:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-meta{display:flex!important;gap:18px;padding:4px 9px 6px;font-size:7px;color:#64737c}
-:is(.print-measure-root.print-view-results,body.print-view-results) .result-kpis{grid-template-columns:repeat(4,1fr)!important;gap:5px!important;margin:0 0 6px!important}
-:is(.print-measure-root.print-view-results,body.print-view-results) .result-kpis article{padding:7px!important;border-radius:7px!important;box-shadow:none!important}
-:is(.print-measure-root.print-view-results,body.print-view-results) .result-kpis span{font-size:6.5px!important}
-:is(.print-measure-root.print-view-results,body.print-view-results) .result-kpis strong{font-size:12px!important;margin-top:3px!important}
-:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-visuals{display:grid!important;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px}
-:is(.print-measure-root.print-view-results,body.print-view-results) .print-chart-card{border:1px solid #dce5eb;border-radius:7px;padding:6px;background:#fff;break-inside:avoid}
-:is(.print-measure-root.print-view-results,body.print-view-results) .print-chart-title span{display:block;font-size:5.8px;font-weight:900;color:#60727e;letter-spacing:.45px}
-:is(.print-measure-root.print-view-results,body.print-view-results) .print-chart-title strong{display:block;font-size:8.3px;margin-top:1px}
-:is(.print-measure-root.print-view-results,body.print-view-results) .print-cost-row{margin-top:7px}
-:is(.print-measure-root.print-view-results,body.print-view-results) .print-cost-row>div:first-child{display:flex;justify-content:space-between;gap:8px;font-size:6.5px}
-:is(.print-measure-root.print-view-results,body.print-view-results) .print-bar-track{height:12px;background:#edf2f5;border-radius:4px;overflow:hidden;margin-top:2px}
-:is(.print-measure-root.print-view-results,body.print-view-results) .print-bar-track.slim{height:6px;margin:0}
-:is(.print-measure-root.print-view-results,body.print-view-results) .print-bar-track i{display:block;height:100%;border-radius:4px;background:#b58a3b}
-:is(.print-measure-root.print-view-results,body.print-view-results) .print-bar-track i.proposed{background:#00a8df}
-:is(.print-measure-root.print-view-results,body.print-view-results) .print-bar-track i.positive{background:#1c9b5f}
-:is(.print-measure-root.print-view-results,body.print-view-results) .print-bar-track i.negative{background:#d94a43}
-:is(.print-measure-root.print-view-results,body.print-view-results) .print-component-bars{display:grid;gap:3px;margin-top:5px}
-:is(.print-measure-root.print-view-results,body.print-view-results) .print-component-row{display:grid;grid-template-columns:85px 1fr 65px;gap:5px;align-items:center;font-size:6px}
-:is(.print-measure-root.print-view-results,body.print-view-results) .print-component-row strong{text-align:right;font-size:6px}
-:is(.print-measure-root.print-view-results,body.print-view-results) .result-consolidated-panel{margin-bottom:6px!important;break-inside:avoid!important}
-:is(.print-measure-root.print-view-results,body.print-view-results) .result-consolidated-panel .panel-heading{padding:5px 7px!important}
-:is(.print-measure-root.print-view-results,body.print-view-results) .result-consolidated-panel .panel-heading h2{font-size:8.5px!important}
-:is(.print-measure-root.print-view-results,body.print-view-results) .pro-table{font-size:7px!important;white-space:nowrap!important}
-:is(.print-measure-root.print-view-results,body.print-view-results) .pro-table th{font-size:5.8px!important;padding:3px 4px!important}
-:is(.print-measure-root.print-view-results,body.print-view-results) .pro-table td{padding:2.7px 4px!important}
-:is(.print-measure-root.print-view-results,body.print-view-results) .result-detail-panel{display:none!important}
-:is(.print-measure-root.print-view-results,body.print-view-results) .ranking-grid{grid-template-columns:repeat(3,1fr)!important;gap:6px!important}
-:is(.print-measure-root.print-view-results,body.print-view-results) .ranking-grid .panel{padding:6px!important;break-inside:avoid!important}
-:is(.print-measure-root.print-view-results,body.print-view-results) .ranking-grid .panel-heading{padding:0 0 3px!important}
-:is(.print-measure-root.print-view-results,body.print-view-results) .ranking-grid .panel-heading h2{font-size:8px!important}
-:is(.print-measure-root.print-view-results,body.print-view-results) .ranking-list{gap:1px!important}
-:is(.print-measure-root.print-view-results,body.print-view-results) .ranking-list>div{padding:3px 0!important;gap:5px!important}
-:is(.print-measure-root.print-view-results,body.print-view-results) .ranking-list i{width:18px!important;height:18px!important;font-size:7px!important;border-radius:5px!important}
-:is(.print-measure-root.print-view-results,body.print-view-results) .ranking-list span b{font-size:6.8px!important}
-:is(.print-measure-root.print-view-results,body.print-view-results) .ranking-list span small{font-size:6px!important;margin-top:0!important}
-:is(.print-measure-root.print-view-results,body.print-view-results) .ranking-brand img{max-height:12px!important;max-width:32px!important}
-:is(.print-measure-root.print-view-results,body.print-view-results) .print-note{margin:5px 0 0!important;font-size:5.8px!important;color:#71808a;text-align:center}
-
-/* VISÃO FINANCEIRA — dashboard executivo com gráficos */
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .dashboard-print-actions{display:none!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .client-hero{grid-template-columns:82px 1fr 82px!important;gap:8px!important;padding:7px 10px!important;border-bottom-width:2.5px!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .client-hero img{max-height:34px!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .client-hero h1{font-size:16px!important;margin:2px 0!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .client-hero .eyebrow{font-size:7px!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .client-hero p{font-size:8px!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .client-meta{padding:4px 10px 6px!important;font-size:7px!important;gap:14px!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .section-kicker{margin:6px 0 4px!important;gap:6px!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .section-kicker>span{width:20px!important;height:20px!important;font-size:7px!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .section-kicker strong{font-size:8.4px!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .section-kicker small{font-size:6.2px!important;margin-top:0!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .kpi-grid{grid-template-columns:repeat(4,1fr)!important;gap:5px!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .kpi-card{padding:7px!important;border-radius:7px!important;box-shadow:none!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .kpi-card>span{font-size:6px!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .kpi-card>strong{font-size:11.5px!important;margin-top:3px!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .kpi-card>small{font-size:5.5px!important;margin-top:1px!important;line-height:1.15!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .result-banner{margin:6px 0!important;padding:7px 9px!important;border-radius:7px!important;box-shadow:none!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .result-banner strong{font-size:10px!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .result-banner p{font-size:6.8px!important;margin-top:2px!important;line-height:1.2!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .dashboard-grid{grid-template-columns:1fr 1fr!important;gap:6px!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .dashboard-grid .panel{min-height:0!important;padding:7px!important;break-inside:avoid!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .dashboard-grid .panel-heading{padding:0 0 4px!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .dashboard-grid .panel-heading h2{font-size:8.5px!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .dashboard-grid .panel-heading span{font-size:5.8px!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .cost-bars{gap:8px!important;padding:4px 2px!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .cost-bar-label{margin-bottom:2px!important}
+/* DASHBOARD / VISÃO FINANCEIRA */
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .dashboard-sheet{page:dashboardPage;width:200mm!important;max-width:200mm!important;margin:0 auto!important;background:#fff!important;box-shadow:none!important;border-radius:0!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .client-hero{grid-template-columns:25mm 1fr 28mm!important;gap:3mm!important;padding:3mm 3.5mm!important;border-bottom-width:2px!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .client-hero img{max-width:27mm!important;max-height:10mm!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .client-hero h1{font-size:15pt!important;line-height:1.06!important;margin:.6mm 0!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .client-hero .eyebrow{font-size:6.6pt!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .client-hero p{font-size:7.5pt!important;margin:0!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .client-meta{padding:1.5mm 3.5mm 2mm!important;gap:5mm!important;font-size:7pt!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .section-kicker{margin:3mm 0 1.5mm!important;gap:2mm!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .section-kicker>span{width:6mm!important;height:6mm!important;font-size:7pt!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .section-kicker strong{font-size:9.5pt!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .section-kicker small{font-size:6.5pt!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .kpi-grid{grid-template-columns:repeat(4,1fr)!important;gap:1.5mm!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .kpi-card{padding:2mm!important;border-radius:2mm!important;box-shadow:none!important;min-height:15mm!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .kpi-card>span{font-size:5.7pt!important;line-height:1.08!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .kpi-card>strong{font-size:10.5pt!important;margin-top:1mm!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .kpi-card>small{font-size:5.5pt!important;line-height:1.08!important;margin-top:.7mm!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .result-banner{margin:2.5mm 0!important;padding:2.5mm 3mm!important;border-radius:2mm!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .result-banner strong{font-size:11pt!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .result-banner p{font-size:7pt!important;line-height:1.25!important;margin:1mm 0 0!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .dashboard-grid{grid-template-columns:1fr 1fr!important;gap:2mm!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .dashboard-grid .panel{min-height:48mm!important;padding:3mm!important;border-radius:2mm!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .panel-heading h2{font-size:9pt!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .panel-heading span{font-size:6pt!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .cost-bars{gap:5mm!important;padding:3mm 1mm!important}
 :is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .cost-bar-label span,
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .cost-bar-label strong{font-size:6.5px!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .cost-track{height:16px!important;border-radius:4px!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .impact-bars{gap:4px!important;padding-top:2px!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .impact-row{grid-template-columns:82px 1fr 66px!important;gap:5px!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .impact-row>span{font-size:6px!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .impact-track{height:6px!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .impact-row>strong{font-size:6px!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .brand-impact-grid{grid-template-columns:repeat(4,1fr)!important;gap:5px!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .brand-impact-card{padding:6px!important;border-radius:7px!important;break-inside:avoid!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .brand-impact-card header{padding-bottom:4px!important;margin-bottom:2px!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .brand-impact-card header .payment-brand.brand-logo{width:70px!important;min-width:70px!important;height:24px!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .brand-impact-card header .payment-brand.brand-logo img{max-width:60px!important;max-height:17px!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .brand-impact-card header small{font-size:6px!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .brand-impact-card>div{padding:2px 0!important;font-size:6.2px!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .dashboard-rates-section,
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .dashboard-rate-matrix{display:none!important}
-:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .dashboard-print-note{margin:6px 0 0!important;padding:5px 7px!important;background:#f4f7f9;border-radius:6px;font-size:6px!important;color:#697985;text-align:center}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .cost-bar-label strong{font-size:7pt!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .cost-track{height:7mm!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .impact-bars{gap:1.5mm!important;padding-top:1mm!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .impact-row{grid-template-columns:28mm 1fr 25mm!important;gap:2mm!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .impact-row>span,
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .impact-row>strong{font-size:6.5pt!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .impact-track{height:2.5mm!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .brand-impact-grid{grid-template-columns:repeat(4,1fr)!important;gap:1.5mm!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .brand-impact-card{padding:2mm!important;border-radius:2mm!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .brand-impact-card header{padding-bottom:1.5mm!important;margin-bottom:1mm!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .brand-impact-card header small{font-size:6.2pt!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .brand-impact-card>div{font-size:6.4pt!important;padding:.8mm 0!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .dashboard-rate-charts{break-before:page!important;page-break-before:always!important;margin-top:0!important;padding-top:0!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .rate-chart-section{margin:0!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .rate-chart-heading{margin-bottom:1.5mm!important;align-items:flex-end!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .rate-chart-heading>div:first-child>span{font-size:5.8pt!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .rate-chart-heading h2{font-size:10pt!important;margin:.5mm 0!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .rate-chart-heading p{font-size:6.2pt!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .rate-chart-key{display:none!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .rate-chart-grid{grid-template-columns:repeat(2,1fr)!important;gap:1.5mm!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .rate-line-card{padding:1.4mm 1.6mm!important;border-radius:1.8mm!important;box-shadow:none!important;break-inside:avoid!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .rate-line-card header{padding-bottom:1mm!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .rate-chart-legend span{font-size:5.8pt!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .rate-line-svg{height:36mm!important;width:100%!important;margin-top:.5mm!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .rate-chart-empty{height:36mm!important;font-size:6pt!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .dashboard-rates-section{margin:2.2mm 0 1mm!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .dashboard-rate-matrix{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:1.5mm!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .rate-brand-card{border-radius:1.6mm!important;break-inside:avoid!important;page-break-inside:avoid!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .rate-brand-card header{display:flex!important;justify-content:space-between!important;align-items:center!important;padding:1mm 1.3mm!important;min-height:7mm!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .rate-brand-card header>span:last-child{display:none!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .rate-brand-card header .payment-brand.brand-logo{width:27mm!important;height:5.2mm!important;padding:.3mm .8mm!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .rate-brand-card header .payment-brand.brand-logo img{max-width:23mm!important;max-height:4mm!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .rate-brand-card table{width:100%!important;min-width:0!important;table-layout:fixed!important;font-size:5.8pt!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .rate-brand-card thead th{font-size:4.8pt!important;padding:.5mm .45mm!important;white-space:nowrap!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .rate-brand-card td{font-size:5.6pt!important;padding:.38mm .45mm!important;white-space:nowrap!important}
+:is(.print-measure-root.print-view-dashboard,body.print-view-dashboard) .dashboard-print-note{margin:2mm 0 0!important;padding:1.3mm!important;font-size:5.6pt!important;line-height:1.15!important;background:#f3f6f8!important;color:#697780!important;text-align:center!important}
+
+/* RESULTADO FINANCEIRO */
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-page{page:resultsPage;width:287mm!important;max-width:287mm!important;margin:0 auto!important;background:#fff!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-page>.page-heading{display:none!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-header{display:grid!important;grid-template-columns:28mm 1fr 30mm!important;align-items:center!important;text-align:center!important;gap:3mm!important;padding:2.5mm 3mm!important;border-bottom:2px solid #0b69b7!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-header img{max-width:28mm!important;max-height:9mm!important;object-fit:contain!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-header span{font-size:6.5pt!important;font-weight:900!important;letter-spacing:.8px!important;color:#0966ad!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-header h1{font-size:15pt!important;line-height:1.05!important;margin:.5mm 0!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-header p{font-size:7.5pt!important;margin:0!important;color:#6a7780!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-meta{display:flex!important;gap:7mm!important;padding:1.4mm 3mm 2mm!important;font-size:6.8pt!important;color:#64737c!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-kpis{grid-template-columns:repeat(4,1fr)!important;gap:2mm!important;margin:0 0 2.2mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-kpis article{padding:2.2mm!important;border-radius:2mm!important;box-shadow:none!important;min-height:16mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-kpis span{font-size:6pt!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-kpis strong{font-size:12pt!important;margin-top:1mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-print-visuals{display:grid!important;grid-template-columns:1fr 1fr!important;gap:2mm!important;margin-bottom:2mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .print-chart-card{border:1px solid #dce5eb!important;border-radius:2mm!important;padding:2mm!important;background:#fff!important;break-inside:avoid!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .print-chart-title span{display:block!important;font-size:5.8pt!important;font-weight:900!important;color:#60727e!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .print-chart-title strong{display:block!important;font-size:8pt!important;margin-top:.4mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .print-cost-row{margin-top:2mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .print-cost-row>div:first-child{display:flex!important;justify-content:space-between!important;gap:2mm!important;font-size:6.4pt!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .print-bar-track{height:4.2mm!important;background:#edf2f5!important;border-radius:1mm!important;overflow:hidden!important;margin-top:.6mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .print-bar-track.slim{height:2mm!important;margin:0!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .print-bar-track i{display:block!important;height:100%!important;border-radius:1mm!important;background:#b58a3b!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .print-bar-track i.proposed{background:#00a8df!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .print-bar-track i.positive{background:#1c9b5f!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .print-bar-track i.negative{background:#d94a43!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .print-component-bars{display:grid!important;gap:.7mm!important;margin-top:1.2mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .print-component-row{display:grid!important;grid-template-columns:30mm 1fr 22mm!important;gap:1.5mm!important;align-items:center!important;font-size:5.8pt!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .print-component-row strong{text-align:right!important;font-size:5.8pt!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-page>.panel{margin-bottom:2mm!important;border-radius:2mm!important;break-inside:avoid!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .panel-heading{padding:2mm 2.5mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .panel-heading h2{font-size:9pt!important;margin:0!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .panel-heading span{font-size:6pt!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .pro-table{width:100%!important;table-layout:auto!important;white-space:nowrap!important;font-size:7pt!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .pro-table th{font-size:5.8pt!important;padding:1.3mm 1.5mm!important;letter-spacing:.15px!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .pro-table td{font-size:6.8pt!important;padding:1.1mm 1.5mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .ranking-grid{grid-template-columns:repeat(3,1fr)!important;gap:2mm!important;margin-top:2mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .ranking-grid .panel{padding:2mm!important;border-radius:2mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .ranking-grid .panel-heading{padding:0 0 1mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .ranking-list{gap:.5mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .ranking-list>div{padding:.8mm 0!important;gap:1.5mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .ranking-list i{width:5mm!important;height:5mm!important;border-radius:1mm!important;font-size:6pt!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .ranking-list span b{font-size:6.5pt!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .ranking-list span small{font-size:5.8pt!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .empty-state{font-size:6.2pt!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .results-rate-charts{break-before:page!important;page-break-before:always!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .rate-chart-section{margin:0 0 3mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .rate-chart-heading{margin-bottom:1.8mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .rate-chart-heading>div:first-child>span{font-size:6pt!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .rate-chart-heading h2{font-size:11pt!important;margin:.5mm 0!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .rate-chart-heading p{font-size:6.5pt!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .rate-chart-key{display:none!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .rate-chart-grid{grid-template-columns:repeat(2,1fr)!important;gap:2mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .rate-line-card{padding:1.7mm 2mm!important;border-radius:2mm!important;box-shadow:none!important;break-inside:avoid!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .rate-line-card header{padding-bottom:1.2mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .rate-chart-legend span{font-size:6pt!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .rate-line-svg{height:42mm!important;width:100%!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .rate-chart-empty{height:42mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-detail-panel{break-inside:auto!important;page-break-inside:auto!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-detail-panel .pro-table{font-size:6.4pt!important;table-layout:auto!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-detail-panel .pro-table th{font-size:5.3pt!important;padding:1mm .8mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-detail-panel .pro-table td{font-size:6pt!important;padding:.85mm .8mm!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-detail-panel thead{display:table-header-group!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .result-detail-panel tr{break-inside:avoid!important;page-break-inside:avoid!important}
+:is(.print-measure-root.print-view-results,body.print-view-results) .print-note{font-size:5.8pt!important;line-height:1.15!important;text-align:center!important;color:#6e7b84!important;margin:2mm 0 0!important}
 
 @media print{
-  html,body{margin:0!important;padding:0!important;background:#fff!important;width:100%!important;min-height:0!important}
-  body{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
-  .topbar,.tabs,.app-footer,.no-print{display:none!important}
-  main{padding:0!important;margin:0!important;max-width:none!important;width:100%!important}
-  .app-shell{min-height:0!important;background:#fff!important}
-  .print-measure-root{display:none!important}
+  html,body{background:#fff!important;margin:0!important;padding:0!important}
+  body.print-layout .topbar,body.print-layout .tabs,body.print-layout .app-footer,body.print-layout .no-print{display:none!important}
   body.print-layout .print-only{display:block!important}
-  body.print-layout *{box-sizing:border-box!important}
-  body.print-view-proposal .proposal-sheet,
-  body.print-view-dashboard .dashboard-sheet,
-  body.print-view-results .results-page{page-break-after:avoid!important;break-after:avoid-page!important}
+  body.print-layout main{padding:0!important;margin:0!important;max-width:none!important;width:auto!important}
+  body.print-layout .app-shell{min-height:0!important;background:#fff!important}
+  body.print-layout a{text-decoration:none!important;color:inherit!important}
 }
