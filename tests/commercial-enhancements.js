@@ -28,6 +28,7 @@ test('Livelo: referencia de R$ 70 por 1.000 pontos gera equivalencia sem somar a
   s.cards.modalities['Débito'].taxaAtualGeral = 1.20;
   s.cards.modalities['Débito'].taxaCieloGeral = 0.80;
   s.package.tipoInstituicaoAtual = 'Sem pacote';
+  s.package.planoProposto = '';
   s.package.statusValidacao = 'NÃO ELEGÍVEL';
   const cards = calculateCards(s);
   assert.equal(cards.complete, true);
