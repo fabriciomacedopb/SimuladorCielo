@@ -96,7 +96,7 @@ export function createShell(ctx) {
           <div>
             <span>DOCUMENTOS DA SIMULAÇÃO</span>
             <h2 id="pdfCenterTitle">Gerar PDF</h2>
-            <p>Selecione um, dois ou os três documentos. Cada arquivo mantém seu próprio leiaute, orientação e finalidade.</p>
+            <p>Selecione um, dois ou os três documentos. Cada arquivo mantém seu próprio leiaute e finalidade.</p>
           </div>
           <button class="pdf-center-close" type="button" data-pdf-close aria-label="Fechar">×</button>
         </header>
@@ -124,7 +124,7 @@ export function createShell(ctx) {
           <label class="pdf-choice results selected">
             <input class="pdf-choice-input" type="checkbox" value="results" checked>
             <span class="pdf-choice-check" aria-hidden="true">✓</span>
-            <span class="pdf-choice-tag">A4 paisagem</span>
+            <span class="pdf-choice-tag">A4 retrato</span>
             <h3>Resultado Financeiro</h3>
             <p>Relatório analítico da simulação com consolidação de custos e detalhamento.</p>
             <ul><li>Resultado por produto</li><li>Rankings e curvas de taxas</li><li>Detalhamento financeiro</li></ul>
